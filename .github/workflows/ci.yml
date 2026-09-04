@@ -1,0 +1,13 @@
+name: ARTH CI
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test CI
+        run: echo "ARTH CI is working!"
