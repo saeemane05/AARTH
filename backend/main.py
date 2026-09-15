@@ -1,6 +1,8 @@
 import logging
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from auth.router import router as auth_router
 
 # =========================================================
 # MODULE: FARMER PROFILE
@@ -15,7 +17,6 @@ from fastapi import FastAPI
 # Farmer endpoints are grouped together automatically in the
 # /docs Swagger UI under the "Farmer Authentication" tag.
 # =========================================================
-from PROFILE.FARMER.router import router as farmer_router
 
 # When you build the next profile type (Buyer, FPO, PACS, etc.),
 # follow the same pattern and import it here, e.g.:
@@ -23,12 +24,22 @@ from PROFILE.FARMER.router import router as farmer_router
 
 logging.basicConfig(level=logging.INFO)
 
-app = FastAPI(title="SEVA API")
+app = FastAPI(title="AARTH API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Common username/password authentication endpoints.
+app.include_router(auth_router)
 
 # ---------------------------------------------------------
 # FARMER PROFILE ROUTES
 # ---------------------------------------------------------
-app.include_router(farmer_router)
 
 # ---------------------------------------------------------
 # Add future profile-type routers below, each on its own line,
