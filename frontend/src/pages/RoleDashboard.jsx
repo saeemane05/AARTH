@@ -1,22 +1,708 @@
-import { useMemo, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+
 import { useNavigate } from "react-router-dom";
+
+import { authApi } from "../api/auth";
+
 import logo from "../assets/aarth-logo.png";
 
-const CONFIG = {
-  farmer: { label: "FARMER", welcome: "Farmer", accent: "#08723d", deep: "#064c29", tagline: "Stronger Farmers|Brighter Markets", section: "Basic Information", steps: ["Profile Details", "Farm & Production", "Market Preferences", "Review & Submit"], nav: ["Profile", "Market Insights", "My Lots", "Advisories", "Weather", "Support"], fields: [["Full name", "Ramesh Vitthal Patil"], ["Phone number", "+91 98765 43210"], ["District", "Nashik", "select"], ["Taluka", "Dindori", "select"], ["Village", "Wani", "select"], ["Crops grown", "Onion, Grapes, Tomato"], ["Land / Production info", "5 Acres"], ["Preferred markets", "Nashik APMC, Lasalgaon"], ["Typical selling quantity", "10 Tonnes per lot"], ["Payment preference", "Direct Bank Transfer (NEFT/RTGS)", "select"], ["Selling urgency", "Within 1 month", "select"]], tip: "Your information helps us connect you with the right buyers and get better prices for your crops.", image: "Your farm|Our support|A brighter tomorrow" },
-  buyer: { label: "BUYER", welcome: "Buyer", accent: "#0957d5", deep: "#073578", tagline: "Reliable Partnerships|Stronger Supply Chains", section: "Business Information", steps: ["Business Details", "Requirements", "Payment & Logistics", "Review & Submit"], nav: ["Profile", "Search Produce", "My Requirements", "Orders", "Supplier Network", "Support"], fields: [["Business name", "Shree Foods Pvt. Ltd."], ["Phone number", "+91 98764 32109"], ["Buyer type", "Processor / Manufacturer", "select"], ["GST number (optional)", "27ABCDE1234F1Z5"], ["District", "Pune", "select"], ["City", "Pune", "select"], ["Required commodities", "Onion, Potato, Tomato"], ["Typical quantity", "20 Tonnes per month"], ["Quality requirements", "Grade A, medium size, clean"], ["Payment terms", "Within 7 days", "select"]], tip: "Verified buyers get access to a larger and more consistent supply of quality produce.", image: "Quality supply|Stronger businesses|Thriving together" },
-  fpo: { label: "FPO", welcome: "FPO", accent: "#7424c7", deep: "#3a1471", tagline: "Growing Together|Building Stronger Markets", section: "Organization Information", steps: ["Organization Details", "Operations", "Market Preferences", "Review & Submit"], nav: ["Profile", "Member Management", "Aggregation", "Market Linkages", "Transactions", "Support"], fields: [["FPO name", "Sahyadri Farmers Producer Company"], ["Registration number", "U01100MH2020OPF0123456"], ["Date of registration", "15 Mar 2020"], ["Member count", "450"], ["District", "Ahmednagar", "select"], ["Taluka", "Sangamner", "select"], ["Headquarters village", "Kopargaon", "select"], ["Crops handled", "Onion, Grapes, Pomegranate"], ["Aggregation capacity", "500 Tonnes per season"], ["Storage facilities (if any)", "Yes, own storage facility", "select"], ["Annual turnover (optional)", "₹ 2.5 Crore"]], tip: "Verified FPOs gain access to larger and more consistent supply opportunities.", image: "Collective strength|Better markets|Growing prosperity" },
-  "logistics-partner": { label: "LOGISTICS", welcome: "Logistics Partner", accent: "#f0540a", deep: "#763008", tagline: "Moving Harvests|Supporting Livelihoods", section: "Business Information", steps: ["Business Details", "Fleet & Capacity", "Service Area", "Review & Submit"], nav: ["Profile", "Available Trips", "Transport Requests", "My Vehicles", "Earnings", "Support"], fields: [["Business name", "Sai Transport Services"], ["Phone number", "+91 98230 11223"], ["District", "Nashik", "select"], ["City", "Nashik", "select"], ["Service area (districts)", "Nashik, Pune, Ahmednagar"], ["Vehicle details", "Truck (6–12 tonnes)", "select"], ["Capacity", "10 Tonnes"], ["Availability", "Available for immediate booking", "select"], ["Pricing (per km)", "₹ 35"], ["Verification status", "Under Verification"]], tip: "Verified partners get 3x more booking requests.", image: "On time delivery|Stronger supply chains|Thriving agriculture" },
-  "storage-partner": { label: "STORAGE", welcome: "Storage Provider", accent: "#007d92", deep: "#004c5a", tagline: "Preserving Today|For a Better Tomorrow", section: "Facility Information", steps: ["Facility Details", "Capacity & Commodities", "Pricing", "Review & Submit"], nav: ["Profile", "Capacity Management", "Bookings", "Pricing", "Transactions", "Support"], fields: [["Facility name", "Nashik Agro Cold Storage"], ["Phone number", "+91 97654 32100"], ["District", "Nashik", "select"], ["Taluka", "Dindori", "select"], ["Village / Area", "MIDC, Ambad", "select"], ["Storage type", "Cold Storage", "select"], ["Total capacity", "1000 Tonnes"], ["Available capacity", "600 Tonnes"], ["Supported commodities", "Onion, Potato, Grapes, Tomato"], ["Pricing (per tonne per month)", "₹ 1200"], ["Verification status", "Verified"]], tip: "Verified storage providers get long-term contracts and higher occupancy.", image: "Store Today|Support Tomorrow|Build a Resilient Agri-Economy" }
-};
-const keyFor = (value) => value.toLowerCase().replace(/\s+/g, "_").replace(/[^a-z_]/g, "");
+function getSession() {
+  try {
+    return JSON.parse(
+      localStorage.getItem("aarth_session") ||
+        "null"
+    );
+  } catch {
+    return null;
+  }
+}
 
-export default function RoleDashboard({ role }) {
-  const navigate = useNavigate(); const config = CONFIG[role] || CONFIG.farmer;
-  const session = useMemo(() => { try { return JSON.parse(localStorage.getItem("aarth_session") || "null"); } catch { return null; } }, []);
-  const profile = session?.profile?.profile_data || {};
-  const [values, setValues] = useState(() => Object.fromEntries(config.fields.map(([label, example]) => [keyFor(label), profile[keyFor(label)] || example])));
-  const [notice, setNotice] = useState(""); const displayName = profile.name || profile.fpo_name || profile.business_name || profile.facility_name || config.welcome;
-  const save = (next) => { localStorage.setItem(`aarth_profile_${role}`, JSON.stringify(values)); setNotice(next ? "Profile details saved. Continue to the next step." : "Draft saved on this device."); };
-  return <div className="onboarding" style={{ "--accent": config.accent, "--deep": config.deep }}><aside className="portal-sidebar"><div className="portal-brand"><img src={logo} alt="AARTH"/><strong>AARTH</strong><small>FROM FARM TO BETTER MARKETS</small></div><nav>{config.nav.map((item, index) => <button key={item} className={index === 0 ? "active" : ""}><span>{index === 0 ? "●" : "▧"}</span>{item}</button>)}</nav><button className="logout" onClick={() => { localStorage.removeItem("aarth_session"); navigate("/login"); }}>♙&nbsp; Logout</button></aside><main className="portal-main"><header className="portal-header"><span className="welcome-icon">♟</span><div><h1>Welcome, {displayName}!</h1><p>Let’s set up your profile to {role === "buyer" ? "start sourcing" : "get started"}.</p></div><b>{config.tagline.split("|").map((line) => <span key={line}>{line}</span>)}</b></header><div className="portal-content"><section className="form-card"><div className="form-title"><h2>Complete your profile</h2><span>{config.label}</span></div><div className="stepper">{config.steps.map((step, index) => <div key={step} className={index === 0 ? "current" : ""}><i>{index + 1}</i><small>{step}</small></div>)}</div><div className="details-box"><h3><em>♟</em>{config.section}</h3><div className="field-grid">{config.fields.map(([label, example, type]) => { const field = keyFor(label); return <label key={label} className={label.includes("commodities") || label.includes("area") ? "wide" : ""}>{label}{!label.includes("optional") && <sup>*</sup>}{type === "select" ? <select value={values[field]} onChange={(event) => setValues({ ...values, [field]: event.target.value })}><option>{values[field]}</option><option>Not specified</option></select> : <input value={values[field]} onChange={(event) => setValues({ ...values, [field]: event.target.value })}/>}</label>; })}</div><footer><button className="draft" onClick={() => save(false)}>▣&nbsp; Save as draft</button><button className="continue" onClick={() => save(true)}>Save &amp; Continue&nbsp; →</button></footer></div></section><aside className="profile-aside"><section className="readiness-card"><h3>Profile readiness</h3><div><strong>25%</strong><p><b>1 of 4 steps completed</b><br/>Complete your profile to unlock better market opportunities.</p></div></section><section className="tip-card">💡<p>{config.tip}</p></section><section className="image-card"><div>{config.image.split("|").map((line) => <span key={line}>{line}</span>)}</div></section></aside></div>{notice && <div className="save-notice">✓ {notice}<button onClick={() => setNotice("")}>×</button></div>}</main></div>;
+function getFieldKey(label) {
+  return label
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_|_$/g, "");
+}
+
+function getPrimaryName(profile, config) {
+  const data = profile?.profile_data || {};
+
+  for (const key of config.nameFields) {
+    if (data[key]) {
+      return data[key];
+    }
+  }
+
+  return profile?.username || config.welcome;
+}
+
+function createInitialValues(config, profile) {
+  const stored = profile?.profile_data || {};
+
+  const result = {};
+
+  config.fields.forEach((field) => {
+    const key = field.key;
+
+    result[key] =
+      stored[key] !== undefined
+        ? stored[key]
+        : "";
+  });
+
+  return result;
+}
+
+export default function RoleProfileDashboard({
+  config,
+}) {
+  const navigate = useNavigate();
+
+  const [session, setSession] =
+    useState(getSession);
+
+  const [values, setValues] =
+    useState(() =>
+      createInitialValues(
+        config,
+        getSession()?.profile
+      )
+    );
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [saving, setSaving] =
+    useState(false);
+
+  const [notice, setNotice] =
+    useState("");
+
+  const [activeNav, setActiveNav] =
+    useState("Profile");
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function loadProfile() {
+      const storedSession =
+        authApi.getSession();
+
+      if (
+        !storedSession?.access_token
+      ) {
+        navigate("/login", {
+          replace: true,
+        });
+
+        return;
+      }
+
+      try {
+        const profile =
+          await authApi.me();
+
+        if (
+          profile.role !==
+          config.role
+        ) {
+          navigate(
+            config.dashboardPathForRole(
+              profile.role
+            ),
+            {
+              replace: true,
+            }
+          );
+
+          return;
+        }
+
+        const updatedSession = {
+          ...storedSession,
+          profile,
+        };
+
+        localStorage.setItem(
+          "aarth_session",
+          JSON.stringify(
+            updatedSession
+          )
+        );
+
+        if (mounted) {
+          setSession(
+            updatedSession
+          );
+
+          setValues(
+            createInitialValues(
+              config,
+              profile
+            )
+          );
+        }
+      } catch {
+        authApi.clearSession();
+
+        navigate("/login", {
+          replace: true,
+        });
+      } finally {
+        if (mounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadProfile();
+
+    return () => {
+      mounted = false;
+    };
+  }, [config, navigate]);
+
+  const profile =
+    session?.profile || {};
+
+  const displayName = useMemo(
+    () =>
+      getPrimaryName(
+        profile,
+        config
+      ),
+    [profile, config]
+  );
+
+  const readiness = useMemo(() => {
+    const requiredFields =
+      config.fields.filter(
+        (field) => field.required
+      );
+
+    if (!requiredFields.length) {
+      return 0;
+    }
+
+    const completed =
+      requiredFields.filter(
+        (field) =>
+          String(
+            values[field.key] ?? ""
+          ).trim().length > 0
+      ).length;
+
+    return Math.round(
+      (completed /
+        requiredFields.length) *
+        100
+    );
+  }, [config.fields, values]);
+
+  const completedFields =
+    config.fields.filter(
+      (field) =>
+        field.required &&
+        String(
+          values[field.key] ?? ""
+        ).trim().length > 0
+    ).length;
+
+  async function saveProfile(
+    continueAfterSave
+  ) {
+    setSaving(true);
+    setNotice("");
+
+    try {
+      /*
+       * Only fields defined by this role
+       * are sent to the backend.
+       *
+       * This prevents future-sprint fields
+       * from accidentally being stored.
+       */
+      const cleanData = {};
+
+      config.fields.forEach(
+        (field) => {
+          cleanData[field.key] =
+            values[field.key] ?? "";
+        }
+      );
+
+      const response =
+        await authApi.saveProfile(
+          cleanData
+        );
+
+      const nextSession = {
+        ...session,
+        profile: response.profile,
+      };
+
+      localStorage.setItem(
+        "aarth_session",
+        JSON.stringify(
+          nextSession
+        )
+      );
+
+      setSession(nextSession);
+
+      setNotice(
+        continueAfterSave
+          ? "Profile saved successfully."
+          : "Draft saved successfully."
+      );
+
+      if (continueAfterSave) {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+    } catch (error) {
+      setNotice(
+        error?.message ||
+          "Could not save the profile."
+      );
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  function logout() {
+    authApi.logout();
+
+    navigate("/login", {
+      replace: true,
+    });
+  }
+
+  function updateField(
+    key,
+    value
+  ) {
+    setValues((previous) => ({
+      ...previous,
+      [key]: value,
+    }));
+  }
+
+  if (loading) {
+    return (
+      <div className="aarth-loading">
+        <div className="aarth-loader"></div>
+
+        <h2>AARTH</h2>
+
+        <p>
+          Loading your{" "}
+          {config.roleLabel.toLowerCase()}{" "}
+          dashboard...
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={`onboarding role-${config.slug}`}
+      style={{
+        "--accent": config.accent,
+        "--deep": config.deep,
+        "--soft": config.soft,
+      }}
+    >
+      <aside className="portal-sidebar">
+        <div className="portal-brand">
+          <img
+            src={logo}
+            alt="AARTH"
+          />
+
+          <strong>AARTH</strong>
+
+          <small>
+            FROM FARM TO BETTER MARKETS
+          </small>
+        </div>
+
+        <div className="role-sidebar-title">
+          {config.roleLabel}
+        </div>
+
+        <nav>
+          {config.nav.map(
+            (item) => (
+              <button
+                key={item.label}
+                type="button"
+                className={
+                  activeNav ===
+                  item.label
+                    ? "active"
+                    : ""
+                }
+                onClick={() =>
+                  setActiveNav(
+                    item.label
+                  )
+                }
+              >
+                <span>
+                  {item.icon}
+                </span>
+
+                {item.label}
+              </button>
+            )
+          )}
+        </nav>
+
+        <button
+          className="logout"
+          type="button"
+          onClick={logout}
+        >
+          ⇥&nbsp; Logout
+        </button>
+      </aside>
+
+      <main className="portal-main">
+        <header className="portal-header">
+          <div className="welcome-icon">
+            {config.icon}
+          </div>
+
+          <div>
+            <h1>
+              Welcome,{" "}
+              {displayName}!
+            </h1>
+
+            <p>
+              {config.subtitle}
+            </p>
+          </div>
+
+          <div className="portal-tagline">
+            {config.tagline.map(
+              (line) => (
+                <span key={line}>
+                  {line}
+                </span>
+              )
+            )}
+          </div>
+        </header>
+
+        <section className="role-dashboard-strip">
+          <div>
+            <span className="strip-label">
+              AARTH ID
+            </span>
+
+            <strong>
+              {profile.aarth_id ||
+                "Not assigned"}
+            </strong>
+          </div>
+
+          <div>
+            <span className="strip-label">
+              ACCOUNT
+            </span>
+
+            <strong>
+              {config.roleLabel}
+            </strong>
+          </div>
+
+          <div>
+            <span className="strip-label">
+              PROFILE STATUS
+            </span>
+
+            <strong>
+              {profile.status ||
+                "ACTIVE"}
+            </strong>
+          </div>
+        </section>
+
+        <div className="portal-content">
+          <section className="form-card">
+            <div className="form-title">
+              <div>
+                <h2>
+                  Complete your profile
+                </h2>
+
+                <p className="form-description">
+                  {config.formDescription}
+                </p>
+              </div>
+
+              <span>
+                {config.roleLabel}
+              </span>
+            </div>
+
+            <div className="stepper">
+              {config.steps.map(
+                (step, index) => (
+                  <div
+                    key={step}
+                    className={
+                      index === 0
+                        ? "current"
+                        : ""
+                    }
+                  >
+                    <i>
+                      {index + 1}
+                    </i>
+
+                    <small>
+                      {step}
+                    </small>
+                  </div>
+                )
+              )}
+            </div>
+
+            <div className="details-box">
+              <h3>
+                <em>
+                  {config.sectionIcon}
+                </em>
+
+                {config.sectionTitle}
+              </h3>
+
+              <div className="field-grid">
+                {config.fields.map(
+                  (field) => (
+                    <label
+                      key={field.key}
+                      className={
+                        field.wide
+                          ? "wide"
+                          : ""
+                      }
+                    >
+                      <span>
+                        {field.label}
+
+                        {field.required && (
+                          <sup>
+                            *
+                          </sup>
+                        )}
+                      </span>
+
+                      {field.type ===
+                      "select" ? (
+                        <select
+                          value={
+                            values[
+                              field.key
+                            ]
+                          }
+                          onChange={(
+                            event
+                          ) =>
+                            updateField(
+                              field.key,
+                              event.target
+                                .value
+                            )
+                          }
+                        >
+                          <option value="">
+                            {field.placeholder ||
+                              "Select"}
+                          </option>
+
+                          {field.options.map(
+                            (option) => (
+                              <option
+                                key={
+                                  option
+                                }
+                                value={
+                                  option
+                                }
+                              >
+                                {option}
+                              </option>
+                            )
+                          )}
+                        </select>
+                      ) : (
+                        <input
+                          type={
+                            field.type ||
+                            "text"
+                          }
+                          value={
+                            values[
+                              field.key
+                            ]
+                          }
+                          placeholder={
+                            field.placeholder ||
+                            ""
+                          }
+                          onChange={(
+                            event
+                          ) =>
+                            updateField(
+                              field.key,
+                              event.target
+                                .value
+                            )
+                          }
+                        />
+                      )}
+                    </label>
+                  )
+                )}
+              </div>
+
+              <footer>
+                <button
+                  className="draft"
+                  type="button"
+                  disabled={saving}
+                  onClick={() =>
+                    saveProfile(false)
+                  }
+                >
+                  ▣&nbsp; Save as draft
+                </button>
+
+                <button
+                  className="continue"
+                  type="button"
+                  disabled={saving}
+                  onClick={() =>
+                    saveProfile(true)
+                  }
+                >
+                  {saving
+                    ? "Saving..."
+                    : "Save & Continue →"}
+                </button>
+              </footer>
+            </div>
+          </section>
+
+          <aside className="profile-aside">
+            <section className="readiness-card">
+              <h3>
+                Profile readiness
+              </h3>
+
+              <div>
+                <strong>
+                  {readiness}%
+                </strong>
+
+                <p>
+                  <b>
+                    {completedFields} of{" "}
+                    {
+                      config.fields.filter(
+                        (field) =>
+                          field.required
+                      ).length
+                    }{" "}
+                    required fields
+                    completed
+                  </b>
+
+                  <br />
+
+                  Complete your basic
+                  profile to unlock
+                  AARTH opportunities.
+                </p>
+              </div>
+            </section>
+
+            <section className="tip-card">
+              <span>
+                {config.tipIcon}
+              </span>
+
+              <p>
+                {config.tip}
+              </p>
+            </section>
+
+            <section
+              className={`role-visual ${config.visualClass}`}
+            >
+              <div className="visual-shape visual-shape-one"></div>
+              <div className="visual-shape visual-shape-two"></div>
+
+              <div className="visual-icon">
+                {config.visualIcon}
+              </div>
+
+              <div className="visual-copy">
+                {config.visualLines.map(
+                  (line) => (
+                    <span
+                      key={line}
+                    >
+                      {line}
+                    </span>
+                  )
+                )}
+              </div>
+            </section>
+
+            <section className="quick-card">
+              <div className="quick-icon">
+                {config.quickIcon}
+              </div>
+
+              <div>
+                <strong>
+                  {config.quickTitle}
+                </strong>
+
+                <p>
+                  {config.quickText}
+                </p>
+              </div>
+            </section>
+          </aside>
+        </div>
+
+        {notice && (
+          <div className="save-notice">
+            ✓ {notice}
+
+            <button
+              type="button"
+              onClick={() =>
+                setNotice("")
+              }
+            >
+              ×
+            </button>
+          </div>
+        )}
+      </main>
+    </div>
+  );
 }
