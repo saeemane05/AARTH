@@ -1,83 +1,55 @@
 import RoleProfileDashboard from "./RoleProfileDashboard";
 
-const buyerConfig = {
-  slug: "buyer",
-
-  role: "BUYER",
-  roleLabel: "BUYER",
-
-  welcome: "Buyer",
-
-  accent: "#0957d5",
-  deep: "#073578",
-  soft: "#edf4ff",
-
-  icon: "🏢",
+const storageConfig = {
+  slug: "storage",
+  role: "STORAGE_PARTNER",
+  roleLabel: "STORAGE PARTNER",
+  welcome: "Storage Partner",
+  accent: "#88739b",
+  deep: "#625273",
+  soft: "#f2edf5",
+  icon: "🏬",
 
   tagline: [
-    "Reliable Partnerships",
-    "Stronger Supply Chains",
+    "Secure Storage",
+    "Smarter Selling Windows",
   ],
 
   subtitle:
-    "Let's set up your profile to start sourcing.",
+    "Set up your storage profile to support farm-to-market movement.",
 
   formDescription:
-    "Create your business identity so AARTH can connect your organization with relevant agricultural suppliers.",
+    "Create your storage identity so AARTH can consider available facilities when comparing sell-now and storage-linked market pathways.",
 
-  sectionTitle:
-    "Business Information",
-
-  sectionIcon: "🏢",
+  sectionTitle: "Storage Information",
+  sectionIcon: "🏬",
 
   steps: [
-    "Business Details",
+    "Facility Details",
     "Location",
-    "Organization",
+    "Capacity",
     "Review",
   ],
 
-  nameFields: [
-    "business_name",
-  ],
+  nameFields: ["facility_name"],
 
   nav: [
-    {
-      label: "Profile",
-      icon: "●",
-    },
-    {
-      label: "Search Produce",
-      icon: "⌕",
-    },
-    {
-      label: "My Requirements",
-      icon: "▤",
-    },
-    {
-      label: "Orders",
-      icon: "□",
-    },
-    {
-      label: "Supplier Network",
-      icon: "♧",
-    },
-    {
-      label: "Support",
-      icon: "?",
-    },
+    { label: "Profile", icon: "●" },
+    { label: "Storage Requests", icon: "⌕" },
+    { label: "My Facilities", icon: "▤" },
+    { label: "Capacity", icon: "◫" },
+    { label: "Bookings", icon: "□" },
+    { label: "Support", icon: "?" },
   ],
 
   fields: [
     {
-      key: "business_name",
-      label: "Business name",
-      placeholder:
-        "Enter registered business name",
+      key: "facility_name",
+      label: "Facility name",
+      placeholder: "Enter storage facility name",
       required: true,
       wide: true,
     },
-
     {
       key: "phone_number",
       label: "Phone number",
@@ -85,31 +57,6 @@ const buyerConfig = {
       required: true,
       type: "tel",
     },
-
-    {
-      key: "buyer_type",
-      label: "Buyer type",
-      placeholder: "Select buyer type",
-      required: true,
-      type: "select",
-      options: [
-        "Processor / Manufacturer",
-        "Wholesaler",
-        "Retailer",
-        "Exporter",
-        "Institutional Buyer",
-        "Other",
-      ],
-    },
-
-    {
-      key: "gst_number",
-      label: "GST number",
-      placeholder:
-        "GST number (optional)",
-      required: false,
-    },
-
     {
       key: "district",
       label: "District",
@@ -117,67 +64,71 @@ const buyerConfig = {
       required: true,
       type: "select",
       options: [
-        "Pune",
-        "Nashik",
-        "Ahmednagar",
-        "Mumbai",
-        "Nagpur",
-        "Aurangabad",
-        "Jalgaon",
+        "Nashik", "Pune", "Ahmednagar", "Jalgaon",
+        "Nagpur", "Amravati", "Akola", "Sangli",
+        "Solapur", "Other",
+      ],
+    },
+    {
+      key: "taluka",
+      label: "Taluka",
+      placeholder: "Enter taluka",
+      required: true,
+    },
+    {
+      key: "village_area",
+      label: "Village / area",
+      placeholder: "Enter facility village or area",
+      required: true,
+      wide: true,
+    },
+    {
+      key: "storage_type",
+      label: "Storage type",
+      placeholder: "Select storage type",
+      required: true,
+      type: "select",
+      options: [
+        "Warehouse",
+        "Cold Storage",
+        "Controlled Atmosphere",
+        "Dry Storage",
         "Other",
       ],
     },
-
     {
-      key: "city",
-      label: "City",
-      placeholder: "Enter city",
+      key: "total_capacity",
+      label: "Total capacity",
+      placeholder: "e.g. 100 MT",
       required: true,
+    },
+    {
+      key: "supported_commodities",
+      label: "Supported commodities",
+      placeholder: "e.g. Onion, Potato, Grapes",
+      required: true,
+      wide: true,
     },
   ],
 
-  tipIcon: "🔎",
-
+  tipIcon: "🌾",
   tip:
-    "A complete buyer profile makes it easier to discover relevant suppliers and build reliable sourcing relationships.",
+    "Accurate facility and capacity information helps AARTH evaluate storage-linked pathways without assuming that storing is always better than selling immediately.",
 
-  visualClass: "visual-buyer",
-
-  visualIcon: "🤝",
-
+  visualClass: "visual-storage",
+  visualIcon: "🏬",
   visualLines: [
-    "Quality Supply",
-    "Stronger Businesses",
-    "Thriving Together",
+    "Secure Storage",
+    "Flexible Timing",
+    "Better Coordination",
   ],
 
   quickIcon: "📦",
-
-  quickTitle:
-    "Buyer profile foundation",
-
+  quickTitle: "Storage foundation",
   quickText:
-    "Requirements, orders and supplier matching can build on this verified business identity.",
-
-  dashboardPathForRole: (role) => {
-    const paths = {
-      FARMER: "/farmer",
-      FPO: "/fpo",
-      BUYER: "/buyer",
-      LOGISTICS_PARTNER:
-        "/logistics-partner",
-      STORAGE_PARTNER:
-        "/storage-partner",
-    };
-
-    return paths[role] || "/login";
-  },
+    "Facility, capacity and commodity details can later support storage matching and sell-vs-store calculations.",
 };
 
-export default function BuyerDashboard() {
-  return (
-    <RoleProfileDashboard
-      config={buyerConfig}
-    />
-  );
+export default function StorageDashboard() {
+  return <RoleProfileDashboard config={storageConfig} />;
 }
