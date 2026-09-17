@@ -416,6 +416,17 @@ export default function RoleProfileDashboard({
 
           <div>
             <span className="strip-label">
+              ROLE ID
+            </span>
+
+            <strong>
+              {profile.role_id ||
+                "Not assigned"}
+            </strong>
+          </div>
+
+          <div>
+            <span className="strip-label">
               ACCOUNT
             </span>
 
