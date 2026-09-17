@@ -131,6 +131,7 @@ export default function LoginPage({ initialMode = "login" }) {
         setSuccess({
           role: data.profile.role,
           aarthId: data.profile.aarth_id,
+          roleId: data.profile.role_id,
         });
       }
     } catch (error) {
@@ -144,13 +145,16 @@ export default function LoginPage({ initialMode = "login" }) {
   }
 
   async function copyAarthId() {
-    if (!success?.aarthId) {
+    const idToCopy =
+      success?.roleId || success?.aarthId;
+
+    if (!idToCopy) {
       return;
     }
 
     try {
       await navigator.clipboard.writeText(
-        success.aarthId
+        idToCopy
       );
 
       setCopied(true);
@@ -415,7 +419,7 @@ export default function LoginPage({ initialMode = "login" }) {
             </p>
 
             <strong>
-              {success.aarthId}
+              {success.roleId || success.aarthId}
             </strong>
 
             <div className="success-actions">
