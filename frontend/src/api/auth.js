@@ -1,6 +1,10 @@
 const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
 const SESSION_KEY = "aarth_session";
+const PROFILE_CACHE_TTL = 30000;
+let profileCache = null;
+let profileCacheExpires = 0;
+let profileRequest = null;
 
 function readSession() {
   try {
@@ -12,17 +16,22 @@ function readSession() {
 
 function saveSession(session) {
   localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+  profileCache = null;
+  profileCacheExpires = 0;
+  profileRequest = null;
 }
 
 function clearSession() {
   localStorage.removeItem(SESSION_KEY);
   localStorage.removeItem("aarth_welcome");
+  profileCache = null;
+  profileCacheExpires = 0;
 }
 
 async function request(path, options = {}, includeAuth = true) {
   const headers = {
     Accept: "application/json",
-    ...(options.body ? { "Content-Type": "application/json" } : {}),
+    ...(options.body && !(options.body instanceof FormData) ? { "Content-Type": "application/json" } : {}),
     ...(options.headers || {}),
   };
 
@@ -105,8 +114,24 @@ export const authApi = {
   },
 
   async me() {
+    const session = readSession();
+
+    if (
+      profileCache &&
+      profileCacheExpires > Date.now() &&
+      profileCache.user_id === session?.profile?.user_id
+    ) {
+      return profileCache;
+    }
+
     try {
-      return await request("/api/auth/me");
+      if (!profileRequest) {
+        profileRequest = request("/api/auth/me");
+      }
+      const profile = await profileRequest;
+      profileCache = profile;
+      profileCacheExpires = Date.now() + PROFILE_CACHE_TTL;
+      return profile;
     } catch (error) {
       if (
         error.message.includes("Invalid session") ||
@@ -116,6 +141,8 @@ export const authApi = {
       }
 
       throw error;
+    } finally {
+      profileRequest = null;
     }
   },
 
@@ -190,4 +217,51 @@ export const dashboardPath = (role) => {
     default:
       return "/login";
   }
+};
+
+export const lotApi = {
+  async list() {
+    return request("/api/lots");
+  },
+
+  async summary() {
+    return request("/api/lots/summary");
+  },
+
+  async get(lotId) {
+    return request(`/api/lots/${encodeURIComponent(lotId)}`);
+  },
+
+  async create(payload) {
+    return request("/api/lots", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  },
+
+  async submitEvidence(lotId, evidence) {
+    const formData = new FormData();
+    formData.append("metadata", JSON.stringify(evidence.map(({ blob, preview, ...item }) => item)));
+    evidence.forEach((item, index) => formData.append("files", item.blob, `lot-evidence-${index + 1}.jpg`));
+    return request(`/api/lots/${encodeURIComponent(lotId)}/evidence`, {
+      method: "POST",
+      body: formData,
+    });
+  },
+};
+
+export const locationApi = {
+  async search(query, district = "", taluka = "") {
+    const params = new URLSearchParams({ q: query });
+    if (district) params.set("district", district);
+    if (taluka) params.set("taluka", taluka);
+    return request(`/api/location/search?${params.toString()}`, {}, false);
+  },
+
+  async reverse(latitude, longitude) {
+    return request("/api/location/reverse", {
+      method: "POST",
+      body: JSON.stringify({ latitude, longitude }),
+    }, false);
+  },
 };
