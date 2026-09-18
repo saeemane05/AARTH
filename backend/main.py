@@ -9,6 +9,7 @@ from backend.fpo.router import router as fpo_router
 from backend.location_services.router import router as location_router
 from backend.lot_aggregation.router import router as lot_router
 from backend.identity.router import router as identity_router
+from backend.buyer_demand.router import router as buyer_requirement_router
 
 
 logging.basicConfig(
@@ -87,6 +88,7 @@ app.include_router(
 app.include_router(location_router)
 app.include_router(lot_router)
 app.include_router(identity_router)
+app.include_router(buyer_requirement_router)
 
 
 # =========================================================

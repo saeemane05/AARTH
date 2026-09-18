@@ -29,6 +29,7 @@ It must never be exposed to React, Vite, Capacitor or Android.
 from __future__ import annotations
 
 import os
+import re
 import secrets
 from pathlib import Path
 from typing import Any
@@ -127,8 +128,28 @@ ROLE_PROFILE_FIELDS = {
         "phone_number",
         "buyer_type",
         "gst_number",
+        "gstin",
         "district",
         "city",
+        "contact_person_name",
+        "email_address",
+        "registered_address",
+        "registered_state",
+        "registered_district",
+        "registered_city",
+        "registered_pin",
+        "operating_location_text",
+        "operating_state",
+        "operating_district",
+        "operating_taluka",
+        "operating_city",
+        "operating_latitude",
+        "operating_longitude",
+        "operating_location_verified",
+        "sourcing_commodities",
+        "preferred_sourcing_regions",
+        "verification_status",
+        "profile_publish_status",
     },
 
     "FPO": {
@@ -932,6 +953,40 @@ def update_profile(
     )
 
     cleaned = {}
+
+    if role == "BUYER" and profile_data.get("profile_publish_status") == "PUBLISHED":
+        required = (
+            "business_name",
+            "buyer_type",
+            "contact_person_name",
+            "phone_number",
+            "email_address",
+            "registered_address",
+            "registered_state",
+            "registered_district",
+            "registered_city",
+            "registered_pin",
+            "operating_location_text",
+            "operating_latitude",
+            "operating_longitude",
+            "sourcing_commodities",
+        )
+        merged_existing = existing.get("profile_data") or {}
+        missing = [
+            field for field in required
+            if not profile_data.get(field, merged_existing.get(field))
+        ]
+        if missing:
+            raise ValueError("Complete all required Buyer profile fields before publishing.")
+        email = str(profile_data.get("email_address", merged_existing.get("email_address", ""))).strip()
+        phone = str(profile_data.get("phone_number", merged_existing.get("phone_number", ""))).strip()
+        pin = str(profile_data.get("registered_pin", merged_existing.get("registered_pin", ""))).strip()
+        if not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", email):
+            raise ValueError("Enter a valid Buyer business email before publishing.")
+        if not re.fullmatch(r"(?:\+91\s?)?[6-9]\d{9}", phone.replace("-", "")):
+            raise ValueError("Enter a valid Buyer phone number before publishing.")
+        if not re.fullmatch(r"\d{6}", pin):
+            raise ValueError("Enter a valid six-digit registered PIN code before publishing.")
 
     for key, value in (
         profile_data or {}
