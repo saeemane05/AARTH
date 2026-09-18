@@ -111,8 +111,15 @@ ROLE_PROFILE_FIELDS = {
         "district",
         "taluka",
         "village",
+        "profile_photo",
         "crops_grown",
-        "land_production_info",
+        "land_size",
+        "cultivation_type",
+        "fpo_membership",
+        "fpo_name",
+        "storage_access",
+        "storage_type",
+        "about_farm",
     },
 
     "BUYER": {
