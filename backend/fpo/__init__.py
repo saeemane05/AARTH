@@ -1,0 +1,1 @@
+"""AARTH FPO foundation module."""
