@@ -14,6 +14,7 @@ import FpoVerificationPage from "./pages/FpoVerificationPage";
 import FarmerLotPage from "./pages/FarmerLotPage";
 import { FpoClaim, FpoDetail, FpoDirectory } from "./pages/FpoFoundation";
 import BuyerDashboard from "./pages/BuyerDashboard";
+import BuyerRequirementPage from "./pages/BuyerRequirementPage";
 import LogisticsDashboard from "./pages/LogisticsDashboard";
 import StorageDashboard from "./pages/StorageDashboard";
 import AarthScanPage from "./pages/AarthScanPage";
@@ -274,6 +275,7 @@ export default function App() {
           </ProtectedRole>
         }
       />
+      <Route path="/buyer/requirements" element={<ProtectedRole role="BUYER"><BuyerRequirementPage /></ProtectedRole>} />
 
       <Route
         path="/logistics-partner"

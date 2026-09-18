@@ -1,183 +1,52 @@
-import RoleProfileDashboard from "./RoleProfileDashboard";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { authApi, locationApi } from "../api/auth";
+import { ALL_AARTH_CROPS } from "../data/farmerCropMaster";
+import { MAHARASHTRA_DISTRICTS } from "../data/maharashtraLocations";
+import logo from "../assets/aarth-logo.png";
+import "./BuyerDashboard.css";
 
-const buyerConfig = {
-  slug: "buyer",
+const BUYER_TYPES = ["Processor / Manufacturer", "Wholesaler", "Retailer", "Exporter", "Institutional Buyer", "Food Business / Restaurant", "Trader", "Other"];
+const STEPS = ["Business Identity", "Business Location", "Sourcing Profile", "Review & Publish"];
+const initial = { business_name: "", buyer_type: "", contact_person_name: "", phone_number: "", email_address: "", registered_address: "", registered_state: "Maharashtra", registered_district: "", registered_city: "", registered_pin: "", operating_location_text: "", operating_state: "", operating_district: "", operating_taluka: "", operating_city: "", operating_latitude: null, operating_longitude: null, operating_location_verified: false, sourcing_commodities: [], preferred_sourcing_regions: [], gstin: "", verification_status: "NOT_SUBMITTED", profile_publish_status: "DRAFT" };
+const requiredFields = ["business_name", "buyer_type", "contact_person_name", "phone_number", "email_address", "registered_address", "registered_state", "registered_district", "registered_city", "registered_pin", "operating_location_text", "operating_latitude", "operating_longitude", "sourcing_commodities"];
 
-  role: "BUYER",
-  roleLabel: "BUYER",
-
-  welcome: "Buyer",
-
-  accent: "#0957d5",
-  deep: "#073578",
-  soft: "#edf4ff",
-
-  icon: "🏢",
-
-  tagline: [
-    "Reliable Partnerships",
-    "Stronger Supply Chains",
-  ],
-
-  subtitle:
-    "Let's set up your profile to start sourcing.",
-
-  formDescription:
-    "Create your business identity so AARTH can connect your organization with relevant agricultural suppliers.",
-
-  sectionTitle:
-    "Business Information",
-
-  sectionIcon: "🏢",
-
-  steps: [
-    "Business Details",
-    "Location",
-    "Organization",
-    "Review",
-  ],
-
-  nameFields: [
-    "business_name",
-  ],
-
-  nav: [
-    {
-      label: "Profile",
-      icon: "●",
-    },
-    {
-      label: "Search Produce",
-      icon: "⌕",
-    },
-    {
-      label: "My Requirements",
-      icon: "▤",
-    },
-    {
-      label: "Orders",
-      icon: "□",
-    },
-    {
-      label: "Supplier Network",
-      icon: "♧",
-    },
-    {
-      label: "Support",
-      icon: "?",
-    },
-  ],
-
-  fields: [
-    {
-      key: "business_name",
-      label: "Business name",
-      placeholder:
-        "Enter registered business name",
-      required: true,
-      wide: true,
-    },
-
-    {
-      key: "phone_number",
-      label: "Phone number",
-      placeholder: "+91 XXXXX XXXXX",
-      required: true,
-      type: "tel",
-    },
-
-    {
-      key: "buyer_type",
-      label: "Buyer type",
-      placeholder: "Select buyer type",
-      required: true,
-      type: "select",
-      options: [
-        "Processor / Manufacturer",
-        "Wholesaler",
-        "Retailer",
-        "Exporter",
-        "Institutional Buyer",
-        "Other",
-      ],
-    },
-
-    {
-      key: "gst_number",
-      label: "GST number",
-      placeholder:
-        "GST number (optional)",
-      required: false,
-    },
-
-    {
-      key: "district",
-      label: "District",
-      placeholder: "Select district",
-      required: true,
-      type: "select",
-      options: [
-        "Pune",
-        "Nashik",
-        "Ahmednagar",
-        "Mumbai",
-        "Nagpur",
-        "Aurangabad",
-        "Jalgaon",
-        "Other",
-      ],
-    },
-
-    {
-      key: "city",
-      label: "City",
-      placeholder: "Enter city",
-      required: true,
-    },
-  ],
-
-  tipIcon: "🔎",
-
-  tip:
-    "A complete buyer profile makes it easier to discover relevant suppliers and build reliable sourcing relationships.",
-
-  visualClass: "visual-buyer",
-
-  visualIcon: "🤝",
-
-  visualLines: [
-    "Quality Supply",
-    "Stronger Businesses",
-    "Thriving Together",
-  ],
-
-  quickIcon: "📦",
-
-  quickTitle:
-    "Buyer profile foundation",
-
-  quickText:
-    "Requirements, orders and supplier matching can build on this verified business identity.",
-
-  dashboardPathForRole: (role) => {
-    const paths = {
-      FARMER: "/farmer",
-      FPO: "/fpo",
-      BUYER: "/buyer",
-      LOGISTICS_PARTNER:
-        "/logistics-partner",
-      STORAGE_PARTNER:
-        "/storage-partner",
-    };
-
-    return paths[role] || "/login";
-  },
-};
+function valuesFromProfile(profile) { return { ...initial, ...(profile?.profile_data || {}), registered_state: profile?.profile_data?.registered_state || "Maharashtra", sourcing_commodities: profile?.profile_data?.sourcing_commodities || [], preferred_sourcing_regions: profile?.profile_data?.preferred_sourcing_regions || [] }; }
+function countReady(values) { return requiredFields.filter((field) => Array.isArray(values[field]) ? values[field].length > 0 : values[field] !== null && String(values[field] || "").trim()).length; }
 
 export default function BuyerDashboard() {
-  return (
-    <RoleProfileDashboard
-      config={buyerConfig}
-    />
-  );
+  const navigate = useNavigate();
+  const [profile, setProfile] = useState(() => authApi.getSession()?.profile || {});
+  const [values, setValues] = useState(() => valuesFromProfile(authApi.getSession()?.profile));
+  const [step, setStep] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [notice, setNotice] = useState("");
+  const [error, setError] = useState("");
+  const [locationSearch, setLocationSearch] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+
+  useEffect(() => { let active = true; authApi.me().then((result) => { if (!active) return; if (result?.role !== "BUYER") { navigate("/login", { replace: true }); return; } setProfile(result); setValues(valuesFromProfile(result)); setLoading(false); }).catch(() => active && navigate("/login", { replace: true })); return () => { active = false; }; }, [navigate]);
+  useEffect(() => { if (notice.startsWith("My Requirements")) navigate("/buyer/requirements"); }, [notice, navigate]);
+  const completion = useMemo(() => ({ completed: countReady(values), total: requiredFields.length }), [values]);
+  const percentage = Math.round((completion.completed / completion.total) * 100);
+  const update = (key, value) => { setValues((current) => ({ ...current, [key]: value })); setError(""); setNotice(""); };
+  const toggleCommodity = (key) => update("sourcing_commodities", values.sourcing_commodities.includes(key) ? values.sourcing_commodities.filter((item) => item !== key) : [...values.sourcing_commodities, key]);
+  const toggleRegion = (district) => update("preferred_sourcing_regions", values.preferred_sourcing_regions.includes(district) ? values.preferred_sourcing_regions.filter((item) => item !== district) : [...values.preferred_sourcing_regions, district]);
+  useEffect(() => { if (locationSearch.trim().length < 2 || values.operating_location_verified) { setSuggestions([]); return undefined; } const timer = setTimeout(() => locationApi.search(locationSearch, values.operating_district, values.operating_taluka).then((result) => setSuggestions(result.suggestions || [])).catch(() => setSuggestions([])), 350); return () => clearTimeout(timer); }, [locationSearch, values.operating_location_verified, values.operating_district, values.operating_taluka]);
+  const selectLocation = async (item) => { try { const result = await locationApi.reverse(item.latitude, item.longitude); setValues((current) => ({ ...current, operating_location_text: result.display_name, operating_state: result.state || "Maharashtra", operating_district: result.district || current.operating_district, operating_taluka: result.taluka || current.operating_taluka, operating_city: result.village || result.taluka || current.operating_city, operating_latitude: result.latitude, operating_longitude: result.longitude, operating_location_verified: true })); setLocationSearch(result.display_name); setSuggestions([]); return true; } catch (reason) { setError(reason.message); return false; } };
+  const captureLiveLocation = () => { if (!navigator.geolocation) { setError("Live location is not supported by this browser."); return; } setNotice("Acquiring procurement location..."); navigator.geolocation.getCurrentPosition(async (position) => { const captured = await selectLocation({ latitude: position.coords.latitude, longitude: position.coords.longitude }); if (captured) setNotice("Procurement location captured."); }, () => setError("Location permission is required for the procurement location."), { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }); };
+  const save = async (publish = false) => { if (publish && percentage < 100) { setError("Complete the required business information before publishing."); return; } setSaving(true); setError(""); setNotice(""); try { const nextValues = { ...values, profile_publish_status: publish ? "PUBLISHED" : "DRAFT" }; const result = await authApi.saveProfile(nextValues); setProfile(result.profile); setValues(valuesFromProfile(result.profile)); setNotice(publish ? "Buyer profile published successfully." : "Buyer profile saved as draft."); } catch (reason) { setError(reason.message); } finally { setSaving(false); } };
+  const logout = () => { authApi.logout(); navigate("/login", { replace: true }); };
+  if (loading) return <div className="buyer-loading"><div className="buyer-loader" /><strong>AARTH</strong><span>Loading buyer workspace...</span></div>;
+  const displayName = values.business_name || profile.username || "Buyer";
+  const selectedCrops = ALL_AARTH_CROPS.filter((crop) => values.sourcing_commodities.includes(crop.key));
+  return <div className="buyer-shell"><header className="buyer-navbar"><button className="buyer-brand" type="button" onClick={() => navigate("/buyer")}><img src={logo} alt="AARTH" /><span>AARTH</span></button><nav>{["Home", "Profile", "Search Produce", "My Requirements", "Orders", "Supplier Network", "Market Insights", "Support"].map((item) => <button type="button" className={item === "Profile" ? "active" : ""} key={item} onClick={() => item === "Home" ? navigate("/buyer") : setNotice(`${item} will be available in the next Buyer workspace release.`)}>{item}</button>)}</nav><div className="buyer-actions"><input aria-label="Search" placeholder="Search markets, crops, suppliers..." /><button type="button" onClick={() => setNotice("No new notifications.")}>●</button><button type="button" className="buyer-account" onClick={logout}><b>{displayName.slice(0, 2).toUpperCase()}</b><span>{displayName}</span>⌄</button></div></header><main className="buyer-main"><section className="buyer-welcome"><div><span className="buyer-kicker">AARTH · BUYER WORKSPACE</span><h1>Welcome, {displayName}!</h1><p>Complete your business profile to start sourcing quality agricultural produce and connect with relevant suppliers.</p></div><div className="buyer-welcome-art"><span>Reliable Partnerships</span><strong>Stronger Supply Chains</strong></div></section><section className="buyer-summary">{[["▣", "AARTH ID", profile.aarth_id || "Not assigned"], ["♙", "ROLE ID", profile.role_id || "Not assigned"], ["▤", "ACCOUNT TYPE", "BUYER"], ["●", "ACCOUNT STATUS", profile.status || "ACTIVE"]].map(([icon, label, value]) => <div key={label}><i>{icon}</i><span><small>{label}</small><strong>{value}</strong></span></div>)}</section><div className="buyer-layout"><section className="buyer-profile-card"><div className="buyer-profile-title"><div><h2>Complete your profile</h2><p>Create your business identity so AARTH can connect your organization with relevant agricultural suppliers.</p></div><b>BUYER</b></div><div className="buyer-stepper">{STEPS.map((title, index) => <button type="button" key={title} className={index === step ? "active" : index < step ? "done" : ""} onClick={() => index <= step && setStep(index)}><i>{index < step ? "✓" : index + 1}</i><span>{title}</span></button>)}</div>{step === 0 && <BusinessIdentity values={values} update={update} />} {step === 1 && <BusinessLocation values={values} update={update} locationSearch={locationSearch} setLocationSearch={setLocationSearch} suggestions={suggestions} selectLocation={selectLocation} captureLiveLocation={captureLiveLocation} />} {step === 2 && <SourcingProfile values={values} toggleCommodity={toggleCommodity} toggleRegion={toggleRegion} selectedCrops={selectedCrops} />} {step === 3 && <Review values={values} />} {error && <div className="buyer-error">{error}</div>}{notice && <div className="buyer-notice">{notice}</div>}<footer className="buyer-footer"><button type="button" className="buyer-secondary" disabled={saving} onClick={() => save(false)}>Save as draft</button>{step < 3 ? <button type="button" className="buyer-primary" onClick={() => setStep(step + 1)}>Save & Continue →</button> : <button type="button" className="buyer-primary" disabled={saving} onClick={() => save(true)}>{saving ? "Publishing..." : "Publish Profile"}</button>}</footer></section><Readiness values={values} percentage={percentage} completed={completion.completed} total={completion.total} /></div></main></div>;
 }
+
+function Field({ label, required, children }) { return <label className="buyer-field"><span>{label}{required && <sup>*</sup>}</span>{children}</label>; }
+function BusinessIdentity({ values, update }) { return <section className="buyer-section"><div className="buyer-section-heading"><span>01</span><div><h3>Business Identity</h3><p>Tell us about your organization.</p></div></div><div className="buyer-fields"><Field label="Business / Organization Name" required><input value={values.business_name} onChange={(event) => update("business_name", event.target.value)} placeholder="Enter registered business name" /></Field><Field label="Buyer Type" required><select value={values.buyer_type} onChange={(event) => update("buyer_type", event.target.value)}><option value="">Select buyer type</option>{BUYER_TYPES.map((item) => <option key={item}>{item}</option>)}</select></Field><Field label="Contact Person Name" required><input value={values.contact_person_name} onChange={(event) => update("contact_person_name", event.target.value)} placeholder="Enter contact person name" /></Field><Field label="Email Address" required><input type="email" value={values.email_address} onChange={(event) => update("email_address", event.target.value)} placeholder="Enter business email" /></Field><Field label="Phone Number" required><input type="tel" value={values.phone_number} onChange={(event) => update("phone_number", event.target.value)} placeholder="+91 XXXXX XXXXX" /></Field><Field label="GSTIN"><input value={values.gstin} onChange={(event) => update("gstin", event.target.value)} placeholder="Optional GSTIN" /></Field></div></section>; }
+function BusinessLocation({ values, update, locationSearch, setLocationSearch, suggestions, selectLocation, captureLiveLocation }) { return <section className="buyer-section"><div className="buyer-section-heading"><span>02</span><div><h3>Business Location</h3><p>Keep your registered address separate from your procurement location.</p></div></div><div className="buyer-location-grid"><div><h4>Registered Address</h4><div className="buyer-fields"><Field label="Address" required><input value={values.registered_address} onChange={(event) => update("registered_address", event.target.value)} placeholder="Enter registered address" /></Field><Field label="State" required><select value={values.registered_state} onChange={(event) => update("registered_state", event.target.value)}><option>Maharashtra</option></select></Field><Field label="District" required><select value={values.registered_district} onChange={(event) => update("registered_district", event.target.value)}><option value="">Select district</option>{MAHARASHTRA_DISTRICTS.map((item) => <option key={item.name}>{item.name}</option>)}</select></Field><Field label="City / Town" required><input value={values.registered_city} onChange={(event) => update("registered_city", event.target.value)} placeholder="Enter city or town" /></Field><Field label="PIN Code" required><input inputMode="numeric" value={values.registered_pin} onChange={(event) => update("registered_pin", event.target.value)} placeholder="Enter PIN code" /></Field></div></div><div className="buyer-operating"><h4>Operating / Procurement Location</h4><p>Main location from which you procure or receive produce.</p><Field label="Search and select location" required><input value={locationSearch} onChange={(event) => setLocationSearch(event.target.value)} placeholder="Search village, town or market" />{suggestions.map((item) => <button type="button" className="buyer-suggestion" key={item.display_name} onClick={() => selectLocation(item)}>{item.display_name}</button>)}</Field><button type="button" className="buyer-live-location" onClick={captureLiveLocation}>⌖ Use live location</button>{values.operating_location_verified ? <div className="buyer-location-success">✓ {values.operating_location_text}</div> : <div className="buyer-location-empty">Select a procurement location to enable future matching.</div>}</div></div></section>; }
+function SourcingProfile({ values, toggleCommodity, toggleRegion, selectedCrops }) { return <section className="buyer-section"><div className="buyer-section-heading"><span>03</span><div><h3>Sourcing Profile</h3><p>These are general preferences, not an active Buyer Requirement.</p></div></div><h4>What produce do you usually source?</h4><div className="buyer-commodity-grid">{ALL_AARTH_CROPS.slice(0, 32).map((crop) => <button type="button" className={values.sourcing_commodities.includes(crop.key) ? "selected" : ""} key={crop.key} onClick={() => toggleCommodity(crop.key)}>{crop.name}</button>)}</div><small>{selectedCrops.length} commodities selected</small><h4>Preferred sourcing region</h4><div className="buyer-region-grid">{MAHARASHTRA_DISTRICTS.map((item) => <button type="button" className={values.preferred_sourcing_regions.includes(item.name) ? "selected" : ""} key={item.name} onClick={() => toggleRegion(item.name)}>{item.name}</button>)}</div></section>; }
+function Review({ values }) { return <section className="buyer-section buyer-review"><div className="buyer-section-heading"><span>04</span><div><h3>Review & Publish</h3><p>Review your business profile before publishing.</p></div></div><dl><dt>Business</dt><dd>{values.business_name || "Not provided"}</dd><dt>Buyer type</dt><dd>{values.buyer_type || "Not provided"}</dd><dt>Registered location</dt><dd>{[values.registered_city, values.registered_district, values.registered_state].filter(Boolean).join(", ") || "Not provided"}</dd><dt>Procurement location</dt><dd>{values.operating_location_text || "Not provided"}</dd><dt>Usual commodities</dt><dd>{values.sourcing_commodities.length || 0} selected</dd><dt>Verification</dt><dd>{values.gstin ? "GSTIN submitted for review" : "Not submitted"}</dd></dl></section>; }
+function Readiness({ values, percentage, completed, total }) { const checks = [["Business Identity", ["business_name", "buyer_type", "contact_person_name", "phone_number", "email_address"]], ["Registered Address", ["registered_address", "registered_state", "registered_district", "registered_city", "registered_pin"]], ["Operating Location", ["operating_location_text", "operating_latitude", "operating_longitude"]], ["Sourcing Profile", ["sourcing_commodities"]], ["Business Verification", ["gstin"]]]; return <aside className="buyer-readiness"><div className="buyer-readiness-head"><h3>Profile readiness</h3><strong>{percentage}%</strong></div><div className="buyer-progress"><span style={{ width: `${percentage}%` }} /></div><p><b>{completed} of {total} required fields completed</b><br />Complete your business profile to unlock AARTH opportunities.</p><div className="buyer-checklist">{checks.map(([label, fields]) => { const done = fields.every((field) => Array.isArray(values[field]) ? values[field].length : values[field]); return <div key={label} className={done ? "done" : ""}><i>{done ? "✓" : "○"}</i><span>{label}</span><small>{fields.filter((field) => Array.isArray(values[field]) ? values[field].length : values[field]).length}/{fields.length}</small></div>; })}</div><div className="buyer-help"><strong>Better Supply<br />Stronger Businesses</strong><span>Build a clear sourcing identity for stronger supplier relationships.</span></div><div className="buyer-support"><b>Need help?</b><span>Our support team can help you complete your profile.</span></div></aside>; }
