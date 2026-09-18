@@ -1,5 +1,11 @@
 import RoleProfileDashboard from "./RoleProfileDashboard";
 
+import { FARMER_CROP_CATEGORIES } from "../data/farmerCropMaster";
+import {
+  MAHARASHTRA_DISTRICTS,
+  MAHARASHTRA_TALUKAS,
+} from "../data/maharashtraLocations";
+
 const farmerConfig = {
   slug: "farmer",
 
@@ -8,22 +14,23 @@ const farmerConfig = {
 
   welcome: "Farmer",
 
-  accent: "#08723d",
-  deep: "#064c29",
-  soft: "#eaf7ef",
+  accent: "#159c91",
+  deep: "#0b5d58",
+  soft: "#e9f7f5",
 
-  icon: "🌾",
+  icon: "🌿",
 
   tagline: [
-    "Stronger Farmers",
-    "Brighter Markets",
+    "Farmers",
+    "Markets",
+    "Opportunities",
   ],
 
   subtitle:
-    "Let's set up your profile to get started.",
+    "Build your farmer profile to connect with relevant AARTH opportunities.",
 
   formDescription:
-    "Tell us about yourself and your farm so AARTH can connect you with relevant market opportunities.",
+    "Tell us about yourself and your farm. This profile is visible to relevant AARTH participants and helps them understand your agricultural background before you create a lot.",
 
   sectionTitle:
     "Basic Information",
@@ -31,10 +38,9 @@ const farmerConfig = {
   sectionIcon: "👨‍🌾",
 
   steps: [
-    "Profile Details",
-    "Farm & Production",
-    "Review",
-    "Submit",
+    "Personal & Location",
+    "Farm Profile",
+    "Review & Publish",
   ],
 
   nameFields: [
@@ -43,28 +49,36 @@ const farmerConfig = {
 
   nav: [
     {
+      label: "Home",
+      icon: "home",
+    },
+    {
       label: "Profile",
-      icon: "●",
+      icon: "user",
     },
     {
       label: "Market Insights",
-      icon: "⌁",
+      icon: "chart",
     },
     {
       label: "My Lots",
-      icon: "▤",
+      icon: "box",
+    },
+    {
+      label: "Buyers",
+      icon: "users",
     },
     {
       label: "Advisories",
-      icon: "✦",
+      icon: "book",
     },
     {
       label: "Weather",
-      icon: "☼",
+      icon: "cloud",
     },
     {
       label: "Support",
-      icon: "?",
+      icon: "headset",
     },
   ],
 
@@ -75,6 +89,7 @@ const farmerConfig = {
       placeholder:
         "Enter your full name",
       required: true,
+      step: 0,
     },
 
     {
@@ -84,6 +99,7 @@ const farmerConfig = {
         "+91 XXXXX XXXXX",
       required: true,
       type: "tel",
+      step: 0,
     },
 
     {
@@ -93,18 +109,11 @@ const farmerConfig = {
         "Select district",
       required: true,
       type: "select",
+      step: 0,
       options: [
-        "Nashik",
-        "Pune",
-        "Ahmednagar",
-        "Jalgaon",
-        "Dhule",
-        "Nandurbar",
-        "Sangli",
-        "Satara",
-        "Kolhapur",
-        "Solapur",
-        "Other",
+        ...MAHARASHTRA_DISTRICTS.map(
+          (item) => item.name
+        ),
       ],
     },
 
@@ -115,14 +124,10 @@ const farmerConfig = {
         "Select taluka",
       required: true,
       type: "select",
-      options: [
-        "Dindori",
-        "Niphad",
-        "Sinnar",
-        "Yeola",
-        "Malegaon",
-        "Other",
-      ],
+      step: 0,
+      optionsByParent: MAHARASHTRA_TALUKAS,
+      dependsOn: "district",
+      icon: "map-pin",
     },
 
     {
@@ -131,6 +136,10 @@ const farmerConfig = {
       placeholder:
         "Enter village name",
       required: true,
+      step: 0,
+      type: "village-search",
+      icon: "landmark",
+      wide: true,
     },
 
     {
@@ -140,42 +149,90 @@ const farmerConfig = {
         "e.g. Onion, Grapes, Tomato",
       required: true,
       wide: true,
+      step: 1,
+      type: "crop-multi-select",
+      icon: "sprout",
+      categories: FARMER_CROP_CATEGORIES,
     },
 
     {
-      key: "land_production_info",
-      label:
-        "Land / Production information",
-      placeholder:
-        "e.g. 5 acres / seasonal production",
+      key: "land_size",
+      label: "Farm / land size (hectares)",
+      placeholder: "Select farm size",
       required: true,
+      type: "select",
+      step: 1,
+      options: [
+        "Less than 0.5 hectare",
+        "0.5 – 2 hectares",
+        "2 – 5 hectares",
+        "5 – 10 hectares",
+        "10+ hectares",
+      ],
+      icon: "land",
       wide: true,
+    },
+
+    {
+      key: "cultivation_type",
+      label: "Cultivation type",
+      placeholder: "Select cultivation type",
+      required: true,
+      type: "select",
+      step: 1,
+      options: ["Irrigated", "Rainfed", "Both"],
+      icon: "droplets",
+    },
+
+    {
+      key: "fpo_membership",
+      label: "FPO / Cooperative association",
+      placeholder: "Select",
+      required: false,
+      type: "select",
+      step: 1,
+      options: ["Yes", "No"],
+      icon: "users",
+    },
+
+    {
+      key: "storage_access",
+      label: "Storage access",
+      placeholder: "Select storage access",
+      required: true,
+      type: "select",
+      step: 1,
+      options: ["Available", "Not Available"],
+      icon: "warehouse",
     },
   ],
 
   tipIcon: "💡",
 
   tip:
-    "Your basic farm information helps AARTH understand your location and production context.",
+    "Your farmer profile works like an agricultural resume. Other relevant AARTH participants can understand your farm background before interacting with your lots.",
 
   visualClass:
     "visual-farmer",
 
+  visualImage:
+    "/farmer-apmc-market.png",
+
   visualIcon: "🌾",
 
   visualLines: [
-    "Your Farm",
-    "Our Support",
-    "A Brighter Tomorrow",
+    "Maharashtra Farmers",
+    "Better Market Linkages",
+    "AARTH",
   ],
 
-  quickIcon: "🌱",
+  quickIcon: "sprout",
 
   quickTitle:
-    "Build your farmer profile",
+    "Maharashtra-first farmer profile",
 
   quickText:
-    "Complete your basic details before creating lots and exploring market opportunities.",
+    "District, taluka, village and agricultural profile are structured around Maharashtra's administrative and market context.",
 };
 
 export default function FarmerDashboard() {

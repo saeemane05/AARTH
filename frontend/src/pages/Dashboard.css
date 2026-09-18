@@ -72,6 +72,738 @@ select {
   }
 }
 
+/* Final reference sizing for the Farmer dashboard. */
+.role-farmer .aarth-topbar {
+  min-height: 76px;
+  padding: 9px 26px;
+  gap: 24px;
+}
+
+.role-farmer .aarth-brand-block img {
+  width: 62px;
+  height: 62px;
+}
+
+.role-farmer .aarth-main-nav {
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.role-farmer .aarth-main-nav button {
+  min-height: 54px;
+  padding: 10px 12px;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.role-farmer .aarth-main-nav button b {
+  min-width: 22px;
+  font-size: 25px;
+}
+
+.role-farmer .aarth-search-box {
+  width: 262px;
+  height: 42px;
+}
+
+.role-farmer .aarth-search-box input {
+  font-size: 13px;
+}
+
+.role-farmer .top-icon-button {
+  width: 42px;
+  height: 42px;
+  font-size: 22px;
+}
+
+.role-farmer .farmer-avatar {
+  width: 44px;
+  height: 44px;
+  font-size: 15px;
+}
+
+.role-farmer .farmer-welcome-hero {
+  height: 220px;
+}
+
+.role-farmer .welcome-copy {
+  width: 52%;
+  padding: 26px 40px 22px 11%;
+}
+
+.role-farmer .welcome-copy h1 {
+  font-size: 27px;
+}
+
+.role-farmer .welcome-copy p {
+  font-size: 15px;
+}
+
+.role-farmer .farmer-hero-image {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-color: #f4faf8;
+}
+
+.role-farmer .farmer-hero-image::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  left: -12px;
+  top: 0;
+  bottom: 0;
+  width: 190px;
+  background: linear-gradient(90deg, #f4faf8 0%, rgba(244,250,248,.92) 26%, rgba(244,250,248,.48) 62%, transparent 100%);
+  filter: blur(7px);
+  pointer-events: none;
+}
+
+.role-farmer .redesigned-id-strip {
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.role-farmer .id-card-item {
+  min-height: 66px;
+  padding: 11px 16px;
+}
+
+.role-farmer .id-card-icon {
+  width: 43px;
+  height: 43px;
+}
+
+.role-farmer .id-card-item strong {
+  font-size: 15px;
+}
+
+.role-farmer .redesigned-content {
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+  gap: 18px;
+}
+
+.role-farmer .redesigned-form-card {
+  padding: 18px 22px 14px;
+  background: #f7fcf8;
+  border-color: #d9ece0;
+}
+
+.role-farmer .redesigned-form-title h2 {
+  font-size: 38px;
+}
+
+.role-farmer .form-description {
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.role-farmer .redesigned-stepper {
+  margin: 17px 18px 20px;
+}
+
+.role-farmer .redesigned-stepper button {
+  min-width: 110px;
+  font-size: 13px;
+}
+
+.role-farmer .redesigned-stepper button i {
+  width: 29px;
+  height: 29px;
+  font-size: 13px;
+}
+
+.role-farmer .redesigned-stepper small {
+  font-size: 12px;
+}
+
+.role-farmer .redesigned-details-box {
+  padding: 14px;
+}
+
+.role-farmer .section-heading-row h3 {
+  font-size: 24px;
+}
+
+.role-farmer .section-heading-row p,
+.role-farmer .maharashtra-badge,
+.role-farmer .location-helper,
+.role-farmer .maharashtra-note {
+  display: none;
+}
+
+.role-farmer .field-label-icon {
+  display: none;
+}
+
+.role-farmer .field-label-row {
+  font-size: 16px !important;
+  min-height: 20px;
+}
+
+.role-farmer .redesigned-field-grid input,
+.role-farmer .redesigned-field-grid select {
+  height: 44px;
+  padding: 0 13px;
+  font-size: 16px;
+}
+
+.role-farmer .redesigned-form-footer button {
+  min-height: 46px;
+  padding: 9px 20px;
+  font-size: 15px !important;
+}
+
+.role-farmer .aside-card-heading h3 {
+  font-size: 20px;
+}
+
+.farmer-identity-section {
+  margin: 0 0 22px;
+  padding: 24px;
+  border: 1px solid #d9ece0;
+  border-radius: 18px;
+  background: #f9fcf8;
+}
+
+.farmer-identity-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.farmer-identity-heading span,
+.farmer-card-id-label,
+.scan-kicker {
+  color: #6d897a;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.farmer-identity-heading h2 {
+  margin: 5px 0 0;
+  color: #063d29;
+  font-size: 26px;
+}
+
+.identity-scan-link,
+.farmer-card-button-row button,
+.scan-primary,
+.manual-scan button,
+.scan-result button {
+  border: 0;
+  border-radius: 8px;
+  padding: 11px 16px;
+  background: #0b5d58;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.farmer-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.farmer-identity-card {
+  position: relative;
+  width: min(100%, 360px);
+  min-height: 580px;
+  overflow: hidden;
+  padding: 22px 28px 20px;
+  border: 1px solid #bfdac4;
+  border-radius: 24px;
+  background: linear-gradient(160deg, #f5fff7 0%, #fff 54%, #edf7e8 100%);
+  box-shadow: 0 18px 38px rgba(18, 75, 48, .14);
+  text-align: center;
+}
+
+.farmer-identity-card::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 168px;
+  background: #075b3c;
+  border-radius: 0 0 55% 28%;
+  content: "";
+}
+
+.farmer-card-top,
+.farmer-card-avatar,
+.farmer-identity-card h3,
+.farmer-card-role,
+.farmer-card-location,
+.farmer-card-qr,
+.farmer-card-id-label,
+.farmer-card-id,
+.farmer-card-tagline {
+  position: relative;
+  z-index: 1;
+}
+
+.farmer-card-top { display: flex; align-items: center; flex-direction: column; gap: 5px; color: #d9f0ce; text-align: center; }
+.farmer-card-top img { width: 112px; filter: brightness(0) invert(1); }
+.farmer-card-top span { font-size: 9px; line-height: 1.2; }
+.farmer-card-leaf { position: absolute; top: 22px; right: 24px; color: #b7df9c; font-size: 32px; }
+.farmer-card-avatar { display: grid; place-items: center; width: 112px; height: 112px; margin: 38px auto 12px; overflow: hidden; border: 5px solid #e8f5e0; border-radius: 50%; background: #2c8c5a; color: #fff; font-size: 28px; font-weight: 800; }
+.farmer-card-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.farmer-identity-card h3 { margin: 0; color: #073b2d; font-size: 25px; line-height: 1.15; }
+.farmer-card-role { display: block; margin: 5px 0 18px; color: #6a7370; letter-spacing: 2px; }
+.farmer-card-location { display: flex; justify-content: center; align-items: center; gap: 9px; color: #5d6b64; font-size: 13px; }
+.farmer-card-location i { height: 20px; border-left: 1px solid #b7c7bc; }
+.farmer-card-qr { display: grid; place-items: center; width: 166px; height: 166px; margin: 20px auto 10px; border: 6px solid #d5e9ce; border-radius: 16px; background: white; color: #6e8175; font-size: 11px; }
+.farmer-card-qr canvas { max-width: 100%; }
+.farmer-card-id-label { display: block; letter-spacing: 1px; }
+.farmer-card-id { display: block; margin: 5px auto 16px; padding: 9px; border-radius: 10px; background: #e7f3de; color: #064b36; font-size: 21px; letter-spacing: 1px; }
+.farmer-card-tagline { color: #74827b; letter-spacing: 1px; }
+.farmer-card-button-row { display: flex; flex-wrap: wrap; align-items: center; align-content: center; gap: 10px; max-width: 300px; }
+.farmer-card-button-row button { background: #fff; border: 1px solid #c7ded0; color: #0b5d58; }
+.farmer-card-button-row button:first-child { background: #0b5d58; color: #fff; }
+.farmer-card-error { margin: 14px 0 0; color: #a44335; font-size: 13px; }
+
+.aarth-scan-page { min-height: 100vh; padding: 28px; background: #f3f8f3; color: #173b2d; }
+.scan-back { border: 0; background: transparent; color: #0b5d58; cursor: pointer; font-weight: 800; }
+.aarth-scan-panel { width: min(100%, 560px); margin: 42px auto; padding: 34px; border: 1px solid #d6e7da; border-radius: 18px; background: #fff; box-shadow: 0 14px 35px rgba(18, 75, 48, .08); text-align: center; }
+.aarth-scan-panel h1 { margin: 8px 0; color: #063d29; }
+.aarth-scan-panel p { color: #668073; }
+#aarth-scan-reader { width: min(100%, 320px); margin: 20px auto; }
+.scan-primary { width: 100%; }
+.scan-divider { margin: 20px 0; color: #91a398; font-size: 11px; letter-spacing: 2px; }
+.manual-scan { display: flex; gap: 8px; }
+.manual-scan input { min-width: 0; flex: 1; padding: 12px; border: 1px solid #cdded3; border-radius: 8px; }
+.scan-result { display: grid; gap: 7px; margin-top: 24px; padding: 18px; border: 1px solid #c5e0ca; border-radius: 12px; background: #f2faf1; text-align: left; }
+.scan-result span { color: #197342; font-size: 12px; font-weight: 800; }
+.scan-result strong { font-size: 20px; }
+.scan-result b { color: #0b5d58; }
+.scan-result small { color: #708477; }
+.scan-result div { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.scan-result button { font-size: 12px; }
+.scan-notice { margin-bottom: 0; color: #9a5d21 !important; font-size: 13px; }
+
+@media (max-width: 700px) {
+  .farmer-identity-section { padding: 16px; }
+  .farmer-identity-heading { align-items: flex-start; flex-direction: column; }
+  .farmer-card-actions { flex-direction: column; }
+  .farmer-card-button-row { justify-content: center; }
+  .aarth-scan-page { padding: 16px; }
+  .aarth-scan-panel { margin: 24px auto; padding: 22px 16px; }
+}
+
+.role-farmer .redesigned-readiness-card p,
+.role-farmer .redesigned-tip-card p {
+  font-size: 14px;
+}
+
+.role-farmer .redesigned-visual-copy .visual-main-line {
+  font-size: 27px;
+}
+
+.role-farmer .redesigned-visual-copy small {
+  font-size: 13px;
+}
+
+.role-farmer .profile-public-card strong {
+  font-size: 14px;
+}
+
+.role-farmer .profile-public-card p {
+  font-size: 11px;
+}
+
+.role-farmer .redesigned-form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+.role-farmer .redesigned-form-footer button,
+.role-farmer .review-actions button,
+.role-farmer .complete-cta {
+  min-height: 46px;
+  padding: 9px 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.role-farmer .redesigned-secondary,
+.role-farmer .back-button {
+  color: #176f63;
+  border: 1px solid #78bbb2;
+  background: #fff;
+}
+
+.role-farmer .redesigned-primary,
+.role-farmer .continue {
+  color: #fff;
+  border: 1px solid #168d7e;
+  background: #168d7e;
+  box-shadow: 0 5px 13px rgba(21,156,145,.15);
+}
+
+.role-farmer .redesigned-stepper {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.role-farmer .redesigned-stepper::before {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 15px;
+  border-top: 1px solid #c8d6e4;
+}
+
+.role-farmer .redesigned-stepper button {
+  position: relative;
+  z-index: 1;
+  min-width: 110px;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  color: #5f7187;
+  text-align: center;
+}
+
+.role-farmer .redesigned-stepper button i {
+  width: 29px;
+  height: 29px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #9eb2c9;
+  border-radius: 50%;
+  color: #4f6884;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.role-farmer .redesigned-stepper button.current,
+.role-farmer .redesigned-stepper button.completed {
+  color: #0b5d58;
+  font-weight: 800;
+}
+
+.role-farmer .redesigned-stepper button.current i,
+.role-farmer .redesigned-stepper button.completed i {
+  color: #fff;
+  border-color: #159c91;
+  background: #159c91;
+}
+
+.role-farmer .redesigned-stepper small {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Farmer profile step controls and review panels. */
+.role-farmer .crop-selector {
+  border: 1px solid #d6e3ea;
+  border-radius: 9px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.role-farmer .crop-selected-summary {
+  padding: 10px 11px;
+  border-bottom: 1px solid #e7eef2;
+  background: #fbfdfd;
+}
+
+.role-farmer .crop-summary-label {
+  color: #66788b;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.role-farmer .crop-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 11px;
+  border-bottom: 1px solid #e7eef2;
+  color: #668094;
+}
+
+.role-farmer .crop-search input {
+  width: 100%;
+  height: 37px !important;
+  border: 0 !important;
+  outline: 0;
+  box-shadow: none !important;
+  background: transparent !important;
+  font-size: 15px;
+}
+
+.role-farmer .crop-category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+  max-height: 340px;
+  padding: 8px;
+  overflow: auto;
+}
+
+.role-farmer .crop-category {
+  align-self: start;
+  overflow: hidden;
+  border: 1px solid #e0e9ee;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.role-farmer .crop-category.open {
+  border-color: #a8d9d2;
+  box-shadow: 0 5px 14px rgba(21,156,145,.07);
+}
+
+.role-farmer .crop-category-trigger {
+  width: 100%;
+  padding: 9px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 0;
+  background: #fff;
+  color: #173250;
+  text-align: left;
+  cursor: pointer;
+}
+
+.role-farmer .crop-category-trigger strong,
+.role-farmer .crop-category-trigger small {
+  display: block;
+}
+
+.role-farmer .crop-category-trigger strong { font-size: 15px; }
+.role-farmer .crop-category-trigger small { margin-top: 2px; color: #8392a1; font-size: 12px; }
+.role-farmer .crop-chevron { color: #4d7e77; font-size: 16px; }
+.role-farmer .crop-option-panel { max-height: 220px; padding: 3px 6px 7px; overflow: auto; border-top: 1px solid #edf2f4; }
+.role-farmer .crop-option { width: 100%; padding: 6px 5px; display: flex; align-items: center; gap: 7px; border: 0; border-radius: 6px; background: transparent; text-align: left; cursor: pointer; }
+.role-farmer .crop-option:hover,.role-farmer .crop-option.selected { background: #f0f8f6; }
+.role-farmer .crop-option b { color: #1c3553; font-size: 15px; }
+.role-farmer .crop-option small { display: block; margin-top: 1px; color: #91a0ae; font-size: 12px; }
+.role-farmer .crop-check { width: 17px; height: 17px; display: grid; place-items: center; flex: 0 0 auto; border: 1px solid #cbd9e1; border-radius: 5px; color: #fff; }
+.role-farmer .crop-option.selected .crop-check { border-color: #159c91; background: #159c91; }
+.role-farmer .crop-chip-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.role-farmer .crop-chip { padding: 5px 8px; border: 1px solid #cde9e3; border-radius: 18px; color: #146f63; background: #eaf7f4; font-size: 15px; cursor: pointer; }
+
+.role-farmer .segmented-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 7px;
+}
+
+.role-farmer .segmented-options label { position: relative; cursor: pointer; }
+.role-farmer .segmented-options input { position: absolute; opacity: 0; pointer-events: none; }
+.role-farmer .segmented-options span { display: inline-flex; min-height: 38px; align-items: center; padding: 0 14px; border: 1px solid #d6e2ea; border-radius: 8px; color: #63768b; background: #fff; font-size: 15px; font-weight: 750; }
+.role-farmer .segmented-options input:checked + span { color: #126b5e; border-color: #76bdb2; background: #eaf7f4; box-shadow: inset 0 0 0 1px #bce2db; }
+.role-farmer .profile-field fieldset,.role-farmer .profile-field legend { margin: 0; padding: 0; border: 0; }
+
+.role-farmer .review-panel,
+.role-farmer .complete-panel {
+  padding: 20px;
+  border: 1px solid #dce7ee;
+  border-radius: 11px;
+  background: linear-gradient(180deg,#fff,#fbfdfd);
+}
+
+.role-farmer .review-profile-header { display: flex; align-items: center; gap: 12px; padding-bottom: 15px; border-bottom: 1px solid #e8eef2; }
+.role-farmer .review-avatar { width: 51px; height: 51px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: linear-gradient(145deg,#2aa57c,#08776a); font-size: 18px; font-weight: 850; }
+.role-farmer .review-profile-header h3 { margin: 0; color: #122b4b; font-size: 23px; }
+.role-farmer .review-profile-header p { margin: 4px 0 0; color: #718296; font-size: 15px; }
+.role-farmer .review-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; margin-top: 15px; }
+.role-farmer .review-grid > div { padding: 10px 11px; border: 1px solid #e2eaf0; border-radius: 8px; background: #fff; }
+.role-farmer .review-grid .review-wide { grid-column: span 2; }
+.role-farmer .review-grid small { display: block; margin-bottom: 4px; color: #8290a0; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+.role-farmer .review-grid strong { color: #193450; font-size: 15px; line-height: 1.45; }
+.role-farmer .review-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 15px; }
+.role-farmer .complete-panel { padding: 40px 30px; text-align: center; }
+.role-farmer .complete-icon { width: 68px; height: 68px; margin: 0 auto 15px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: #168d7e; }
+.role-farmer .complete-panel h3 { margin: 0; color: #122b4b; font-size: 25px; }
+.role-farmer .complete-panel p { max-width: 610px; margin: 8px auto 0; color: #6c7e91; font-size: 15px; line-height: 1.6; }
+
+@media (max-width: 720px) {
+  .role-farmer .crop-category-grid { grid-template-columns: 1fr; }
+  .role-farmer .review-grid { grid-template-columns: 1fr; }
+  .role-farmer .review-grid .review-wide { grid-column: auto; }
+}
+/* Farmer dashboard presentation. Keep this scope isolated from the
+   authentication screens, FPO workspace, and other role dashboards. */
+.onboarding.role-farmer {
+  flex-direction: column;
+  min-height: 100vh;
+  color: #0b2142;
+  background: #f4f8f7;
+}
+
+.role-farmer .aarth-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  width: 100%;
+  min-height: 76px;
+  padding: 9px 26px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: rgba(255,255,255,.97);
+  border-bottom: 1px solid #e5edf0;
+  box-shadow: 0 2px 15px rgba(24,55,72,.055);
+}
+
+.role-farmer .aarth-brand-block {
+  display: flex;
+  align-items: center;
+  min-width: 74px;
+  justify-content: center;
+}
+
+.role-farmer .aarth-brand-block img {
+  display: block;
+  width: 62px;
+  height: 62px;
+  object-fit: contain;
+}
+
+.role-farmer .aarth-brand-block span { display: none; }
+
+.role-farmer .aarth-main-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  min-width: 0;
+  flex: 1;
+}
+
+.role-farmer .aarth-main-nav button {
+  min-height: 54px;
+  flex: 1 1 auto;
+  justify-content: center;
+  border: 0;
+  border-radius: 11px;
+  padding: 10px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #132640;
+  background: transparent;
+  font-size: 16px;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.role-farmer .aarth-main-nav button:hover,
+.role-farmer .aarth-main-nav button.active {
+  color: #0b5d58;
+  background: #e9f6f3;
+}
+
+.role-farmer .aarth-main-nav button b { min-width: 22px; font-size: 25px; line-height: 1; }
+.role-farmer .aarth-topbar-actions { display: flex; align-items: center; gap: 12px; flex: 0 0 auto; }
+.role-farmer .aarth-search-box { width: 262px; height: 42px; border: 1px solid #d5e1e8; border-radius: 10px; display: flex; align-items: center; gap: 8px; padding: 0 11px; color: #7b8b9b; background: #fff; }
+.role-farmer .aarth-search-box input { width: 100%; border: 0; outline: 0; color: #1d3048; background: transparent; font-size: 13px; }
+.role-farmer .top-icon-button { width: 42px; height: 42px; border: 0; border-radius: 50%; color: #10233c; background: transparent; font-size: 22px; cursor: pointer; }
+.role-farmer .farmer-account-menu { position: relative; }
+.role-farmer .farmer-account { display: flex; align-items: center; gap: 8px; border: 0; padding: 2px; color: #14253c; background: transparent; cursor: pointer; }
+.role-farmer .farmer-avatar { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: #178b64; font-size: 15px; font-weight: 850; }
+.role-farmer .farmer-account-copy { display: grid; gap: 2px; text-align: left; }
+.role-farmer .farmer-account-copy strong { font-size: 13px; }
+.role-farmer .farmer-account-copy small { color: #65778a; font-size: 11px; }
+.role-farmer .account-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 165px; padding: 10px; border: 1px solid #dce7ec; border-radius: 10px; background: #fff; box-shadow: 0 12px 28px rgba(18,48,63,.16); }
+.role-farmer .account-dropdown span,.role-farmer .account-dropdown button { display: block; width: 100%; padding: 8px; border: 0; background: #fff; text-align: left; font-size: 11px; }
+.role-farmer .account-dropdown button { color: #ad3434; cursor: pointer; font-weight: 800; }
+
+.redesigned-farmer-main { width: 100%; padding: 0 34px 34px; background: linear-gradient(180deg,#fbfdfc 0%,#f3f8f7 100%); }
+.farmer-welcome-hero { height: 156px; margin: 0 -34px 13px; display: flex; overflow: hidden; background: #f4faf8; border-bottom: 1px solid #e4efec; }
+.welcome-copy { width: 52%; padding: 26px 40px 22px 11%; display: flex; align-items: center; gap: 16px; }
+.welcome-leaf-icon { color: #1b9b62; font-size: 40px; }
+.welcome-copy h1 { margin: 0; color: #10213e; font-size: 27px; font-weight: 850; }
+.welcome-copy p { margin: 6px 0 0; color: #4e6981; font-size: 15px; }
+.farmer-hero-image { flex: 1; min-width: 0; background-position: center; background-size: cover; position: relative; }
+.farmer-hero-overlay { position: absolute; inset: 0; background: linear-gradient(90deg,rgba(244,250,248,.16),rgba(8,62,45,.04)); }
+.redesigned-id-strip { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 11px; margin-bottom: 17px; }
+.id-card-item { min-height: 63px; padding: 10px 13px; display: flex; align-items: center; gap: 10px; border: 1px solid #dfe9ed; border-radius: 11px; background: #fff; box-shadow: 0 5px 15px rgba(26,64,79,.055); }
+.id-card-icon { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 9px; color: #0b5d58; background: #eaf6f3; }
+.id-card-item > span { min-width: 0; flex: 1; }
+.id-card-item small { display: block; color: #718397; font-size: 10px; font-weight: 800; letter-spacing: .8px; }
+.id-card-item strong { display: block; margin-top: 3px; color: #142c4d; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.id-card-item > button { border: 0; background: transparent; color: #657b94; cursor: pointer; }
+.redesigned-content { display: grid; grid-template-columns: minmax(0,3fr) minmax(300px,.98fr); gap: 15px; }
+.redesigned-form-card,.redesigned-aside > section { border: 1px solid #e0e9ed; border-radius: 13px; background: #fff; box-shadow: 0 7px 24px rgba(26,63,78,.065); }
+.redesigned-form-card { padding: 20px 22px 18px; }
+.redesigned-form-title h2 { font-size: 25px; color: #10234a; }
+.redesigned-form-title > span { padding: 6px 12px; border: 1px solid #d8ede8; border-radius: 20px; color: #167766; background: #eaf6f3; font-size: 10px; font-weight: 800; }
+.redesigned-stepper { margin: 18px 4px 20px; }
+.redesigned-stepper button { border: 0; background: transparent; cursor: pointer; }
+.redesigned-stepper small { font-size: 10px; font-weight: 700; }
+.redesigned-details-box { padding: 17px; border: 1px solid #dce6ee; border-radius: 11px; }
+.section-heading-row { display: flex; justify-content: space-between; gap: 15px; margin-bottom: 16px; }
+.section-heading-row h3 { margin: 0; color: #10264a; font-size: 17px; font-weight: 850; }
+.section-heading-row p { margin: 6px 0 0; color: #6a7b8f; font-size: 12px; }
+.redesigned-field-grid { gap: 13px 15px; }
+.field-label-row { display: flex !important; align-items: center; gap: 6px; color: #1a3961 !important; font-size: 12px !important; font-weight: 800 !important; }
+.field-label-icon { width: 23px; height: 23px; display: grid; place-items: center; color: #178b79; background: #eaf6f3; border-radius: 7px; }
+.redesigned-field-grid input,.redesigned-field-grid select,.redesigned-field-grid textarea { border: 1px solid #d6e2ea; border-radius: 8px; color: #162e4d; background: #fff; font-size: 13px; }
+.redesigned-field-grid input,.redesigned-field-grid select { height: 42px; }
+.redesigned-field-grid input:focus,.redesigned-field-grid select:focus,.redesigned-field-grid textarea:focus { border-color: #67bdb4; outline: none; box-shadow: 0 0 0 3px rgba(21,156,145,.09); }
+.redesigned-aside { display: grid; gap: 11px; }
+.redesigned-readiness-card { padding: 16px !important; }
+.aside-card-heading { display: flex; justify-content: space-between; }
+.aside-card-heading h3 { color: #143052; font-size: 15px; }
+.aside-card-heading span { color: #15816f; font-size: 18px; font-weight: 850; }
+.readiness-progress-track { height: 7px; margin: 6px 0 9px; border-radius: 99px; background: #e9eff2; overflow: hidden; }
+.readiness-progress-track span { display: block; height: 100%; border-radius: inherit; background: #168d7e; }
+.redesigned-readiness-card p,.redesigned-tip-card p { color: #63778b; font-size: 11px; line-height: 1.45; }
+.redesigned-tip-card { padding: 15px; background: #f0faf7 !important; }
+.tip-icon-box { width: 31px; height: 31px; display: grid; place-items: center; border-radius: 9px; background: #fff8d8; }
+.redesigned-role-visual { min-height: 230px; position: relative; overflow: hidden; background: url('/farmer-apmc-market.png') center/cover; border-radius: 11px; }
+.redesigned-role-visual .visual-photo-overlay { position: absolute; inset: 0; background: linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,38,29,.78)); }
+.redesigned-visual-copy { position: absolute; left: 16px; right: 16px; bottom: 16px; color: #fff; z-index: 1; }
+.redesigned-visual-copy .visual-main-line { display: block; font-size: 23px; line-height: 1.02; font-weight: 850; }
+.redesigned-visual-copy small { display: block; margin-top: 9px; color: #fff; font-size: 10px; }
+.profile-public-card { display: flex; gap: 10px; align-items: flex-start; padding: 13px !important; }
+.public-card-icon { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 9px; color: #188779; background: #eef7f5; }
+.profile-public-card strong { color: #193753; font-size: 12px; }
+.profile-public-card p { margin: 3px 0 0; color: #748497; font-size: 10px; }
+
+@media (max-width: 980px) {
+  .role-farmer .aarth-topbar { flex-wrap: wrap; padding: 8px 15px; }
+  .role-farmer .aarth-main-nav { order: 3; width: 100%; overflow-x: auto; }
+  .redesigned-content { grid-template-columns: 1fr; }
+  .redesigned-aside { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 720px) {
+  .role-farmer .aarth-search-box,.role-farmer .farmer-account-copy { display: none; }
+  .redesigned-id-strip { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .redesigned-aside { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .redesigned-farmer-main { padding: 0 10px 20px; }
+  .farmer-welcome-hero { height: 170px; margin-left: -10px; margin-right: -10px; }
+  .welcome-copy { width: 100%; padding-left: 25px; }
+  .farmer-hero-image { display: none; }
+  .redesigned-id-strip { grid-template-columns: 1fr; }
+}
+
 /* =========================================================
    MAIN
 ========================================================= */
@@ -1126,5 +1858,107 @@ select {
 
   .details-box footer button {
     padding: 8px 10px;
+  }
+}
+
+/* Compact alignment for the restored Farmer dashboard. */
+.role-farmer .aarth-topbar {
+  min-height: 76px;
+  padding: 9px 26px;
+  gap: 24px;
+}
+
+.role-farmer .aarth-brand-block img {
+  width: 62px;
+  height: 62px;
+}
+
+.role-farmer .aarth-main-nav button {
+  min-height: 54px;
+  padding: 10px 12px;
+  gap: 8px;
+  font-size: 16px;
+}
+
+.role-farmer .aarth-main-nav button b {
+  min-width: 22px;
+  font-size: 25px;
+}
+
+.role-farmer .aarth-search-box {
+  width: 262px;
+  height: 42px;
+}
+
+.role-farmer .top-icon-button {
+  width: 42px;
+  height: 42px;
+  font-size: 22px;
+}
+
+.role-farmer .farmer-avatar {
+  width: 44px;
+  height: 44px;
+  font-size: 15px;
+}
+
+.redesigned-farmer-main {
+  padding: 0 24px 26px;
+}
+
+.farmer-welcome-hero {
+  height: 140px;
+  margin-left: -24px;
+  margin-right: -24px;
+}
+
+.welcome-copy {
+  padding-left: 8%;
+}
+
+.welcome-copy h1 {
+  font-size: 24px;
+}
+
+.welcome-copy p {
+  font-size: 13px;
+}
+
+.redesigned-id-strip {
+  gap: 9px;
+  margin-bottom: 13px;
+}
+
+.id-card-item {
+  min-height: 56px;
+  padding: 8px 11px;
+}
+
+.id-card-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.id-card-item strong {
+  font-size: 13px;
+}
+
+.redesigned-form-card {
+  padding: 17px 19px 15px;
+}
+
+.redesigned-form-title h2 {
+  font-size: 23px;
+}
+
+@media (max-width: 720px) {
+  .redesigned-farmer-main {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .farmer-welcome-hero {
+    margin-left: -14px;
+    margin-right: -14px;
   }
 }
