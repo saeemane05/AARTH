@@ -29,6 +29,8 @@ const ROLE_GROUPS = {
   ],
 };
 
+const PENDING_INVITE_KEY = "aarth_pending_fpo_invite";
+
 export default function LoginPage({ initialMode = "login" }) {
   const navigate = useNavigate();
 
@@ -106,7 +108,12 @@ export default function LoginPage({ initialMode = "login" }) {
          * public.profiles.
          */
         navigate(
-          dashboardPath(data.profile.role),
+          data.profile.role === "FARMER" &&
+            localStorage.getItem(PENDING_INVITE_KEY)
+            ? `/fpo/join/${encodeURIComponent(
+                localStorage.getItem(PENDING_INVITE_KEY)
+              )}`
+            : dashboardPath(data.profile.role),
           {
             replace: true,
           }
@@ -172,8 +179,14 @@ export default function LoginPage({ initialMode = "login" }) {
       return;
     }
 
+    const pendingInvite = localStorage.getItem(
+      PENDING_INVITE_KEY
+    );
+
     navigate(
-      dashboardPath(success.role),
+      success.role === "FARMER" && pendingInvite
+        ? `/fpo/join/${encodeURIComponent(pendingInvite)}`
+        : dashboardPath(success.role),
       {
         replace: true,
       }
