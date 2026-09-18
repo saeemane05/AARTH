@@ -265,3 +265,12 @@ export const locationApi = {
     }, false);
   },
 };
+
+export const buyerRequirementApi = {
+  list: () => request("/api/buyer-requirements"),
+  get: (id) => request(`/api/buyer-requirements/${encodeURIComponent(id)}`),
+  create: (payload) => request("/api/buyer-requirements", { method: "POST", body: JSON.stringify(payload) }),
+  update: (id, payload) => request(`/api/buyer-requirements/${encodeURIComponent(id)}`, { method: "PUT", body: JSON.stringify(payload) }),
+  publish: (id) => request(`/api/buyer-requirements/${encodeURIComponent(id)}/publish`, { method: "POST" }),
+  transition: (id, status) => request(`/api/buyer-requirements/${encodeURIComponent(id)}/status`, { method: "POST", body: JSON.stringify({ status }) }),
+};
