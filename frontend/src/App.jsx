@@ -4,9 +4,19 @@ import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import FarmerDashboard from "./pages/FarmerDashboard";
 import FpoDashboard from "./pages/FpoDashboard";
+import FpoLotCreationBridge from "./pages/FpoLotCreationBridge";
+import FpoJoinPage from "./pages/FpoJoinPage";
+import FpoFarmersPage from "./pages/FpoFarmersPage";
+import FpoSettings from "./pages/FpoSettings";
+import FpoStaffPage from "./pages/FpoStaffPage";
+import FpoOrganisationPage from "./pages/FpoOrganisationPage";
+import FpoVerificationPage from "./pages/FpoVerificationPage";
+import FarmerLotPage from "./pages/FarmerLotPage";
+import { FpoClaim, FpoDetail, FpoDirectory } from "./pages/FpoFoundation";
 import BuyerDashboard from "./pages/BuyerDashboard";
 import LogisticsDashboard from "./pages/LogisticsDashboard";
 import StorageDashboard from "./pages/StorageDashboard";
+import AarthScanPage from "./pages/AarthScanPage";
 
 import { authApi, dashboardPath } from "./api/auth";
 
@@ -25,8 +35,14 @@ function LoadingScreen() {
 function ProtectedRole({ role, children }) {
   const navigate = useNavigate();
 
-  const [checking, setChecking] = useState(true);
-  const [allowed, setAllowed] = useState(false);
+  const [checking, setChecking] = useState(() => {
+    const session = authApi.getSession();
+    return session?.profile?.role !== role;
+  });
+  const [allowed, setAllowed] = useState(() => {
+    const session = authApi.getSession();
+    return session?.profile?.role === role;
+  });
 
   useEffect(() => {
     let active = true;
@@ -144,11 +160,108 @@ export default function App() {
         }
       />
 
+      <Route path="/farmer/lots" element={<ProtectedRole role="FARMER"><FarmerLotPage mode="list" /></ProtectedRole>} />
+      <Route path="/farmer/lots/:lotId" element={<ProtectedRole role="FARMER"><FarmerLotPage mode="detail" /></ProtectedRole>} />
+      <Route path="/farmer/lots/new" element={<ProtectedRole role="FARMER"><FarmerLotPage mode="create" /></ProtectedRole>} />
+      <Route path="/fpo/scan" element={<ProtectedRole role="FPO"><AarthScanPage /></ProtectedRole>} />
+      <Route path="/farmer/scan" element={<ProtectedRole role="FARMER"><AarthScanPage /></ProtectedRole>} />
+
       <Route
         path="/fpo"
         element={
           <ProtectedRole role="FPO">
+            <Navigate to="/fpo/dashboard" replace />
+          </ProtectedRole>
+        }
+      />
+
+      <Route path="/fpos" element={<FpoDirectory />} />
+
+      <Route path="/fpos/:id" element={<FpoDetail />} />
+
+      <Route
+        path="/fpo/join/:inviteCode"
+        element={<FpoJoinPage />}
+      />
+
+      <Route
+        path="/fpo/claim/:id"
+        element={<FpoClaim />}
+      />
+
+      <Route
+        path="/fpo/login"
+        element={<LoginPage initialMode="login" />}
+      />
+
+      <Route
+        path="/fpo/dashboard"
+        element={
+          <ProtectedRole role="FPO">
             <FpoDashboard />
+          </ProtectedRole>
+        }
+      />
+
+      <Route
+        path="/fpo/lots/create"
+        element={
+          <ProtectedRole role="FPO">
+            <FpoLotCreationBridge />
+          </ProtectedRole>
+        }
+      />
+
+      <Route
+        path="/fpo/farmers"
+        element={
+          <ProtectedRole role="FPO">
+            <FpoFarmersPage />
+          </ProtectedRole>
+        }
+      />
+
+      <Route
+        path="/fpo/organisation"
+        element={
+          <ProtectedRole role="FPO">
+            <FpoOrganisationPage />
+          </ProtectedRole>
+        }
+      />
+
+      <Route
+        path="/fpo/farmers/:id"
+        element={
+          <ProtectedRole role="FPO">
+            <FpoFarmersPage />
+          </ProtectedRole>
+        }
+      />
+
+      <Route
+        path="/fpo/settings"
+        element={
+          <ProtectedRole role="FPO">
+            <FpoSettings />
+          </ProtectedRole>
+        }
+      />
+
+      <Route
+        path="/fpo/staff"
+        element={
+          <ProtectedRole role="FPO">
+            <FpoStaffPage />
+          </ProtectedRole>
+        }
+      />
+
+      <Route
+        path="/fpo/verification"
+        element={
+          <ProtectedRole role="FPO">
+            <FpoVerificationPage />
           </ProtectedRole>
         }
       />
