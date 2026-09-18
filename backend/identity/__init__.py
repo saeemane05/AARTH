@@ -1,0 +1,1 @@
+"""AARTH identity credentials."""
