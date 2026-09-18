@@ -5,6 +5,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from backend.auth.router import router as auth_router
+from backend.fpo.router import router as fpo_router
+from backend.location_services.router import router as location_router
+from backend.lot_aggregation.router import router as lot_router
+from backend.identity.router import router as identity_router
 
 
 logging.basicConfig(
@@ -50,18 +54,55 @@ app.add_middleware(
 )
 
 
+# =========================================================
+# AUTHENTICATION ROUTES
+# =========================================================
+#
+# Authentication remains registered directly on the main
+# FastAPI application.
+#
+# Existing /api/auth/* routes are NOT changed.
+#
+
 app.include_router(
     auth_router
 )
 
 
+# =========================================================
+# FPO ROUTES
+# =========================================================
+#
+# IMPORTANT:
+#
+# The FPO router itself has no prefix. FastAPI adds the
+# shared /api prefix when registering its endpoints.
+#
+
+app.include_router(
+    fpo_router,
+    prefix="/api",
+)
+
+app.include_router(location_router)
+app.include_router(lot_router)
+app.include_router(identity_router)
+
+
+# =========================================================
+# ROOT
+# =========================================================
+
 @app.get("/")
 async def root():
     return {
-        "status":
-            "AARTH API running"
+        "status": "AARTH API running"
     }
 
+
+# =========================================================
+# HEALTH
+# =========================================================
 
 @app.get("/health")
 async def health():
