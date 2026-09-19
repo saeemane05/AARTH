@@ -171,6 +171,12 @@ ROLE_PROFILE_FIELDS = {
         "service_area",
         "vehicle_details",
         "capacity",
+        "partner_type", "contact_person_name", "email_address", "business_address", "pin_code",
+        "primary_operating_district", "service_coverage", "districts_served", "common_routes",
+        "operating_availability", "notice_period", "vehicle_types", "typical_capacity_value",
+        "typical_capacity_unit", "commodities_handled", "cargo_types", "special_handling",
+        "loading_unloading_support", "gstin", "gstin_status", "gstin_legal_name", "gstin_trade_name",
+        "gstin_checked_at", "profile_publish_status",
     },
 
     "STORAGE_PARTNER": {
