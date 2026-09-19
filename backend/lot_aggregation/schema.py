@@ -19,7 +19,10 @@ class LotCreateRequest(BaseModel):
 	quantity_unit: QuantityUnit
 	partial_sale_allowed: bool = False
 	minimum_sale_quantity: float | None = Field(default=None, gt=0)
-	harvest_date: date
+	# Durations are intentionally stored separately from dates: a farmer can
+	# describe an expected harvest window without inventing an exact date.
+	harvest_duration_min_days: int = Field(gt=0, le=365)
+	harvest_duration_max_days: int = Field(gt=0, le=365)
 	grade: str | None = Field(default=None, max_length=80)
 	size_calibre: str | None = Field(default=None, max_length=120)
 	quality_measurements: dict[str, Any] = Field(default_factory=dict)
@@ -47,8 +50,8 @@ class LotCreateRequest(BaseModel):
 	def validate_business_rules(self):
 		if self.pickup_until < self.available_from:
 			raise ValueError("Latest pickup date cannot be before availability date.")
-		if self.harvest_date > self.available_from:
-			raise ValueError("Harvest date cannot be after the lot becomes available.")
+		if self.harvest_duration_max_days < self.harvest_duration_min_days:
+			raise ValueError("Maximum harvest duration must be at least the minimum duration.")
 		if self.partial_sale_allowed and self.minimum_sale_quantity is None:
 			raise ValueError("Minimum sale quantity is required when partial sale is allowed.")
 		if self.minimum_sale_quantity and self.minimum_sale_quantity > self.quantity:

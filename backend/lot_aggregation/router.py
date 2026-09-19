@@ -81,12 +81,14 @@ async def submit_lot_evidence(
 	authorization: str = Header(default=""),
 ):
 	user_id = _user_id(authorization)
-	if len(files) < 4 or len(files) > 5:
-		raise HTTPException(422, "Four to five evidence photos are required.")
 	try:
 		items = json.loads(metadata)
 		if not isinstance(items, list) or len(items) != len(files):
 			raise ValueError("Evidence metadata does not match the uploaded photos.")
+		photo_count = sum(1 for upload in files if (upload.content_type or "").startswith("image/"))
+		video_count = sum(1 for upload in files if (upload.content_type or "").startswith("video/"))
+		if photo_count < 4 or photo_count > 5 or video_count > 1:
+			raise ValueError("Capture four to five photos and, optionally, one short video.")
 		_get_farmer(user_id)
 		admin = _client(admin=True)
 		lot = admin.table("farmer_lots").select("id, lot_id, user_id, status").eq("lot_id", lot_id).eq("user_id", user_id).maybe_single().execute().data
@@ -100,12 +102,14 @@ async def submit_lot_evidence(
 			if item.get("latitude") is None or item.get("longitude") is None or item.get("gps_accuracy") is None or not item.get("captured_at_client"):
 				raise ValueError("Every photo needs fresh GPS and capture metadata.")
 			content = await upload.read()
-			if not content or not upload.content_type or not upload.content_type.startswith("image/"):
-				raise ValueError("Evidence files must be images.")
-			path = f"{user_id}/{lot['lot_id']}/{index}-{datetime.now(timezone.utc).timestamp()}.jpg"
+			if not content or not upload.content_type or not (upload.content_type.startswith("image/") or upload.content_type.startswith("video/")):
+				raise ValueError("Evidence files must be photos or videos.")
+			extension = "webm" if upload.content_type.startswith("video/") else "jpg"
+			path = f"{user_id}/{lot['lot_id']}/{index}-{datetime.now(timezone.utc).timestamp()}.{extension}"
 			admin.storage.from_("lot-evidence").upload(path, content, {"content-type": upload.content_type, "upsert": "false"})
 			row = {
 				"lot_id": lot["id"], "sequence_number": index, "storage_path": path,
+				"media_type": "VIDEO" if upload.content_type.startswith("video/") else "PHOTO",
 				"captured_at_client": item["captured_at_client"], "latitude": item["latitude"],
 				"longitude": item["longitude"], "gps_accuracy": item["gps_accuracy"],
 				"capture_source": "aarth_camera", "status": "SUBMITTED",
