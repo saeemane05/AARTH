@@ -10,6 +10,8 @@ from backend.location_services.router import router as location_router
 from backend.lot_aggregation.router import router as lot_router
 from backend.identity.router import router as identity_router
 from backend.buyer_demand.router import router as buyer_requirement_router
+from backend.logistics.router import router as logistics_router
+from backend.verification.router import router as verification_router
 
 
 logging.basicConfig(
@@ -89,6 +91,8 @@ app.include_router(location_router)
 app.include_router(lot_router)
 app.include_router(identity_router)
 app.include_router(buyer_requirement_router)
+app.include_router(logistics_router)
+app.include_router(verification_router)
 
 
 # =========================================================
