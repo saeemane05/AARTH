@@ -242,7 +242,7 @@ export const lotApi = {
   async submitEvidence(lotId, evidence) {
     const formData = new FormData();
     formData.append("metadata", JSON.stringify(evidence.map(({ blob, preview, ...item }) => item)));
-    evidence.forEach((item, index) => formData.append("files", item.blob, `lot-evidence-${index + 1}.jpg`));
+    evidence.forEach((item, index) => formData.append("files", item.blob, `lot-evidence-${index + 1}.${item.media_type === "video" ? "webm" : "jpg"}`));
     return request(`/api/lots/${encodeURIComponent(lotId)}/evidence`, {
       method: "POST",
       body: formData,
