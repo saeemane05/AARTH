@@ -1,1552 +1,1080 @@
-AARTH — S4 BUYER REQUIREMENT IMPLEMENTATION
-FINAL IMPLEMENTATION PROMPT
+IMPLEMENT THE LOGISTICS PARTNER PROFILE + GSTIN VERIFICATION FOR AARTH.
 
 IMPORTANT:
-You are continuing work on the existing AARTH project.
-
-The Buyer Profile has already been implemented.
-
-Now implement S4 — BUYER REQUIREMENT.
-
-Treat the CURRENT AARTH codebase as the source of truth.
-
-DO NOT rebuild existing functionality.
-
-DO NOT disturb existing logic.
-
-============================================================
-1. FIRST — INSPECT THE EXISTING PROJECT
-============================================================
-
-Before making any changes, inspect:
-
-1. Current Buyer Dashboard
-2. Current Buyer Profile
-3. Current Buyer Profile data/model/API
-4. Current horizontal Buyer navbar
-5. Existing My Requirements navigation item
-6. Existing BuyerRequirementPage.jsx
-7. Existing buyer_demand backend folder
-8. Existing buyer requirement model/schema/router
-9. Existing Farmer Lot Creation
-10. Existing Farmer Lot database model/schema
-11. Existing Farmer location implementation
-12. Existing commodity master/data
-13. Existing quantity/unit conversion logic
-14. Existing profile readiness/save/review/publish patterns
-15. Existing Supabase/RLS/authentication
-16. Existing API patterns
-
-Understand the existing architecture before changing anything.
-
-Do not assume that a file is empty just because its name suggests it is a placeholder.
-
-============================================================
-2. ABSOLUTE RULE — DO NOT DISTURB EXISTING LOGIC
-============================================================
-
-This is an incremental implementation.
-
-DO NOT modify or break:
-
-- Authentication
-- Supabase Auth
-- Login
-- Signup
-- Role selection
-- Farmer Dashboard
-- Farmer Profile
-- Farmer Lot Creation
-- Farmer Lot listing
-- Farmer Lot editing
-- Farmer photo evidence
-- S3 evidence logic
-- GPS/photo evidence logic
-- Farmer Digital Card
-- Farmer QR
-- Farmer location implementation
-- Market Intelligence
-- Existing Buyer Profile
-- Existing Buyer Profile save/review/publish flow
-- Existing Buyer authentication
-- Existing navigation logic except what is strictly required to make My Requirements functional
-- Existing APIs unrelated to Buyer Requirement
-- Existing database functionality unrelated to Buyer Requirement
-
-DO NOT perform broad refactoring.
-
-DO NOT rewrite working components.
-
-DO NOT rename files unnecessarily.
-
-DO NOT replace React/Vite.
-
-DO NOT replace FastAPI.
-
-DO NOT introduce React Native.
-
-DO NOT introduce another frontend framework.
-
-DO NOT introduce a second commodity system.
-
-DO NOT introduce a second location system.
-
-DO NOT modify Farmer Lot Creation just to implement Buyer Requirement.
-
-If existing code can be reused safely, reuse it.
-
-If new code is required, keep it isolated to the Buyer Requirement functionality.
-
-============================================================
-3. MY REQUIREMENTS MUST BE ACCESSIBLE FROM THE NAVBAR
-============================================================
-
-The Buyer Dashboard already uses a HORIZONTAL TOP NAVBAR.
-
-KEEP THE NAVBAR HORIZONTAL.
-
-DO NOT introduce a vertical sidebar.
-
-The navigation should include:
-
-Home
-Profile
-Search Produce
-My Requirements
-Orders
-Supplier Network
-Market Insights
-Support
-
-The exact existing navigation structure should be preserved.
-
-The "My Requirements" item must become fully functional.
-
-When the buyer clicks:
-
-My Requirements
-
-it should navigate to the Buyer Requirements page.
-
-Use the existing routing architecture.
-
-Do not create a second routing system.
-
-============================================================
-4. MY REQUIREMENTS PAGE
-============================================================
-
-Create a professional Buyer Requirements management page.
-
-The page should clearly communicate:
-
-MY REQUIREMENTS
-
-Subtitle:
-
-Manage your active sourcing requirements and create new requirements for agricultural produce.
-
-Primary action:
-
-[ + Create Requirement ]
-
-The page should show the buyer's existing requirements.
-
-Separate them logically into:
-
-ACTIVE
-DRAFT
-PAUSED
-FULFILLED
-CANCELLED
-
-Do not show empty sections unnecessarily.
-
-If there are no requirements:
-
-Show a professional empty state:
-
-No active requirements yet.
-
-Create a requirement to tell AARTH what produce you need.
-
-[ + Create Requirement ]
-
-============================================================
-5. REQUIREMENT ID
-============================================================
-
-Every Buyer Requirement must have its own unique human-readable ID.
-
-Use a format compatible with AARTH conventions.
-
-Example:
-
-BR-MH-000001
-
-Do not hardcode this.
-
-Generate/store it according to the existing AARTH ID generation conventions if such a mechanism exists.
-
-A requirement ID is different from:
-
-- AARTH ID
-- Buyer ID
-- Profile ID
-
-A single buyer must be able to create MULTIPLE requirements.
-
-============================================================
-6. CREATE REQUIREMENT
-============================================================
-
-When the buyer clicks:
-
-[ + Create Requirement ]
-
-open the Buyer Requirement creation flow.
-
-The form should be professional, clean, fast and easy to understand.
-
-Do not make it unnecessarily complicated.
-
-Use a multi-step structure if that matches the existing AARTH UX architecture.
-
-Recommended steps:
-
-1. Produce
-2. Quantity & Quality
-3. Delivery
-4. Preferences
-5. Review & Publish
-
-The user should always understand where they are in the process.
-
-============================================================
-7. IMPORTANT — AUTOFILL FROM BUYER PROFILE
-============================================================
-
-This is VERY IMPORTANT.
-
-Do NOT make the buyer enter information that AARTH already knows from their Buyer Profile.
-
-Just like the Farmer workflow reuses existing farmer information, Buyer Requirement should intelligently reuse Buyer Profile information.
-
-Before building this, inspect exactly how the Farmer Lot Creation autofills/reuses farmer profile information.
-
-Use the SAME GENERAL APPROACH.
-
-Do not duplicate profile data unnecessarily.
-
-------------------------------------------------------------
-AUTOFILL THESE WHERE AVAILABLE:
-------------------------------------------------------------
-
-A. BUYER / BUSINESS IDENTITY
-
-The requirement should automatically know:
-
-- authenticated buyer
-- buyer_id
-- business/organization name
-- buyer type
-- contact identity if required internally
-
-Do NOT ask the buyer to manually type their business name again.
-
-These should come from the authenticated buyer/profile.
-
-------------------------------------------------------------
-B. OPERATING / PROCUREMENT LOCATION
-------------------------------------------------------------
-
-If the Buyer Profile already contains:
-
-Operating / Procurement Location
-
-use it as the DEFAULT delivery/receiving location for a new requirement.
-
-Example:
-
-Buyer Profile:
-
-Operating / Procurement Location:
-Nashik, Maharashtra
-
-New Requirement:
-
-Delivery / Receiving Location:
-[ Nashik, Maharashtra ✓ ]
-
-Show a small option:
-
-Using your procurement location from Buyer Profile.
-
-[ Change Location ]
-
-The buyer must still be able to change the requirement's delivery location.
-
-IMPORTANT:
-
-The profile location is a DEFAULT/PREFILL.
-
-It is NOT permanently locked.
-
-------------------------------------------------------------
-C. USUAL COMMODITIES
-------------------------------------------------------------
-
-If the Buyer Profile contains:
-
-"What produce do you usually source?"
-
-use those commodities as suggested/preferred options in the requirement.
-
-Example:
-
-Buyer Profile sourcing preferences:
-
-Onion
-Potato
-Tomato
-
-New Requirement:
-
-Commodity *
-
-[ Onion ]
-[ Potato ]
-[ Tomato ]
-
-Other commodities can still be searched/selected from the SAME AARTH commodity master.
-
-Do not automatically create a requirement merely because a commodity exists in the profile.
-
-The buyer must explicitly choose the commodity for this requirement.
-
-------------------------------------------------------------
-D. PREFERRED SOURCING REGION
-------------------------------------------------------------
-
-If Buyer Profile contains preferred sourcing regions, use them as contextual preferences where useful.
-
-Do NOT automatically make them hard constraints.
-
-Do NOT prevent the buyer from selecting other locations.
-
-============================================================
-8. REQUIREMENT SECTION 1 — PRODUCE
-============================================================
-
-FIELD:
-
-Commodity *
-
-Use the SAME commodity master used by Farmer Lot Creation.
-
-This is critical.
-
-Do NOT create:
-
-buyer_commodities
-
-or a separate crop list if an existing AARTH commodity master already exists.
-
-The Buyer Requirement commodity identifier must be compatible with the Farmer Lot commodity identifier.
-
-UI:
-
-Commodity *
-
-[ Search / Select commodity ]
-
-Show profile-based suggestions first if available.
-
-Example:
-
-Suggested from your sourcing profile:
-
-[ Onion ] [ Potato ] [ Tomato ]
-
-Then:
-
-Search all commodities
-
-[ Search commodity... ]
-
-------------------------------------------------------------
-
-VARIETY
-
-Variety should be OPTIONAL.
-
-UI:
-
-Variety
-
-[ Any variety ▼ ]
-
-Options should be based on existing AARTH commodity/lot data where available.
-
-Do not force the buyer to know or select a variety.
-
-============================================================
-9. REQUIREMENT SECTION 2 — QUANTITY
-============================================================
-
-Required Quantity *
-
-Example:
-
-[ 20 ] [ Tonnes ▼ ]
-
-Use the SAME unit system used by Farmer Lot Creation.
-
-Support the units already supported by the Farmer Lot implementation.
-
-Internally maintain normalized quantity if the Farmer Lot architecture already uses normalized kilograms.
-
-For example:
-
-quantity
-quantity_unit
-quantity_kg
-
-Do not create a second quantity conversion system.
-
-Validation:
-
-- quantity must be greater than zero
-- valid numeric value
-- valid unit
-
-============================================================
-10. QUALITY REQUIREMENTS
-============================================================
-
-IMPORTANT:
-
-DO NOT INCLUDE MOISTURE.
-
-Do not add a moisture field.
-
-Do not add:
-
-max_moisture
-
-Do not create a moisture input anywhere in this requirement flow.
-
-Keep quality requirements practical and compatible with the existing Farmer Lot structure.
-
-Include:
-
-QUALITY GRADE
-
-[ Any ▼ ]
-
-Use the existing Farmer Lot grade values where possible.
-
-------------------------------------------------------------
-
-PREFERRED SIZE / CALIBRE
-
-[ Optional ]
-
-Use the existing Farmer Lot size/calibre concept where available.
-
-------------------------------------------------------------
-
-OTHER QUALITY REQUIREMENTS
-
-[____________________________________________]
-[____________________________________________]
-
-Example placeholder:
-
-Fresh, uniform size, no visible damage.
-
-This should remain a free-text supplementary requirement.
-
-Do NOT create a huge technical laboratory-quality form.
-
-Do NOT make the buyer enter technical parameters they may not know.
-
-============================================================
-11. DELIVERY / RECEIVING LOCATION
-============================================================
-
-This is a CORE AARTH requirement.
-
-The buyer needs to specify where the produce should be delivered/received.
-
-Use the SAME LOCATION CODE/COMPONENT/LOGIC already used in:
-
-FARMER LOT CREATION.
-
-Do NOT build a new location picker.
-
-Do NOT create a second location API.
-
-Do NOT create a different latitude/longitude structure.
-
-Reuse/adapt the Farmer Lot location implementation.
-
-The Buyer Requirement delivery location should be structurally compatible with:
-
-Farmer Lot pickup location.
-
-Conceptually:
-
-FARMER LOT
-pickup_latitude
-pickup_longitude
-
-        ↓
-
-S5 DISTANCE MATCHING
-
-        ↑
-
-BUYER REQUIREMENT
-delivery_latitude
-delivery_longitude
-
-------------------------------------------------------------
-
-If Buyer Profile has an Operating / Procurement Location:
-
-AUTOFILL IT.
-
-Example:
-
-Delivery / Receiving Location
-
-✓ Nashik, Maharashtra
-
-Using your operating/procurement location
-
-[ Change Location ]
-
-The buyer can select another location.
-
-Store appropriate location information according to the existing location architecture:
-
-- delivery_location
-- district
-- taluka if supported
-- city/town
-- latitude
-- longitude
-
-Do not expose raw coordinates to the normal user unless the existing location UI does so.
-
-============================================================
-12. DELIVERY WINDOW
-============================================================
-
-Do NOT use only a single "required_by" field if the existing architecture can support a range.
-
-Use:
-
-Delivery From *
-
-[ Date ]
-
-Delivery By *
-
-[ Date ]
-
-Example:
-
-25 Sep 2026 → 30 Sep 2026
-
-This should eventually correspond with Farmer Lot availability:
-
-Farmer Lot:
-available_from
-pickup_until
-
-Buyer Requirement:
-delivery_start_date
-delivery_end_date
-
-Validation:
-
-- delivery_from cannot be after delivery_by
-- dates must be valid
-- do not allow invalid past dates according to the project's existing business rules
-
-============================================================
-13. PACKAGING REQUIREMENT
-============================================================
-
-Optional.
-
-Packaging Requirement
-
-[ No specific requirement ▼ ]
-
-Possible options should remain simple and relevant.
-
-For example:
-
-- No specific requirement
-- Bulk / Loose
-- Bags
-- Crates
+You already know the existing AARTH project structure and architecture.
+
+DO NOT start from Phase 0.
+DO NOT rebuild the project.
+DO NOT redesign the entire application.
+DO NOT modify authentication, registration, login, role selection, Farmer Dashboard, Farmer Profile, Farmer Lot Creation, Lot Evidence, Buyer Profile, Buyer Requirements, Market Intelligence, S3/photo evidence, QR logic, or any other existing functionality.
+
+This task is ONLY for:
+1. Logistics Partner Profile
+2. Logistics Partner GSTIN verification
+3. Logistics Partner service/capability information
+4. Logistics vehicle information structure/UI
+5. Related backend/database/API integration required for the above
+
+Before changing anything:
+- Inspect the existing Logistics Dashboard/Profile implementation.
+- Inspect the existing Farmer Profile implementation.
+- Inspect the existing Buyer Profile implementation.
+- Inspect the existing Farmer Lot Creation location implementation.
+- Inspect the existing database schema/migrations for logistics_partners and related profile tables.
+- Inspect existing API/router/service conventions.
+- Inspect existing navbar/dashboard layout conventions.
+- Reuse existing components, utilities, validation, location masters, auth/session handling and styling wherever possible.
+- Do not create duplicate architecture if something already exists.
+
+The latest existing code/schema is authoritative.
+
+==================================================
+1. LOGISTICS PROFILE GOAL
+==================================================
+
+The current Logistics Profile is too basic.
+
+The current UI contains basic fields such as:
+- Business name
+- Phone
+- District
+- City/town
+- Service area
+- Vehicle details
+- Typical capacity
+
+Replace/extend this into a proper professional AARTH Logistics Partner Profile.
+
+The profile should collect enough information for AARTH to understand:
+- who the logistics partner is
+- where they operate
+- what transport capability they have
+- what agricultural commodities/cargo they handle
+- how they can support farm-to-market movement
+- whether their business identity has been GST-verified
+- what vehicles they operate
+
+Do NOT overcollect unnecessary KYC or financial information.
+
+==================================================
+2. PROFILE STRUCTURE
+==================================================
+
+Use a multi-step profile flow similar in quality and interaction to the existing Farmer and Buyer profiles.
+
+STEP 1 — BUSINESS IDENTITY
+
+Required fields:
+
+- Business / Operator Name *
+- Logistics Partner Type *
+- Contact Person Name *
+- Primary Mobile Number *
+- Email Address *
+- Business Address *
+- State *
+- District *
+- City / Town *
+- PIN Code *
+
+Logistics Partner Type options:
+
+- Fleet Owner
+- Transport Company
+- Individual Truck Owner
+- Transport Operator
+- Broker / Transport Agent
+- Cooperative / FPO Transport Unit
 - Other
 
-Do not make packaging mandatory.
+Do not invent additional unnecessary categories.
 
-Do not invent a huge packaging specification system.
+Use existing AARTH validation and form conventions wherever possible.
 
-============================================================
-14. TARGET BUYING PRICE
-============================================================
+Phone number should use the existing authentication/profile phone where appropriate instead of forcing unnecessary duplicate entry.
 
-Include an OPTIONAL target buying price.
+If the logged-in user's existing phone/email/profile data is available, reuse/autofill it where appropriate.
 
-Example:
+Do not create duplicate profile records.
 
-Target Buying Price
+==================================================
+3. STEP 2 — SERVICE NETWORK
+==================================================
 
-₹ [________] per [ Quintal ▼ ]
+Collect:
 
-Allow:
+- Primary Operating District *
+- Service Coverage *
+- Maharashtra Districts Served
+- Common Transport Routes
+- Operating Availability
+- Typical Notice Period
 
-[ ] Open to market-based pricing
+Examples of availability:
 
-This field is optional.
+- On demand
+- Scheduled
+- Weekdays
+- Weekends
+- 24/7
 
-The buyer must be able to publish a requirement without specifying a target price.
+Typical notice period:
 
-Do not add payment methods.
+- Same day
+- Within 24 hours
+- 1–2 days
+- 3+ days
 
-Do not add bank details.
+Do not make every optional field mandatory.
 
-Do not add payment preferences.
+IMPORTANT LOCATION REQUIREMENT:
 
-This is only a sourcing price preference.
+DO NOT build a new location system.
 
-============================================================
-15. ADDITIONAL REQUIREMENTS
-============================================================
+Find the exact location/district/state/taluka/city/location code already used in the EXISTING FARMER LOT CREATION FLOW.
 
-Include:
+Reuse/adapt that existing location implementation.
 
-Additional Requirements
+Use the same:
+- location masters
+- district data
+- state data
+- selectors
+- validation
+- location utility functions
+- API endpoints
+- storage conventions
 
-[____________________________________________]
-[____________________________________________]
-[____________________________________________]
+Do NOT create another duplicate Maharashtra district list.
 
-This allows the buyer to provide additional context.
+If Farmer Lot Creation already has a reusable location component/helper/service, extract/reuse it rather than duplicating its logic.
 
-Example placeholder:
+The Logistics Profile should use the same location conventions as Farmer Lot Creation so that later matching between:
+Farmer Lot → Logistics Partner
+works consistently.
 
-"Prefer consistent quality suitable for retail distribution."
+==================================================
+4. STEP 3 — TRANSPORT CAPABILITY
+==================================================
 
-Do not use this field as a hard matching rule in S4.
+Collect:
 
-S5 can later decide whether/how to use structured or textual requirements.
+- Vehicle Types *
+- Typical Load Capacity *
+- Agricultural Commodities Handled
+- Cargo Types
+- Special Handling
+- Loading / Unloading Support
 
-============================================================
-16. REQUIREMENT REVIEW
-============================================================
+Vehicle types can include:
 
-Before publishing, show a clean Review Requirement page/card.
+- Mini Truck
+- Pickup
+- LCV
+- Medium Goods Vehicle
+- Heavy Goods Vehicle
+- Truck
+- Trailer
+- Refrigerated Vehicle
+- Insulated Vehicle
+- Other
 
-Example:
-
-REVIEW REQUIREMENT
-
-Requirement ID
-BR-MH-000124
-
-Produce
-Onion
-
-Variety
-Any variety
-
-Required Quantity
-20 Tonnes
-
-Quality Grade
-Grade A
-
-Size / Calibre
-55–70 mm
-
-Delivery Location
-Nashik, Maharashtra
-
-Delivery Window
-25 Sep – 30 Sep 2026
-
-Packaging
-Crates
-
-Target Buying Price
-₹2,800 / Quintal
-
-Additional Requirements
-Fresh, uniform size.
-
-Then:
-
-[ Edit ]
-
-[ Save as Draft ]
-
-[ Publish Requirement ]
-
-Do not allow publishing if required information is incomplete.
-
-============================================================
-17. REQUIREMENT STATUS
-============================================================
-
-Use a simple requirement lifecycle.
-
-Recommended:
-
-DRAFT
-ACTIVE
-PAUSED
-FULFILLED
-CANCELLED
-
-Conceptually:
-
-DRAFT
-↓
-ACTIVE
-↓
-PAUSED
-↓
-ACTIVE
-
-or:
-
-ACTIVE
-↓
-FULFILLED
-
-or:
-
-ACTIVE
-↓
-CANCELLED
-
-Do NOT add MATCHING as an S4 status unless the existing architecture already requires it.
-
-Matching belongs to S5.
-
-Do NOT implement S5 matching logic here.
-
-============================================================
-18. REQUIREMENT CARD
-============================================================
-
-The My Requirements page should show professional cards.
-
-Example:
-
-------------------------------------------------------------
-
-BR-MH-000124
-ONION
-
-20 Tonnes
-Grade A
-Any variety
-
-📍 Nashik, Maharashtra
-📅 25 Sep – 30 Sep 2026
-
-● ACTIVE
-
-Created 19 Sep 2026
-
-[ View Requirement ] [ Edit ]
-
-------------------------------------------------------------
-
-Use a clear status badge.
-
-ACTIVE:
-green
-
-DRAFT:
-neutral/grey
-
-PAUSED:
-yellow/amber
-
-FULFILLED:
-appropriate completed state
-
-CANCELLED:
-muted state
-
-Do not use aggressive red for ordinary status states.
-
-============================================================
-19. HERO SECTION — VERY IMPORTANT UI REQUIREMENT
-============================================================
-
-The Buyer Requirement page must use the FULL AVAILABLE RECTANGULAR DASHBOARD SPACE.
-
-DO NOT leave large blank areas on the left or right side of the hero/header section.
-
-The hero section should stretch across the FULL MAIN CONTENT WIDTH beneath the horizontal navbar.
-
-It should not look like a small centered card floating in a huge empty page.
-
-Use a full-width rectangular hero/banner.
-
-Conceptually:
-
-------------------------------------------------------------
-|                                                          |
-|  MY REQUIREMENTS                     [ + Create ]        |
-|                                                          |
-|  Manage your sourcing requirements and connect with      |
-|  relevant agricultural supply.                            |
-|                                                          |
-------------------------------------------------------------
-
-The hero/background/image should occupy the full rectangular width of the main dashboard content.
-
-If an agricultural image is used:
-
-- let it extend across the full hero rectangle
-- use an elegant gradient/overlay for readability
-- do not leave unused white space on either side
-- do not create a narrow image strip surrounded by blank space
-
-The hero should feel intentional and balanced.
-
-IMPORTANT:
-
-This does NOT mean making the entire webpage edge-to-edge without margins.
-
-It means:
-
-WITHIN THE DASHBOARD CONTENT CONTAINER,
-
-the hero should use the complete available width.
-
-No awkward left/right empty columns.
-
-============================================================
-20. BUYER REQUIREMENT PAGE LAYOUT
-============================================================
-
-Recommended structure:
-
-HORIZONTAL TOP NAVBAR
-↓
-FULL-WIDTH HERO SECTION
-↓
-REQUIREMENT SUMMARY / FILTER AREA
-↓
-ACTIVE REQUIREMENT CARDS
-↓
-DRAFT / PAST REQUIREMENTS
-
-For Create Requirement:
-
-HORIZONTAL TOP NAVBAR
-↓
-FULL-WIDTH PAGE HEADER
-↓
-MAIN REQUIREMENT FORM
-↓
-OPTIONAL RIGHT SUMMARY/HELP PANEL
-↓
-SAVE / REVIEW / PUBLISH ACTIONS
-
-Do not make the form unnecessarily narrow.
-
-Use the available dashboard width intelligently.
-
-============================================================
-21. UI THEME
-============================================================
-
-The Buyer Dashboard has its OWN visual identity.
-
-Do NOT copy the Farmer Dashboard's exact colors.
-
-Use a sophisticated light-blue professional theme.
-
-Suggested visual direction:
-
-- soft light blue
-- muted blue
-- white
-- very light blue-grey
-- deep navy typography
-- subtle blue gradients
-- restrained shadows
-- clean borders
-
-The UI should feel:
-
-- professional
-- trustworthy
-- premium
-- modern
-- agricultural B2B
-- business-oriented
-
-Do NOT make it:
-
-- neon blue
-- overly saturated
-- childish
-- overly dark
-- visually noisy
-
-The Farmer Dashboard is only inspiration for overall usability and product quality.
-
-Do NOT copy Farmer-specific visual elements.
-
-============================================================
-22. NAVBAR
-============================================================
-
-KEEP THE BUYER NAVBAR HORIZONTAL.
-
-It must remain at the top.
-
-No vertical sidebar.
-
-The navbar should clearly show:
-
-AARTH
-Home
-Profile
-Search Produce
-My Requirements
-Orders
-Supplier Network
-Market Insights
-Support
-
-The active page should clearly highlight:
-
-My Requirements
-
-Use the existing Buyer navbar implementation where possible.
-
-Do not modify the Farmer navbar.
-
-============================================================
-23. DATABASE
-============================================================
-
-Before creating/modifying database structures:
-
-INSPECT THE CURRENT DATABASE.
-
-Do not blindly create a new table.
-
-Check:
-
-- existing buyer_requirement.py
-- buyer_demand schemas
-- buyer_demand router
-- database models
-- migrations
-- Supabase tables
-- existing RLS
-- existing Farmer Lot schema
-- existing naming conventions
-
-If a buyer_requirements table already exists, extend it safely rather than creating another duplicate table.
-
-The requirement should conceptually contain:
-
-buyer requirement identity:
-- id
-- requirement_id
-- buyer_id
-
-produce:
-- commodity_key
-- commodity_name
-- variety
-
-quantity:
-- quantity
-- quantity_unit
-- quantity_kg
-
-quality:
-- quality_grade
-- size_calibre
-- quality_requirements
-
-delivery:
-- delivery_location
-- delivery_district
-- delivery_taluka if supported
-- delivery_city
-- delivery_latitude
-- delivery_longitude
-
-dates:
-- delivery_start_date
-- delivery_end_date
-
-commercial preference:
-- target_price
-- target_price_unit
-
-other:
-- packaging_requirement
-- additional_requirements
-
-status:
-- status
-
-timestamps:
-- created_at
-- updated_at
-
-DO NOT add:
-
-- max_moisture
-- payment_preference
-- bank_details
-- negotiation_fields
-- transaction_fields
-- matching_score
-
-============================================================
-24. PROFILE AUTOFILL DATA MUST NOT BE DUPLICATED CARELESSLY
-============================================================
-
-If profile information is used to initialize the requirement:
-
-DO NOT create unnecessary duplicate profile records.
-
-For example:
-
-buyer_id should reference the authenticated buyer.
-
-The requirement should store its own delivery location because the buyer may later create requirements for different receiving locations.
-
-Similarly:
-
-Buyer Profile:
-usual commodities = Onion, Potato
-
-Requirement:
-commodity = Onion
-
-The requirement must store the selected commodity explicitly.
-
-Do not make the requirement dynamically depend on the current profile forever.
-
-At creation time, use the profile to PREFILL the form.
-
-Then store the requirement's actual values.
-
-============================================================
-25. SECURITY
-============================================================
-
-Buyer A must not be able to:
-
-- view private Buyer B requirements
-- edit Buyer B requirements
-- delete Buyer B requirements
-- publish Buyer B requirements
-
-Use:
-
-- Supabase Auth
-- buyer ownership
-- existing RLS
-- FastAPI authentication
-- backend authorization
-
-Do not disable RLS.
-
-Do not weaken existing policies.
-
-Backend must verify:
-
-authenticated user
-+
-buyer role
-+
-buyer ownership
-+
-requirement ownership
-
-Do not trust only frontend state.
-
-============================================================
-26. API
-============================================================
-
-Inspect existing buyer_demand API architecture.
-
-Reuse existing patterns.
-
-Conceptually support:
-
-GET / buyer requirements
-GET / buyer requirement by ID
-CREATE buyer requirement
-UPDATE buyer requirement
-SAVE draft
-PUBLISH requirement
-PAUSE requirement
-CANCEL requirement
-
-But if equivalent endpoints already exist, reuse them.
-
-Do not create duplicate endpoints.
-
-The API must validate:
-
-- authenticated buyer
-- commodity
-- quantity
+Capacity:
+- value
 - unit
-- quality values
-- delivery location
-- delivery dates
-- ownership
-- status transitions
 
-============================================================
-27. S4 MUST NOT IMPLEMENT S5
-============================================================
+Reuse the existing AARTH quantity/unit conventions where possible.
 
-This is extremely important.
+Agricultural Commodities:
+REUSE the SAME commodity master already used by Farmer Lot Creation and Buyer Requirements.
 
-S4 is:
+Do NOT create another commodity list.
 
-WHAT DOES THE BUYER NEED?
+Cargo types can include:
 
-S5 is:
+- Bagged
+- Crated
+- Bulk
+- Loose Agricultural Produce
+- Grains / Cereals
+- Perishable Produce
 
-WHICH FARMER/FPO LOTS MATCH THAT NEED?
+Special handling:
 
-Therefore DO NOT implement:
+- Covered
+- Ventilated
+- Insulated
+- Refrigerated
+- Temperature Sensitive
+- Fragile
+- None
 
-- matching score
-- farmer recommendations
-- matched lots
-- distance ranking
-- aggregation
-- best supplier
-- AI recommendation
-- landed cost
-- transport optimization
+Loading/unloading:
 
-S4 only collects and stores the buyer's demand correctly.
+- Driver only
+- Driver + Helper
+- Loading assistance
+- Unloading assistance
+- Both loading and unloading assistance
 
-Prepare the data cleanly for S5.
+Keep the UI practical and easy to understand.
 
-============================================================
-28. S5 COMPATIBILITY
-============================================================
+Do not make this look like a highly technical fleet-management system.
 
-Design the requirement data so S5 can later compare it against Farmer Lots.
+==================================================
+5. STEP 4 — GSTIN BUSINESS VERIFICATION
+==================================================
 
-Farmer Lot:
+This is an IMPORTANT part of this task.
 
-commodity
-variety
-quantity
-grade
-size/calibre
-pickup location
-available_from
-pickup_until
-expected_price
-packaging
-status
+I have already created the GSTIN API key and added it to the backend environment file.
 
-Buyer Requirement:
+DO NOT ask me to add another API key.
 
-commodity
-variety
-required quantity
-grade
-size/calibre
-delivery location
-delivery_start_date
-delivery_end_date
-target_price
-packaging
-status
+DO NOT put the API key anywhere in React/frontend code.
 
-This is the data contract for future matching.
+DO NOT expose the API key in browser requests.
 
-Do not implement the matching itself.
+The API key must remain server-side.
 
-============================================================
-29. AUTOFILL EXAMPLE
-============================================================
+Environment variable:
 
-If Buyer Profile contains:
+GSTIN_API_KEY
 
-Business:
-ABC Foods
+The backend must read it using the existing environment configuration conventions.
 
-Buyer Type:
-Processor / Manufacturer
+==================================================
+6. GSTIN API
+==================================================
 
-Operating / Procurement Location:
-Nashik, Maharashtra
+Use this provider:
 
-Usual commodities:
-Onion
-Potato
+https://www.gstinapi.in
 
-Preferred sourcing region:
+Endpoint:
+
+GET https://www.gstinapi.in/v1/gstin/{GSTIN}
+
+Authentication header:
+
+x-api-key: <GSTIN_API_KEY>
+
+Use the following GSTIN verification service implementation as the basis.
+
+DO NOT blindly duplicate existing code if an equivalent verification service already exists.
+If no equivalent exists, create a clean reusable service following existing AARTH backend conventions.
+
+CODE:
+
+import os
+import re
+from typing import Any, Dict
+
+import httpx
+
+
+GSTIN_API_BASE_URL = "https://www.gstinapi.in"
+
+GSTIN_PATTERN = re.compile(
+    r"^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][A-Z0-9]Z[A-Z0-9]$"
+)
+
+CHARSET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+
+def normalize_gstin(gstin: str) -> str:
+    if not gstin:
+        return ""
+
+    return (
+        gstin
+        .strip()
+        .replace(" ", "")
+        .replace("-", "")
+        .upper()
+    )
+
+
+def validate_gstin_checksum(gstin: str) -> bool:
+    gstin = normalize_gstin(gstin)
+
+    if len(gstin) != 15:
+        return False
+
+    total = 0
+
+    for index, character in enumerate(gstin[:14]):
+        try:
+            value = CHARSET.index(character)
+        except ValueError:
+            return False
+
+        factor = 1 if index % 2 == 0 else 2
+
+        product = value * factor
+
+        total += (product // 36) + (product % 36)
+
+    expected_value = (36 - (total % 36)) % 36
+
+    return CHARSET[expected_value] == gstin[14]
+
+
+def validate_gstin_format(gstin: str) -> Dict[str, Any]:
+    gstin = normalize_gstin(gstin)
+
+    if len(gstin) != 15:
+        return {
+            "valid": False,
+            "stage": "FORMAT",
+            "message": "GSTIN must contain exactly 15 characters.",
+        }
+
+    if not GSTIN_PATTERN.fullmatch(gstin):
+        return {
+            "valid": False,
+            "stage": "FORMAT",
+            "message": "Invalid GSTIN format.",
+        }
+
+    if not validate_gstin_checksum(gstin):
+        return {
+            "valid": False,
+            "stage": "CHECKSUM",
+            "message": "GSTIN checksum is invalid.",
+        }
+
+    return {
+        "valid": True,
+        "stage": "FORMAT",
+        "message": "GSTIN format and checksum are valid.",
+        "gstin": gstin,
+    }
+
+
+async def verify_gstin(gstin: str) -> Dict[str, Any]:
+    validation = validate_gstin_format(gstin)
+
+    if not validation["valid"]:
+        return {
+            "success": False,
+            "verification_status": "FORMAT_INVALID",
+            "message": validation["message"],
+        }
+
+    gstin = validation["gstin"]
+
+    api_key = os.getenv("GSTIN_API_KEY")
+
+    if not api_key:
+        return {
+            "success": False,
+            "verification_status": "API_NOT_CONFIGURED",
+            "message": "GST verification service is not configured.",
+        }
+
+    url = f"{GSTIN_API_BASE_URL}/v1/gstin/{gstin}"
+
+    headers = {
+        "x-api-key": api_key,
+        "Accept": "application/json",
+    }
+
+    try:
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            response = await client.get(
+                url,
+                headers=headers,
+            )
+
+    except httpx.TimeoutException:
+        return {
+            "success": False,
+            "verification_status": "TIMEOUT",
+            "message": "GST verification service timed out.",
+        }
+
+    except httpx.RequestError:
+        return {
+            "success": False,
+            "verification_status": "PROVIDER_UNAVAILABLE",
+            "message": "GST verification service is currently unavailable.",
+        }
+
+    if response.status_code == 401:
+        return {
+            "success": False,
+            "verification_status": "API_AUTH_ERROR",
+            "message": "GST verification API authentication failed.",
+        }
+
+    if response.status_code == 429:
+        return {
+            "success": False,
+            "verification_status": "RATE_LIMITED",
+            "message": "GST verification rate limit reached. Please try again later.",
+        }
+
+    if response.status_code == 402:
+        return {
+            "success": False,
+            "verification_status": "CREDITS_EXHAUSTED",
+            "message": "GST verification credits are exhausted.",
+        }
+
+    if response.status_code == 502:
+        return {
+            "success": False,
+            "verification_status": "PROVIDER_UNAVAILABLE",
+            "message": "GST provider is temporarily unavailable.",
+        }
+
+    try:
+        payload = response.json()
+    except ValueError:
+        return {
+            "success": False,
+            "verification_status": "INVALID_PROVIDER_RESPONSE",
+            "message": "Invalid response received from GST provider.",
+        }
+
+    if not payload.get("success"):
+        return {
+            "success": False,
+            "verification_status": "NOT_VERIFIED",
+            "message": payload.get(
+                "error",
+                "GSTIN could not be verified."
+            ),
+        }
+
+    data = payload.get("data") or {}
+
+    return {
+        "success": True,
+        "verification_status": "LIVE_VERIFIED",
+        "gstin": data.get("gstin") or gstin,
+
+        "legal_name": data.get("legal_name"),
+        "trade_name": data.get("trade_name"),
+        "registration_status": data.get("status"),
+        "taxpayer_type": data.get("taxpayer_type"),
+        "business_constitution": data.get("business_constitution"),
+
+        "registration_date": data.get("registration_date"),
+        "cancellation_date": data.get("cancellation_date"),
+
+        "state_code": data.get("state_code"),
+        "state_jurisdiction": data.get("state_jurisdiction"),
+
+        "address": data.get("address"),
+        "city": data.get("city"),
+        "address_details": data.get("address_details"),
+
+        "credits_remaining": payload.get("credits_remaining"),
+        "response_ms": payload.get("response_ms"),
+    }
+
+==================================================
+7. FASTAPI GSTIN ENDPOINT
+==================================================
+
+Create/reuse an appropriate backend verification router.
+
+Do NOT create another FastAPI application.
+
+Expected endpoint:
+
+POST /api/verification/gstin
+
+Request:
+
+{
+    "gstin": "27XXXXXXXXXXXXZ5"
+}
+
+The endpoint should:
+1. Normalize GSTIN
+2. Validate format
+3. Validate checksum
+4. Call gstinapi.in
+5. Return normalized verification information
+6. Never expose API key
+7. Handle API errors cleanly
+
+Use the existing AARTH backend authentication/authorization conventions.
+
+A logged-in logistics partner should only be able to update/check their own profile context.
+
+Do not allow arbitrary profile modification through the verification endpoint.
+
+==================================================
+8. GSTIN UI
+==================================================
+
+Add a dedicated Business Verification section.
+
+UI:
+
+GSTIN
+[ Enter GSTIN                    ]
+
+[ Verify GSTIN ]
+
+Before verification:
+- neutral input state
+
+During verification:
+- loading state
+- "Verifying GSTIN..."
+
+Successful:
+
+✓ GSTIN Verified
+
+Legal Business Name
+ABC Logistics Pvt. Ltd.
+
+Trade Name
+ABC Logistics
+
+Registration Status
+Active
+
+Taxpayer Type
+Regular
+
+Registered State
 Maharashtra
 
-Then when the buyer clicks:
+Registration Date
+01/07/2017
 
-+ Create Requirement
+Do not display fake data.
 
-the form should open approximately as:
+The returned API values must be used.
 
-Business:
-ABC Foods
-        ↓
-already known / not manually entered
+The verified legal name may be offered as an autofill suggestion for Business / Operator Name.
 
-Commodity:
-[ Onion ] [ Potato ] suggested
-        ↓
-buyer explicitly chooses one
+DO NOT silently overwrite user-entered profile data.
 
-Quantity:
-[ ______ ] [ Tonnes ]
+Provide a clear way to use the verified business name.
 
-Variety:
-[ Any variety ]
+If verification fails:
+- show clear error
+- retain entered GSTIN
+- allow retry
+- do not mark the partner verified
 
-Quality Grade:
-[ Any ]
+Possible backend statuses:
 
-Size / Calibre:
-[ Optional ]
+FORMAT_INVALID
+CHECKSUM_INVALID
+LIVE_VERIFIED
+NOT_VERIFIED
+API_NOT_CONFIGURED
+API_AUTH_ERROR
+PROVIDER_UNAVAILABLE
+RATE_LIMITED
+CREDITS_EXHAUSTED
+TIMEOUT
+INVALID_PROVIDER_RESPONSE
 
-Delivery Location:
-[ Nashik, Maharashtra ✓ ]
-        ↓
-prefilled from Buyer Profile
+Do not collapse every failure into "Invalid GSTIN".
 
-Delivery From:
-[ ______ ]
+==================================================
+9. GST VERIFICATION STORAGE
+==================================================
 
-Delivery By:
-[ ______ ]
+Inspect the existing logistics schema first.
 
-Packaging:
-[ No specific requirement ]
+If suitable existing fields do not exist, add only the necessary fields.
 
-Target Price:
-[ Optional ]
+Prefer explicit columns over a giant JSON object.
 
-Additional Requirements:
-[________________________]
+Store at minimum:
 
-This makes the process fast and avoids repetitive data entry.
+- gstin
+- gstin_verification_status
+- gstin_verified_at
+- gstin_legal_name
+- gstin_trade_name
+- gstin_registration_status
+- gstin_taxpayer_type
+- gstin_registered_state
+- gstin_registration_date
+- gstin_verification_provider
 
-============================================================
-30. EMPTY / LOADING / ERROR STATES
-============================================================
+Do not store the API key in the database.
 
-Implement proper states.
+Do not store unnecessary raw API responses unless the existing architecture requires it.
 
-Loading:
+==================================================
+10. STEP 5 — VEHICLES
+==================================================
 
-Show professional skeleton/loading state.
+Vehicles MUST remain separate from the logistics partner profile.
 
-Empty:
+One logistics partner can own/manage multiple vehicles.
 
-"No requirements yet."
+Inspect the existing "My Vehicles" route/page before changing anything.
 
-Error:
+If a proper vehicle structure already exists:
+- reuse it
+- improve it only where required for this profile
 
-"Unable to load your requirements. Please try again."
+If it does not exist sufficiently, implement the minimum required structure.
 
-Save error:
+Each vehicle:
 
-"Unable to save this requirement. Please try again."
+- Registration Number *
+- Vehicle Type *
+- Capacity *
+- RC document
+- Insurance document
+- Fitness document
+- PUC document
+- Goods Carriage Permit document
 
-Publish error:
+Each document must have its own status.
 
-"Unable to publish this requirement. Please try again."
+Possible document statuses:
 
-Do not expose raw backend/database errors to normal users.
+NOT_SUBMITTED
+SUBMITTED
+UNDER_REVIEW
+VERIFIED
+REJECTED
+EXPIRED
 
-============================================================
-31. DRAFT BEHAVIOR
-============================================================
+IMPORTANT:
+Document upload is NOT the same as document verification.
 
-The buyer should be able to save incomplete requirements as:
+Do not claim a vehicle is verified merely because files were uploaded.
 
-DRAFT
+Do not implement automatic government vehicle verification unless an existing authorized API is already present in AARTH.
 
-A draft does NOT need all required fields.
+==================================================
+11. DATABASE DESIGN
+==================================================
+
+Before changing the database:
+- inspect existing migrations
+- inspect logistics_partners
+- inspect profile tables
+- inspect My Vehicles tables
+- inspect RLS policies
+- inspect naming conventions
+- inspect existing IDs and relationships
+
+Do not blindly create duplicate tables.
+
+Conceptually the architecture should be:
+
+logistics_partners
+    │
+    ├── logistics profile
+    │
+    ├── service areas / capabilities
+    │
+    └── logistics_vehicles
+            │
+            └── vehicle documents
+
+Use the existing AARTH conventions wherever possible.
+
+Ensure:
+- ownership checks
+- RLS where applicable
+- authenticated access
+- no cross-user profile editing
+
+==================================================
+12. UI / DESIGN REQUIREMENTS
+==================================================
+
+THIS IS VERY IMPORTANT.
+
+Use the existing Farmer and Buyer Dashboard/Profile UI as the visual and structural reference.
+
+The screenshot attached to this task is the CURRENT Logistics Profile.
+
+The current screenshot has a vertical left sidebar and a relatively narrow central form.
+
+DO NOT keep the old narrow/empty layout.
+
+The new Logistics Profile should follow the SAME overall dashboard standard already established for Farmer and Buyer:
+
+- horizontal top navbar
+- full-width dashboard content
+- professional rectangular dashboard layout
+- no large blank left/right spaces
+- no narrow form floating in the middle
+- profile content should use the full available dashboard width
+- consistent spacing
+- same general typography scale
+- same professional form density
+- same card treatment
+- same responsiveness
+- same visual polish
+- same header/hero treatment quality
 
 However:
 
-PUBLISH
+DO NOT simply copy the Farmer or Buyer colors.
 
-must require all mandatory fields.
+Give Logistics its own professional logistics/transport visual identity while still feeling like the same AARTH product.
 
-Do not confuse Save Draft validation with Publish validation.
+Use:
+- sophisticated logistics/transport visual language
+- subtle neutral/slate/blue/orange accents where appropriate
+- professional agricultural supply-chain feel
+- restrained gradients
+- clean cards
+- subtle shadows
+- clear section hierarchy
 
-============================================================
-32. EDIT BEHAVIOR
-============================================================
+Do NOT use:
+- neon colors
+- excessive gradients
+- oversized text
+- childish truck graphics
+- excessive animations
+- AI-looking decorative graphics
+- huge empty areas
 
-Buyer can edit their own:
+==================================================
+13. PAGE WIDTH / LAYOUT
+==================================================
 
-DRAFT
-ACTIVE
-PAUSED
+The profile must cover the full usable dashboard area like the existing Farmer and Buyer dashboards.
 
-requirements according to the project's status rules.
+The hero/profile area must span the available content width.
 
-When editing an existing requirement:
+Do not leave large blank white spaces on the left or right.
 
-- load existing data
-- preserve requirement ID
-- do not create a duplicate requirement
-- save changes to the same record
+Use the same content-width/container strategy already used by Farmer and Buyer.
 
-Do not accidentally create a new requirement when the user clicks Save on Edit.
+The main form and supporting profile-readiness/verification cards should be balanced across the page.
 
-============================================================
-33. REVIEW / PUBLISH
-============================================================
+Example structure:
 
-Use the same general UX quality as the Farmer Profile's Review/Publish experience.
+--------------------------------------------------
+AARTH TOP NAVBAR
+--------------------------------------------------
 
-Before publish:
+Welcome / Logistics Profile Hero
+--------------------------------------------------
 
-validate required fields.
+Profile progress / readiness
 
-Then show:
+--------------------------------------------------
+| Main Profile Form                    | Summary |
+|                                     | /Status |
+| Step 1                              |         |
+| Step 2                              |         |
+| Step 3                              |         |
+| Step 4 GST Verification             |         |
+--------------------------------------------------
 
-Requirement ready to publish.
+My Vehicles / vehicle summary
 
-[ Publish Requirement ]
+--------------------------------------------------
 
-After successful publish:
+Do not literally reproduce this ASCII layout.
+Use the existing Farmer/Buyer layout system.
 
-show:
+==================================================
+14. NAVBAR
+==================================================
 
-✓ Requirement published successfully.
+Use the existing horizontal navbar pattern from Farmer and Buyer.
 
-Then return to:
+Do not retain the current vertical sidebar as the primary navigation if Farmer/Buyer already use the horizontal navbar pattern.
 
-My Requirements
+Existing Logistics navigation should remain logically equivalent.
 
-and show:
+Possible navigation:
 
-● ACTIVE
+Home
+Profile
+Transport Requests
+My Vehicles
+Active Trips
+History
+Support
 
-Do not fake successful publication if the backend request failed.
+Preserve existing routes and functionality.
 
-============================================================
-34. RESPONSIVE DESIGN
-============================================================
+Do NOT break existing navigation paths.
 
-Desktop:
+==================================================
+15. PROFILE READINESS
+==================================================
 
-- horizontal navbar
-- full-width hero
-- wide content
-- clean requirement cards
-- spacious form
-- no unnecessary empty areas
+Replace the current simplistic "0 of 7 required fields" logic with readiness based on the actual required profile fields.
 
-Tablet:
+Required business profile completion should consider:
 
-- adapt cards
-- stack form sections where necessary
+Business / Operator Name
+Partner Type
+Contact Person
+Primary Mobile
+Email
+Business Address
+State
+District
+City / Town
+PIN
+Primary Operating District
+Service Coverage
+Vehicle Types
+Typical Capacity
 
-Mobile:
+GSTIN verification should NOT be treated as a normal required field unless the existing business rules explicitly require it.
 
-- responsive top navigation
-- no horizontal overflow
-- fields stack vertically
-- buttons remain usable
-- location picker remains usable
-- requirement cards become full width
+Instead show it as a separate verification/readiness item:
 
-============================================================
-35. FINAL VISUAL TARGET
-============================================================
+Business Profile
+✓ Complete
 
-The Buyer Requirement page should conceptually feel like:
+GSTIN Verification
+✓ Verified
+or
+○ Not verified
 
-------------------------------------------------------------
-AARTH NAVBAR
-------------------------------------------------------------
-AARTH | Home | Profile | Search Produce | My Requirements |
-Orders | Supplier Network | Market Insights | Support
-------------------------------------------------------------
+Vehicle Verification
+○ Not submitted
+or
+◐ Partially verified
+or
+✓ Complete
 
-FULL-WIDTH HERO
+Do not use red for ordinary incomplete profile states.
 
-┌──────────────────────────────────────────────────────────┐
-│                                                          │
-│  My Requirements                       + Create Requirement│
-│                                                          │
-│  Manage your active sourcing requirements and discover   │
-│  agricultural supply through AARTH.                     │
-│                                                          │
-└──────────────────────────────────────────────────────────┘
+Use neutral/amber for incomplete/action-needed states, consistent with Farmer/Buyer design.
 
-NO LARGE EMPTY LEFT SPACE.
+==================================================
+16. PROFILE SAVE / DRAFT / REVIEW
+==================================================
 
-NO LARGE EMPTY RIGHT SPACE.
+Keep the existing AARTH profile workflow style:
 
-The hero should occupy the complete available rectangular
-dashboard content area.
+- Save as Draft
+- Save & Continue
+- Review
+- Publish / Complete Profile
 
-------------------------------------------------------------
+Do not create duplicate save mechanisms.
 
-ACTIVE REQUIREMENTS
+On save:
+- preserve the same profile ID
+- update the existing profile
+- do not create duplicate records
 
-┌──────────────────────────────────────────────────────────┐
-│ BR-MH-000124                              ● ACTIVE       │
-│                                                          │
-│ ONION                                                    │
-│ 20 Tonnes | Grade A | Any variety                       │
-│                                                          │
-│ 📍 Nashik, Maharashtra                                  │
-│ 📅 25 Sep – 30 Sep 2026                                 │
-│                                                          │
-│                         [ View ] [ Edit ]                │
-└──────────────────────────────────────────────────────────┘
+On reload:
+- existing saved data must reappear.
 
-------------------------------------------------------------
+On logout/login:
+- profile data must persist.
 
-DRAFTS / PAST REQUIREMENTS
+==================================================
+17. AUTOFILL
+==================================================
 
-etc.
+Reuse existing authenticated user data where available.
 
-============================================================
-36. TESTING CHECKLIST
-============================================================
+Examples:
+
+Phone:
+- use existing authenticated profile phone if available
+
+Email:
+- use existing account/profile email if available
+
+Location:
+- use existing AARTH location architecture
+
+GSTIN:
+- after successful verification, allow verified legal/trade name to populate business identity
+
+Do not ask the user to repeatedly enter information AARTH already has.
+
+==================================================
+18. DO NOT ADD THESE
+==================================================
+
+Do NOT add:
+
+- Bank account
+- UPI
+- Payment preference
+- Driver Aadhaar
+- Full Aadhaar
+- Financial information
+- Fuel consumption
+- Profitability
+- GPS tracking
+- Live vehicle tracking
+- Blockchain
+- IoT
+- RFID
+- E-way bill generation
+- E-invoice generation
+- GST return compliance scoring
+- AI trust score
+- AI risk score
+- Freight rate prediction
+- S5 matching
+- Farmer matching
+- Route optimization
+- Transaction system
+- Payment system
+
+Those belong to later stages or are unnecessary for this profile.
+
+==================================================
+19. VERY IMPORTANT — DO NOT DISTURB EXISTING LOGIC
+==================================================
+
+Do not modify:
+
+AUTHENTICATION
+REGISTRATION
+LOGIN
+ROLE SELECTION
+SUPABASE AUTH
+FARMER PROFILE
+FARMER LOT CREATION
+LOT PHOTO EVIDENCE
+GPS CAPTURE
+S3/STORAGE
+FARMER DIGITAL CARD
+QR
+BUYER PROFILE
+BUYER REQUIREMENTS
+MARKET INTELLIGENCE
+EXISTING MATCHING PREPARATION
+OTHER ROLE DASHBOARDS
+EXISTING API CONTRACTS UNRELATED TO LOGISTICS
+EXISTING ROUTES UNRELATED TO LOGISTICS
+
+Only make changes required for:
+- Logistics Profile
+- Logistics GST verification
+- Logistics Service/Capability data
+- Logistics Vehicles
+- Supporting database/API changes
+
+If a shared component must be changed, first verify that the change will not alter existing Farmer/Buyer behaviour.
+
+Prefer logistics-specific adaptation over changing shared components globally.
+
+==================================================
+20. ERROR HANDLING
+==================================================
+
+Handle properly:
+
+- Invalid GSTIN format
+- Invalid checksum
+- GSTIN not found
+- Inactive/cancelled GSTIN
+- API key missing
+- API authentication error
+- API timeout
+- Provider unavailable
+- Rate limit
+- Credits exhausted
+- Network failure
+- Backend validation failure
+- Session expiration
+- Unauthorized profile access
+
+Never expose:
+- API key
+- stack traces
+- internal backend errors
+- provider credentials
+
+to the frontend.
+
+==================================================
+21. TESTING
+==================================================
 
 After implementation:
 
 1. Run frontend build.
-2. Fix all compile/import errors.
-3. Verify Buyer Dashboard loads.
-4. Verify horizontal navbar works.
-5. Verify My Requirements navigation works.
-6. Verify Create Requirement works.
-7. Verify Buyer Profile data is fetched correctly.
-8. Verify profile-based autofill works.
-9. Verify operating/procurement location autofills correctly.
-10. Verify the buyer can change the delivery location.
-11. Verify the location uses the same underlying Farmer Lot location implementation.
-12. Verify commodity suggestions come from Buyer Profile.
-13. Verify commodity itself uses the existing commodity master.
-14. Verify quantity/unit conversion.
-15. Verify variety.
-16. Verify grade.
-17. Verify size/calibre.
-18. Verify NO moisture field exists anywhere.
-19. Verify delivery dates.
-20. Verify packaging.
-21. Verify optional target price.
-22. Verify additional requirements.
-23. Verify Save as Draft.
-24. Verify Review.
-25. Verify Publish.
-26. Verify requirement ID generation.
-27. Verify requirement cards.
-28. Verify Edit.
-29. Verify Pause.
-30. Verify Cancel.
-31. Verify ownership/security.
-32. Verify RLS.
-33. Verify backend validation.
-34. Verify Farmer Dashboard still works.
-35. Verify Farmer Profile still works.
-36. Verify Farmer Lot Creation still works.
-37. Verify Farmer location logic still works.
-38. Verify S3/photo evidence still works.
-39. Verify QR/Digital Farmer Card still works.
-40. Verify existing authentication still works.
-41. Verify no unrelated routes were broken.
+2. Run backend.
+3. Test Logistics Profile load.
+4. Test creating/updating profile.
+5. Test refresh persistence.
+6. Test authenticated ownership.
+7. Test GSTIN format validation.
+8. Test checksum validation.
+9. Test GSTIN API integration.
+10. Test provider failure.
+11. Test API key missing.
+12. Test rate limit handling.
+13. Test vehicle creation.
+14. Test vehicle document status.
+15. Test navigation.
+16. Confirm Farmer functionality still works.
+17. Confirm Buyer functionality still works.
+18. Confirm login/registration still works.
 
-============================================================
-37. ABSOLUTE FINAL RULE
-============================================================
+Use the provider's documented test GSTIN if available:
 
-IMPLEMENT ONLY S4 BUYER REQUIREMENT.
+00AAAAA0000A1ZT
 
-DO NOT "IMPROVE" UNRELATED CODE.
+Do not consume unnecessary API credits during testing.
 
-DO NOT TOUCH FARMER LOGIC.
+==================================================
+22. FINAL IMPLEMENTATION STANDARD
+==================================================
 
-DO NOT TOUCH FARMER LOT LOGIC.
+The final Logistics Profile should feel like a real AARTH product module, not a generic CRUD form.
 
-DO NOT TOUCH FARMER PHOTO EVIDENCE.
+It should communicate:
 
-DO NOT TOUCH FARMER QR.
+WHO is the logistics partner?
+WHERE do they operate?
+WHAT can they transport?
+HOW much can they transport?
+WHAT agricultural cargo can they handle?
+IS the business GSTIN verified?
+WHAT vehicles are available?
+WHAT vehicle documents have been submitted/verified?
 
-DO NOT TOUCH AUTHENTICATION.
+The result must be:
+- professional
+- practical for Maharashtra logistics partners
+- mobile responsive
+- desktop responsive
+- consistent with Farmer and Buyer dashboards
+- full-width
+- clean
+- easy to understand
+- ready for future logistics matching
 
-DO NOT TOUCH MARKET INTELLIGENCE.
+MOST IMPORTANT:
 
-DO NOT CHANGE BUYER PROFILE LOGIC EXCEPT WHERE A SMALL, NECESSARY INTEGRATION IS REQUIRED FOR AUTOFILL.
+INSPECT FIRST.
+REUSE EXISTING AARTH LOGIC.
+DO NOT BREAK ANYTHING OUTSIDE THIS TASK.
+DO NOT REBUILD AUTH OR REGISTRATION.
+DO NOT CREATE DUPLICATE LOCATION OR COMMODITY SYSTEMS.
+DO NOT EXPOSE THE GST API KEY.
+DO NOT IMPLEMENT S5 MATCHING.
+DO NOT IMPLEMENT UNRELATED FEATURES.
 
-DO NOT CREATE DUPLICATE LOCATION LOGIC.
-
-DO NOT CREATE DUPLICATE COMMODITY LOGIC.
-
-DO NOT ADD MOISTURE.
-
-DO NOT ADD PAYMENT PREFERENCES.
-
-DO NOT ADD BANK DETAILS.
-
-DO NOT ADD TRANSACTIONS.
-
-DO NOT ADD NEGOTIATION.
-
-DO NOT ADD MATCHING.
-
-DO NOT ADD AGGREGATION.
-
-DO NOT ADD LANDED COST.
-
-DO NOT ADD AI RECOMMENDATIONS.
-
-DO NOT CREATE A VERTICAL SIDEBAR.
-
-KEEP THE BUYER NAVBAR HORIZONTAL AT THE TOP.
-
-MAKE THE HERO SECTION USE THE FULL AVAILABLE RECTANGULAR WIDTH OF THE DASHBOARD CONTENT AREA WITH NO AWKWARD BLANK LEFT/RIGHT SPACE.
-
-USE BUYER-SPECIFIC LIGHT, SOPHISTICATED BLUE VISUAL DESIGN.
-
-USE THE FARMER IMPLEMENTATION AS AN ARCHITECTURAL/UX REFERENCE ONLY.
-
-REUSE EXISTING WORKING CODE WHERE SAFE.
-
-INSPECT FIRST → IMPLEMENT S4 → TEST → PRESERVE EVERYTHING ELSE.
+After completing the implementation, provide a concise summary of:
+1. files changed
+2. database changes
+3. API endpoints added/changed
+4. GST verification flow
+5. profile fields added
+6. vehicle structure added/changed
+7. tests/build results
+8. any issue that still requires manual action
