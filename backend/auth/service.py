@@ -149,6 +149,7 @@ ROLE_PROFILE_FIELDS = {
         "sourcing_commodities",
         "preferred_sourcing_regions",
         "verification_status",
+        "gstin_legal_name", "gstin_trade_name", "gstin_registration_status", "gstin_taxpayer_type", "gstin_registered_state", "gstin_registration_date", "gstin_verified_at", "gstin_verification_provider",
         "profile_publish_status",
     },
 
@@ -177,6 +178,7 @@ ROLE_PROFILE_FIELDS = {
         "typical_capacity_unit", "commodities_handled", "cargo_types", "special_handling",
         "loading_unloading_support", "gstin", "gstin_status", "gstin_legal_name", "gstin_trade_name",
         "gstin_checked_at", "profile_publish_status",
+        "gstin_registration_status", "gstin_taxpayer_type", "gstin_registered_state", "gstin_registration_date", "gstin_verified_at", "gstin_verification_provider",
     },
 
     "STORAGE_PARTNER": {
