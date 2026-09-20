@@ -72,6 +72,23 @@ def create_farmer_lot(payload: LotCreateRequest, authorization: str = Header(def
 	except Exception as exc:
 		raise HTTPException(500, "Could not create the farmer lot.") from exc
 
+@router.delete("/{lot_id}")
+def delete_farmer_lot(lot_id: str, authorization: str = Header(default="")):
+	"""Permanently remove only an owner-owned draft lot; published lots retain audit history."""
+	try:
+		user_id = _user_id(authorization)
+		_get_farmer(user_id)
+		admin = _client(admin=True)
+		lot = admin.table("farmer_lots").select("id,status").eq("lot_id", lot_id).eq("user_id", user_id).maybe_single().execute().data
+		if not lot: raise HTTPException(404, "Lot not found.")
+		if lot["status"] != "DRAFT": raise HTTPException(409, "Only draft lots can be deleted. Cancel a published lot to preserve its record.")
+		admin.table("lot_evidence").delete().eq("lot_id", lot["id"]).execute()
+		admin.table("farmer_lots").delete().eq("id", lot["id"]).eq("user_id", user_id).execute()
+		return {"deleted": True, "lot_id": lot_id}
+	except HTTPException: raise
+	except ValueError as exc: raise HTTPException(403, str(exc)) from exc
+	except Exception as exc: raise HTTPException(500, "Could not delete the lot.") from exc
+
 
 @router.post("/{lot_id}/evidence")
 async def submit_lot_evidence(

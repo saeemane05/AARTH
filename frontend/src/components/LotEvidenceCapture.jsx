@@ -20,11 +20,15 @@ export default function LotEvidenceCapture({ evidence, setEvidence, commodityKey
   const start = async (nextMode = "photo") => {
     setBusy(true); setError("");
     if (!navigator.mediaDevices?.getUserMedia) { setError("Camera access is not supported by this browser. Camera permission is required for verified lot evidence."); setBusy(false); return; }
-    try { const currentLocation = await readLocation(); const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" } }, audio: nextMode === "video" }); streamRef.current = stream; setLocation(currentLocation); setMode(nextMode); setOpen(true); requestAnimationFrame(attachStream); }
-    catch (reason) { setError(reason.message || "Camera permission is required for verified lot evidence."); } finally { setBusy(false); }
+    try {
+      // GPS can be temporarily unavailable indoors; it must not prevent camera opening.
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" } }, audio: nextMode === "video" });
+      streamRef.current = stream; setMode(nextMode); setOpen(true); requestAnimationFrame(attachStream);
+      try { setLocation(await readLocation()); } catch { setLocation({ latitude: null, longitude: null, gps_accuracy: null }); setError("Camera opened, but location could not be captured. Enable location and retry before publishing."); }
+    } catch (reason) { setError(reason.name === "NotFoundError" ? "No camera was found. Connect or enable a camera and try again." : reason.message || "Camera permission is required for lot evidence."); } finally { setBusy(false); }
   };
   const capture = () => {
-    const video = videoRef.current, canvas = canvasRef.current; if (!video || !canvas || !location) return;
+    const video = videoRef.current, canvas = canvasRef.current; if (!video || !canvas) return;
     canvas.width = video.videoWidth || 1280; canvas.height = video.videoHeight || 720; canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
     canvas.toBlob((blob) => { if (!blob) { setError("The camera could not process this photo. Please try again."); return; } const item = { blob, preview: URL.createObjectURL(blob), captured_at_client: new Date().toISOString(), latitude: location.latitude, longitude: location.longitude, gps_accuracy: location.gps_accuracy, capture_source: "aarth_camera", media_type: "photo" }; setEvidence((current) => retakeIndex === null ? [...current, item] : current.map((entry, index) => index === retakeIndex ? item : entry)); setRetakeIndex(null); setError(""); }, "image/jpeg", 0.88);
   };
