@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authApi, buyerRequirementApi, locationApi } from "../api/auth";
 import { ALL_AARTH_CROPS } from "../data/farmerCropMaster";
-import { varietySuggestions } from "../data/commodityVarieties";
+import { hasVarietyChoices, varietiesForCrop } from "../data/cropVarieties";
 import logo from "../assets/aarth-logo.png";
 import "./BuyerRequirementPage.css";
 
@@ -70,7 +70,11 @@ export default function BuyerRequirementPage() {
       setProfile(me);
       setItems(result.requirements || []);
     } catch (reason) {
-      setError(reason.message?.includes("503") ? "Buyer requirement service is temporarily unavailable. Please try again." : "Unable to load your requirements. Please try again.");
+      setError(
+        reason.message?.includes("503")
+          ? "Buyer requirement service is temporarily unavailable. Please try again."
+          : "Unable to load your requirements. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -210,7 +214,12 @@ export default function BuyerRequirementPage() {
       setEditing(null);
       await load();
     } catch (reason) {
-      setError(reason.message || (publish ? "Requirement could not be published. Please review the highlighted fields." : "Unable to save this requirement. Please try again."));
+      setError(
+        reason.message ||
+          (publish
+            ? "Requirement could not be published. Please review the highlighted fields."
+            : "Unable to save this requirement. Please try again."),
+      );
     } finally {
       setSaving(false);
     }
@@ -222,6 +231,11 @@ export default function BuyerRequirementPage() {
     } catch {
       setError("Unable to update this requirement. Please try again.");
     }
+  };
+  const remove = async (id) => {
+    if (!window.confirm("Delete this draft requirement? This cannot be undone.")) return;
+    try { await buyerRequirementApi.delete(id); setItems((current) => current.filter((item) => item.requirement_id !== id)); setNotice("Draft requirement deleted."); }
+    catch (reason) { setError(reason.message || "Unable to delete this requirement."); }
   };
   const nav = (item) =>
     item === "Home"
@@ -266,7 +280,14 @@ export default function BuyerRequirementPage() {
       </header>
       <main className="requirements-main">
         {step < 0 ? (
-          <List items={items} loading={loading} start={start} status={status} profile={profile} />
+          <List
+            items={items}
+            loading={loading}
+            start={start}
+            status={status}
+            remove={remove}
+            profile={profile}
+          />
         ) : (
           <Form
             form={form}
@@ -294,7 +315,7 @@ export default function BuyerRequirementPage() {
   );
 }
 
-function List({ items, loading, start, status, profile }) {
+function List({ items, loading, start, status, remove, profile }) {
   const groups = ["ACTIVE", "DRAFT", "PAUSED", "FULFILLED", "CANCELLED"]
     .map((key) => [key, items.filter((item) => item.status === key)])
     .filter(([, values]) => values.length);
@@ -385,6 +406,7 @@ function List({ items, loading, start, status, profile }) {
                         Publish
                       </button>
                     )}
+                    {item.status === "DRAFT" && <button className="req-delete" onClick={() => remove(item.requirement_id)}>Delete draft</button>}
                     {item.status === "ACTIVE" && (
                       <button
                         onClick={() => status(item.requirement_id, "PAUSED")}
@@ -436,7 +458,8 @@ function Form(props) {
     saving,
     editing,
   } = props;
-  const varieties = varietySuggestions(form.commodity_key, form.variety);
+  const [otherVariety, setOtherVariety] = useState(false);
+  const varieties = varietiesForCrop(form.commodity_key);
   return (
     <>
       <section className="requirements-hero compact">
@@ -480,6 +503,8 @@ function Form(props) {
                         onClick={() => {
                           update("commodity_key", crop.key);
                           update("commodity_name", crop.name);
+                          update("variety", "");
+                          setOtherVariety(false);
                         }}
                       >
                         {crop.name}
@@ -506,17 +531,15 @@ function Form(props) {
                     onClick={() => {
                       update("commodity_key", crop.key);
                       update("commodity_name", crop.name);
+                      update("variety", "");
+                      setOtherVariety(false);
                     }}
                   >
                     {crop.name}
                   </button>
                 ))}
               </div>
-              <label>
-                Variety
-                <input value={form.variety} onChange={(e) => update("variety", e.target.value)} placeholder="Type variety (optional)" disabled={!form.commodity_key} />
-              </label>
-              {form.variety && <div className="variety-suggestions">{varieties.length ? varieties.map((value) => <button type="button" key={value} onClick={() => update("variety", value)}>{value}</button>) : <small>No matching variety found. You can enter a custom variety.</small>}</div>}
+              {hasVarietyChoices(form.commodity_key) && !otherVariety ? <label>Variety<select value={form.variety} onChange={(e) => e.target.value === "__other__" ? (setOtherVariety(true), update("variety", "")) : update("variety", e.target.value)}><option value="">Select variety (optional)</option>{varieties.map((value) => <option key={value} value={value}>{value}</option>)}<option value="__other__">Other — type variety</option></select></label> : <label>Variety<input value={form.variety} onChange={(e) => update("variety", e.target.value)} placeholder="Type variety (optional)" disabled={!form.commodity_key} />{hasVarietyChoices(form.commodity_key) && <button type="button" className="req-text-button" onClick={() => { setOtherVariety(false); update("variety", ""); }}>Choose from list</button>}</label>}
             </>
           )}
           {step === 1 && (

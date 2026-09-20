@@ -2,7 +2,7 @@ from fastapi import APIRouter, Header, HTTPException
 
 from backend.lot_aggregation.router import _user_id
 from .schema import RequirementCreateRequest, RequirementPayload, StatusRequest
-from .service import change_status, create_requirement, get_requirement, list_requirements, update_requirement
+from .service import change_status, create_requirement, delete_requirement, get_requirement, list_requirements, update_requirement
 
 router = APIRouter(prefix="/api/buyer-requirements", tags=["Buyer Requirements"])
 
@@ -53,3 +53,12 @@ def status(requirement_id: str, payload: StatusRequest, authorization: str = Hea
     except LookupError as exc: raise HTTPException(404, str(exc)) from exc
     except ValueError as exc: raise HTTPException(422, str(exc)) from exc
     except Exception as exc: raise HTTPException(500, "Could not update the requirement.") from exc
+
+@router.delete("/{requirement_id}")
+def delete(requirement_id: str, authorization: str = Header(default="")):
+    try:
+        delete_requirement(_user_id(authorization), requirement_id)
+        return {"deleted": True, "requirement_id": requirement_id}
+    except LookupError as exc: raise HTTPException(404, str(exc)) from exc
+    except ValueError as exc: raise HTTPException(409, str(exc)) from exc
+    except Exception as exc: raise HTTPException(500, "Could not delete the requirement.") from exc

@@ -98,3 +98,15 @@ def change_status(user_id: str, requirement_id: str, next_status: str) -> dict[s
     if next_status == "ACTIVE": _publish_ready(existing)
     response = _client(admin=True).table("buyer_requirements").update({"status": next_status}).eq("user_id", user_id).eq("requirement_id", requirement_id).execute()
     return _row(response.data[0])
+
+
+def delete_requirement(user_id: str, requirement_id: str) -> None:
+    """Permanently remove only the buyer's own unpublished requirement."""
+    existing = get_requirement(user_id, requirement_id)
+    if not existing:
+        raise LookupError("Requirement not found.")
+    if existing["status"] != "DRAFT":
+        raise ValueError("Only draft requirements can be deleted. Cancel a published requirement to preserve its record.")
+    response = _client(admin=True).table("buyer_requirements").delete().eq("user_id", user_id).eq("requirement_id", requirement_id).execute()
+    if not response.data:
+        raise ValueError("Could not delete the requirement.")
