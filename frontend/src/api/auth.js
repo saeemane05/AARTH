@@ -238,6 +238,9 @@ export const lotApi = {
       body: JSON.stringify(payload),
     });
   },
+  async delete(lotId) {
+    return request(`/api/lots/${encodeURIComponent(lotId)}`, { method: "DELETE" });
+  },
 
   async submitEvidence(lotId, evidence) {
     const formData = new FormData();
@@ -273,4 +276,16 @@ export const buyerRequirementApi = {
   update: (id, payload) => request(`/api/buyer-requirements/${encodeURIComponent(id)}`, { method: "PUT", body: JSON.stringify(payload) }),
   publish: (id) => request(`/api/buyer-requirements/${encodeURIComponent(id)}/publish`, { method: "POST" }),
   transition: (id, status) => request(`/api/buyer-requirements/${encodeURIComponent(id)}/status`, { method: "POST", body: JSON.stringify({ status }) }),
+  delete: (id) => request(`/api/buyer-requirements/${encodeURIComponent(id)}`, { method: "DELETE" }),
+};
+
+export const logisticsApi = {
+  listVehicles: () => request("/api/logistics/vehicles"),
+  createVehicle: (payload) => request("/api/logistics/vehicles", { method: "POST", body: JSON.stringify(payload) }),
+  deleteVehicle: (id) => request(`/api/logistics/vehicles/${encodeURIComponent(id)}`, { method: "DELETE" }),
+  uploadVehicleDocument: (id, type, file) => { const body = new FormData(); body.append("file", file); return request(`/api/logistics/vehicles/${encodeURIComponent(id)}/documents/${encodeURIComponent(type)}`, { method: "POST", body }); },
+};
+
+export const verificationApi = {
+  gstin: (gstin) => request("/api/verification/gstin", { method: "POST", body: JSON.stringify({ gstin }) }),
 };
