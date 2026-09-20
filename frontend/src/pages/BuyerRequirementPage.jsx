@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authApi, buyerRequirementApi, locationApi } from "../api/auth";
+import MarketPriceAdvisor from "../components/MarketPriceAdvisor";
 import { ALL_AARTH_CROPS } from "../data/farmerCropMaster";
 import { hasVarietyChoices, varietiesForCrop } from "../data/cropVarieties";
 import logo from "../assets/aarth-logo.png";
@@ -25,7 +26,10 @@ const empty = {
   delivery_end_date: "",
   packaging_requirement: "No specific requirement",
   target_price: "",
+  target_price_min: "",
+  target_price_max: "",
   target_price_unit: "INR_PER_QUINTAL",
+  price_mode: "PREFERRED_RANGE",
   open_to_market_pricing: false,
   additional_requirements: "",
 };
@@ -139,6 +143,9 @@ export default function BuyerRequirementPage() {
             ...item,
             quantity: item.quantity ?? "",
             target_price: item.target_price ?? "",
+            target_price_min: item.target_price_min ?? item.target_price ?? "",
+            target_price_max: item.target_price_max ?? item.target_price ?? "",
+            price_mode: item.price_mode || (item.open_to_market_pricing ? "MARKET_LINKED" : "PREFERRED_RANGE"),
           }
         : {
             ...empty,
@@ -243,10 +250,10 @@ export default function BuyerRequirementPage() {
       : item === "Profile"
         ? navigate("/buyer")
         : item === "My Requirements"
-          ? null
-          : setNotice(
-              `${item} will be available in the next Buyer workspace release.`,
-            );
+        ? null
+        : item === "Discover Lots"
+          ? navigate("/buyer/discover-lots")
+          : setNotice(`${item} will be available in the next Buyer workspace release.`);
   return (
     <div className="requirements-shell">
       <header className="requirements-nav">
@@ -263,6 +270,7 @@ export default function BuyerRequirementPage() {
             "Profile",
             "Search Produce",
             "My Requirements",
+            "Discover Lots",
             "Orders",
             "Supplier Network",
             "Market Insights",
@@ -658,56 +666,57 @@ function Form(props) {
                   Packaging requirement
                   <select
                     value={form.packaging_requirement}
-                    onChange={(e) =>
-                      update("packaging_requirement", e.target.value)
-                    }
+                    onChange={(e) => update("packaging_requirement", e.target.value)}
                   >
-                    {[
-                      "No specific requirement",
-                      "Bulk / Loose",
-                      "Bags",
-                      "Crates",
-                      "Other",
-                    ].map((x) => (
-                      <option key={x}>{x}</option>
-                    ))}
+                    {["No specific requirement", "Bulk / Loose", "Bags", "Crates", "Other"].map((x) => <option key={x}>{x}</option>)}
                   </select>
                 </label>
                 <label>
-                  Target buying price
-                  <input
-                    disabled={form.open_to_market_pricing}
-                    type="number"
-                    min="0"
-                    value={form.target_price}
-                    onChange={(e) => update("target_price", e.target.value)}
-                    placeholder="Optional"
-                  />
+                  Price mode
+                  <select
+                    value={form.price_mode}
+                    onChange={(e) => {
+                      const mode = e.target.value;
+                      update("price_mode", mode);
+                      update("open_to_market_pricing", mode === "MARKET_LINKED");
+                    }}
+                  >
+                    <option value="PREFERRED_RANGE">Preferred range</option>
+                    <option value="MAXIMUM">Maximum buying price</option>
+                    <option value="MARKET_LINKED">Use market-linked pricing</option>
+                  </select>
                 </label>
                 <label>
                   Price unit
-                  <select
-                    value={form.target_price_unit}
-                    onChange={(e) =>
-                      update("target_price_unit", e.target.value)
-                    }
-                  >
+                  <select value={form.target_price_unit} onChange={(e) => update("target_price_unit", e.target.value)}>
                     <option value="INR_PER_KG">per Kg</option>
                     <option value="INR_PER_QUINTAL">per Quintal</option>
-                    <option value="INR_PER_TON">per Tonne</option>
+                    <option value="INR_PER_TON">per MT</option>
                   </select>
                 </label>
+                <label>
+                  Minimum buying price
+                  <input disabled={form.price_mode === "MARKET_LINKED"} type="number" min="0" value={form.target_price_min} onChange={(e) => update("target_price_min", e.target.value)} placeholder="Optional" />
+                </label>
+                <label>
+                  Maximum / preferred ceiling
+                  <input disabled={form.price_mode === "MARKET_LINKED"} type="number" min="0" value={form.target_price_max} onChange={(e) => update("target_price_max", e.target.value)} placeholder="Optional" />
+                </label>
               </div>
-              <label className="req-check">
-                <input
-                  type="checkbox"
-                  checked={form.open_to_market_pricing}
-                  onChange={(e) =>
-                    update("open_to_market_pricing", e.target.checked)
-                  }
-                />{" "}
-                Open to market-based pricing
-              </label>
+              <MarketPriceAdvisor
+                cropKey={form.commodity_key}
+                latitude={form.delivery_latitude}
+                longitude={form.delivery_longitude}
+                selectedUnit={form.target_price_unit}
+                onUseRange={({ min, max, modal }) => {
+                  update("target_price_min", String(Math.round(min * 100) / 100));
+                  update("target_price_max", String(Math.round(max * 100) / 100));
+                  update("target_price", String(Math.round(modal * 100) / 100));
+                  update("price_mode", "PREFERRED_RANGE");
+                  update("open_to_market_pricing", false);
+                }}
+              />
+              <p className="req-price-note">AARTH shows live MSAMB/APMC observations as a reference. You decide whether to use the suggested range, enter your own range, set a maximum, or use market-linked pricing.</p>
               <label>
                 Additional requirements
                 <textarea
@@ -769,11 +778,13 @@ function Review({ form }) {
     ["Packaging", form.packaging_requirement],
     [
       "Target buying price",
-      form.open_to_market_pricing
-        ? "Open to market-based pricing"
-        : form.target_price
-          ? `₹${form.target_price} / ${form.target_price_unit?.replace("INR_PER_", "")}`
-          : "Not specified",
+      form.price_mode === "MARKET_LINKED" || form.open_to_market_pricing
+        ? "Market-linked pricing"
+        : form.target_price_min || form.target_price_max
+          ? `₹${form.target_price_min || form.target_price_max} – ₹${form.target_price_max || form.target_price_min} / ${form.target_price_unit?.replace("INR_PER_", "")}`
+          : form.target_price
+            ? `₹${form.target_price} / ${form.target_price_unit?.replace("INR_PER_", "")}`
+            : "Not specified",
     ],
     ["Additional requirements", form.additional_requirements || "None"],
   ];

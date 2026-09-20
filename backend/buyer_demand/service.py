@@ -31,7 +31,7 @@ def _row(row: dict[str, Any]) -> dict[str, Any]:
         "quantity_unit", "quantity_kg", "quality_grade", "size_calibre", "quality_requirements",
         "delivery_location", "delivery_district", "delivery_taluka", "delivery_city", "delivery_latitude",
         "delivery_longitude", "delivery_start_date", "delivery_end_date", "packaging_requirement",
-        "target_price", "target_price_unit", "open_to_market_pricing", "additional_requirements", "status",
+        "target_price", "target_price_min", "target_price_max", "target_price_unit", "price_mode", "open_to_market_pricing", "additional_requirements", "status",
         "created_at", "updated_at",
     )}
 

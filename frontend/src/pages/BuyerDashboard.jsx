@@ -286,6 +286,7 @@ export default function BuyerDashboard() {
             "Profile",
             "Search Produce",
             "My Requirements",
+            "Discover Lots",
             "Orders",
             "Supplier Network",
             "Market Insights",
@@ -298,9 +299,11 @@ export default function BuyerDashboard() {
               onClick={() =>
                 item === "Home"
                   ? navigate("/buyer")
-                  : setNotice(
-                      `${item} will be available in the next Buyer workspace release.`,
-                    )
+                  : item === "My Requirements"
+                    ? navigate("/buyer/requirements")
+                    : item === "Discover Lots"
+                      ? navigate("/buyer/discover-lots")
+                      : setNotice(`${item} will be available in the next Buyer workspace release.`)
               }
             >
               {item}

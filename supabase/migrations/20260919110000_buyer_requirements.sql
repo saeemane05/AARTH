@@ -1,4 +1,4 @@
-create extension if not exists pgcrypto;
+
 
 create table if not exists public.buyer_requirements (
     id uuid primary key default gen_random_uuid(),
@@ -25,7 +25,10 @@ create table if not exists public.buyer_requirements (
     delivery_end_date date,
     packaging_requirement text default 'No specific requirement',
     target_price numeric(14,2) check (target_price >= 0),
+    target_price_min numeric(14,2),
+    target_price_max numeric(14,2),
     target_price_unit text check (target_price_unit in ('INR_PER_KG', 'INR_PER_QUINTAL', 'INR_PER_TON')),
+    price_mode text not null default 'PREFERRED_RANGE' check (price_mode in ('PREFERRED_RANGE', 'MAXIMUM', 'MARKET_LINKED')),
     open_to_market_pricing boolean not null default false,
     additional_requirements text,
     status text not null default 'DRAFT' check (status in ('DRAFT', 'ACTIVE', 'PAUSED', 'FULFILLED', 'CANCELLED')),

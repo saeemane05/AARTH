@@ -1,3 +1,4 @@
+
 import {
   useEffect,
   useMemo,
@@ -477,6 +478,10 @@ export default function RoleProfileDashboard({
         navigate("/farmer/lots");
         return;
       }
+      if (label === "Buyers") {
+        navigate("/farmer/buyers");
+        return;
+      }
       if (label === "Profile") {
         requestAnimationFrame(() => {
           document.querySelector(".redesigned-form-card")?.scrollIntoView({
@@ -492,6 +497,7 @@ export default function RoleProfileDashboard({
       chart: "▥",
       box: "◇",
       users: "♧",
+      buyers: "♧",
       book: "▤",
       cloud: "☁",
       headset: "◉",
@@ -523,7 +529,7 @@ export default function RoleProfileDashboard({
     };
 
     return <div className="onboarding role-farmer" style={{ "--accent": config.accent, "--deep": config.deep, "--soft": config.soft }}>
-      <header className="aarth-topbar"><div className="aarth-brand-block"><img src={logo} alt="AARTH" /><span><strong>AARTH</strong><small>FARMERS · MARKETS · OPPORTUNITIES</small></span></div><nav className="aarth-main-nav">{config.nav.map((item) => <button type="button" key={item.label} className={activeNav === item.label ? "active" : ""} onClick={() => selectFarmerNav(item.label)}><b>{farmerNavIcons[item.icon] || "•"}</b><span>{item.label}</span></button>)}</nav><div className="aarth-topbar-actions"><label className="aarth-search-box"><span>⌕</span><input placeholder="Search markets, crops, buyers..." /></label><button type="button" className="top-icon-button" aria-label="Notifications">♧<i className="notification-dot" /></button><div className="farmer-account-menu"><button type="button" className="farmer-account" aria-expanded={accountMenuOpen} onClick={() => setAccountMenuOpen((open) => !open)}><span className="farmer-avatar">{displayName.slice(0, 2).toUpperCase()}</span><span className="farmer-account-copy"><strong>{displayName}</strong><small>Farmer</small></span><b className="account-chevron">⌄</b></button>{accountMenuOpen && <div className="account-dropdown"><span>{displayName}</span><button type="button" onClick={logout}>↪ Log out</button></div>}</div></div></header>
+      <header className="aarth-topbar"><div className="aarth-brand-block"><img src={logo} alt="AARTH" /><span><strong>AARTH</strong><small>FARMERS · MARKETS · OPPORTUNITIES</small></span></div><nav className="aarth-main-nav">{(config.nav.some((item) => item.label === "Buyers") ? config.nav : [...config.nav, { label: "Buyers", icon: "buyers" }]).map((item) => <button type="button" key={item.label} className={activeNav === item.label ? "active" : ""} onClick={() => selectFarmerNav(item.label)}><b>{farmerNavIcons[item.icon] || "•"}</b><span>{item.label}</span></button>)}</nav><div className="aarth-topbar-actions"><label className="aarth-search-box"><span>⌕</span><input placeholder="Search markets, crops, buyers..." /></label><button type="button" className="top-icon-button" aria-label="Notifications">♧<i className="notification-dot" /></button><div className="farmer-account-menu"><button type="button" className="farmer-account" aria-expanded={accountMenuOpen} onClick={() => setAccountMenuOpen((open) => !open)}><span className="farmer-avatar">{displayName.slice(0, 2).toUpperCase()}</span><span className="farmer-account-copy"><strong>{displayName}</strong><small>Farmer</small></span><b className="account-chevron">⌄</b></button>{accountMenuOpen && <div className="account-dropdown"><span>{displayName}</span><button type="button" onClick={logout}>↪ Log out</button></div>}</div></div></header>
       <main className="redesigned-farmer-main"><section className="farmer-welcome-hero"><div className="welcome-copy"><span className="welcome-leaf-icon">☘</span><div><h1>Welcome, {displayName}!</h1><p>Let’s set up your profile to get started with AARTH.</p></div></div><div className="farmer-hero-image" style={{ backgroundImage: `url(${config.visualImage})` }}><div className="farmer-hero-overlay" /></div></section>
       <section className="role-dashboard-strip redesigned-id-strip">{[["▣", "AARTH ID", profile.aarth_id || "Not assigned", true], ["☘", "ROLE ID", profile.role_id || "Not assigned", true], ["●", "ACCOUNT TYPE", config.roleLabel], ["●", "ACCOUNT STATUS", profile.status || "ACTIVE"]].map(([icon, labelText, value, copy]) => <div className="id-card-item" key={labelText}><i className={`id-card-icon ${labelText === "ACCOUNT STATUS" ? "status-icon" : ""}`}>{icon}</i><span><small>{labelText}</small><strong>{value}</strong></span>{copy && <button type="button" aria-label={`Copy ${labelText}`} onClick={() => navigator.clipboard?.writeText(value)}>⧉</button>}</div>)}</section>
       {(completion.percentage === 100 || savedCompletion.percentage === 100) && <FarmerIdentityCard profile={profile} onScan={() => navigate("/farmer/scan")} />}

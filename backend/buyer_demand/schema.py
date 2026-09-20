@@ -28,7 +28,10 @@ class RequirementPayload(BaseModel):
     delivery_end_date: date | None = None
     packaging_requirement: str | None = Field(default="No specific requirement", max_length=80)
     target_price: float | None = Field(default=None, ge=0, le=100_000_000)
+    target_price_min: float | None = Field(default=None, ge=0, le=100_000_000)
+    target_price_max: float | None = Field(default=None, ge=0, le=100_000_000)
     target_price_unit: Literal["INR_PER_KG", "INR_PER_QUINTAL", "INR_PER_TON"] | None = None
+    price_mode: Literal["PREFERRED_RANGE", "MAXIMUM", "MARKET_LINKED"] = "PREFERRED_RANGE"
     open_to_market_pricing: bool = False
     additional_requirements: str | None = Field(default=None, max_length=3000)
 
@@ -38,6 +41,10 @@ class RequirementPayload(BaseModel):
             raise ValueError("Delivery from date cannot be after delivery by date.")
         if self.quantity is not None and self.quantity_unit is None:
             raise ValueError("A quantity unit is required with quantity.")
+        if self.target_price_min is not None and self.target_price_max is not None and self.target_price_min > self.target_price_max:
+            raise ValueError("Minimum buying price cannot be greater than maximum buying price.")
+        if self.price_mode == "MARKET_LINKED":
+            self.open_to_market_pricing = True
         return self
 
 

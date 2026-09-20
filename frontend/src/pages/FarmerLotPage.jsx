@@ -226,6 +226,32 @@ export default function FarmerLotPage({ mode = "create" }) {
       setLocationError(value.message);
     }
   };
+  const verifyEnteredLocation = async () => {
+    if (form.location_verified) return true;
+    const query = (locationSearch || form.pickup_location_text || form.pickup_village || "").trim();
+    if (!query || query.length < 2) {
+      setLocationError("Enter a village, market or area and verify the pickup location before continuing.");
+      return false;
+    }
+    try {
+      setLocationError("Verifying pickup location...");
+      const result = await locationApi.search(
+        query,
+        form.pickup_district,
+        form.pickup_taluka,
+      );
+      const suggestion = result.suggestions?.[0];
+      if (!suggestion) {
+        setLocationError("AARTH could not find this location. Select a search result or use live location.");
+        return false;
+      }
+      await selectLocation(suggestion);
+      return true;
+    } catch (reason) {
+      setLocationError(reason.message || "Unable to verify the pickup location.");
+      return false;
+    }
+  };
   const captureLiveLocation = () => {
     if (!navigator.geolocation) {
       setLocationError("Live location is not supported by this browser.");
@@ -280,23 +306,58 @@ export default function FarmerLotPage({ mode = "create" }) {
         ? Number(form.quantity) > 0 &&
           (!form.partial_sale_allowed || Number(form.minimum_sale_quantity) > 0)
         : index === 2
-          ? Boolean(form.grade)
+          ? Boolean(
+              form.grade &&
+                evidence.filter((item) => item.media_type !== "video").length >= 4 &&
+                evidence.filter((item) => item.media_type !== "video").length <= 5,
+            )
           : index === 3
             ? Boolean(
                 form.pickup_district &&
                   form.pickup_village &&
                   form.pickup_location_text &&
                   form.location_verified &&
+                  form.pickup_latitude !== null &&
+                  form.pickup_longitude !== null &&
                   form.available_from &&
                   form.pickup_until &&
-                  form.payment_needed_by,
+                  form.payment_needed_by &&
+                  form.available_from <= form.pickup_until,
               )
             : index === 4
               ? true
-              : [0, 1, 2, 3, 4].every(complete);
+              : [0, 1, 2, 3].every(complete);
+
+  const missingForStep = (index) => {
+    const missing = [];
+    if (index === 0) {
+      if (!form.commodity_key) missing.push("crop");
+      if (!(Number(form.harvest_duration_min_days) > 0)) missing.push("harvest duration from");
+      if (!(Number(form.harvest_duration_max_days) >= Number(form.harvest_duration_min_days))) missing.push("valid harvest duration to");
+    } else if (index === 1) {
+      if (!(Number(form.quantity) > 0)) missing.push("quantity");
+      if (form.partial_sale_allowed && !(Number(form.minimum_sale_quantity) > 0)) missing.push("minimum sale quantity");
+    } else if (index === 2) {
+      if (!form.grade) missing.push("grade");
+      const photos = evidence.filter((item) => item.media_type !== "video").length;
+      if (photos < 4) missing.push(`4 lot photos (currently ${photos})`);
+    } else if (index === 3) {
+      if (!form.pickup_district) missing.push("district");
+      if (!form.pickup_village) missing.push("village");
+      if (!form.pickup_location_text) missing.push("pickup location");
+      if (!form.location_verified || form.pickup_latitude === null || form.pickup_longitude === null) missing.push("verified pickup coordinates");
+      if (!form.available_from) missing.push("available-from date");
+      if (!form.pickup_until) missing.push("pickup-until date");
+      if (form.available_from && form.pickup_until && form.available_from > form.pickup_until) missing.push("pickup date after availability date");
+      if (!form.payment_needed_by) missing.push("payment-needed-by date");
+    }
+    return missing;
+  };
+
   const submit = async () => {
-    if (!complete(3)) {
-      setError("Complete the required lot information before publishing.");
+    if (!complete(0) || !complete(1) || !complete(2) || !complete(3)) {
+      const missing = [0, 1, 2, 3].flatMap((index) => missingForStep(index));
+      setError(`Complete the following before publishing: ${missing.join(", ")}.`);
       return;
     }
     const photos = evidence.filter((item) => item.media_type !== "video");
@@ -316,7 +377,7 @@ export default function FarmerLotPage({ mode = "create" }) {
             minimum_sale_quantity: form.partial_sale_allowed
               ? Number(form.minimum_sale_quantity)
               : null,
-            expected_price: 0,
+            expected_price: Number(form.expected_price) || 0,
             quality_measurements: form.quality_measurements,
             status: "DRAFT",
           });
@@ -432,7 +493,7 @@ export default function FarmerLotPage({ mode = "create" }) {
                     locationError={locationError}
                   />
                 )}
-                {step === 4 && <Review form={form} />}
+                {step === 4 && <Review form={form} update={update} />}
               </div>
               {error && <div className="lot-error">{error}</div>}
               {message && <div className="lot-success">{message}</div>}
@@ -448,20 +509,29 @@ export default function FarmerLotPage({ mode = "create" }) {
                 {step < 4 ? (
                   <button
                     className="lot-primary-button"
-                    onClick={() =>
-                      complete(step)
-                        ? setStep(step + 1)
-                        : setError(
-                            "Complete the required information before continuing.",
-                          )
-                    }
+                    onClick={async () => {
+                      if (step === 3 && !form.location_verified) {
+                        const verified = await verifyEnteredLocation();
+                        if (!verified) {
+                          setError("AARTH still needs a verified pickup location before you can continue.");
+                          return;
+                        }
+                      }
+                      if (complete(step)) {
+                        setError("");
+                        setStep(step + 1);
+                      } else {
+                        const missing = missingForStep(step);
+                        setError(`Complete: ${missing.join(", ") || "the required information"}.`);
+                      }
+                    }}
                   >
                     Continue
                   </button>
                 ) : (
                   <button
                     className="lot-primary-button"
-                    disabled={saving || evidence.length < 4}
+                    disabled={saving}
                     onClick={submit}
                   >
                     {saving ? "Publishing..." : "Publish lot"}
@@ -929,7 +999,7 @@ function Selling({ form, update }) {
     </Step>
   );
 }
-function Review({ form }) {
+function Review({ form, update }) {
   return (
     <Step
       title="Review your lot"
@@ -948,8 +1018,16 @@ function Review({ form }) {
         <span>{form.grade}</span>
         <b>Pickup</b>
         <span>{form.pickup_location_text}</span>
-        <b>Expected price</b>
-        <span>₹{form.expected_price} / quintal</span>
+        <b>Expected price / quintal</b>
+        <span>
+          <input
+            type="number"
+            min="0"
+            value={form.expected_price}
+            onChange={(event) => update("expected_price", event.target.value)}
+            aria-label="Expected price per quintal"
+          />
+        </span>
       </div>
     </Step>
   );

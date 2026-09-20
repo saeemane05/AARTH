@@ -1,4 +1,5 @@
 import logging
+
 import os
 
 from fastapi import FastAPI
@@ -12,6 +13,7 @@ from backend.identity.router import router as identity_router
 from backend.buyer_demand.router import router as buyer_requirement_router
 from backend.logistics.router import router as logistics_router
 from backend.verification.router import router as verification_router
+from backend.matching_engine.router import router as matching_engine_router
 
 
 logging.basicConfig(
@@ -93,6 +95,7 @@ app.include_router(identity_router)
 app.include_router(buyer_requirement_router)
 app.include_router(logistics_router)
 app.include_router(verification_router)
+app.include_router(matching_engine_router)
 
 
 # =========================================================
