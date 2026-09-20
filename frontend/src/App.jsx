@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 
 import LoginPage from "./pages/LoginPage";
 import FarmerDashboard from "./pages/FarmerDashboard";
@@ -136,7 +137,8 @@ function AdminPage() {
 
 export default function App() {
   return (
-    <Routes>
+    <>
+      <Routes>
       <Route
         path="/"
         element={<Navigate to="/login" replace />}
@@ -308,6 +310,8 @@ export default function App() {
         path="*"
         element={<Navigate to="/login" replace />}
       />
-    </Routes>
+      </Routes>
+      <Analytics />
+    </>
   );
 }
