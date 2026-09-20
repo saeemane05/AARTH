@@ -1,0 +1,891 @@
+{
+  "sugarcane": [
+    "Co 86032 (को ८६०३२)",
+    "CoM 0265 / Phule 265 (फुले २६५)",
+    "CoM 11082 / Phule 11082 (फुले ११०८२)",
+    "Phule 10001 (फुले १०००१)",
+    "VSI 12121 (व्हीएसआय १२१२१)",
+    "CoM 88121 (कोएम ८८१२१)",
+    "Co 7525 (को ७५२५)",
+    "Co 8014 (को ८०१४)"
+  ],
+
+  "wheat": [
+    "NIAW-301 / Trimbak (त्र्यंबक)",
+    "NIAW-917 / Tapovan (तपोवन)",
+    "NIDW-295 / Godawari (गोदावरी)",
+    "NIDW-15 / Panchavati (पंचवटी)",
+    "AKAW-4627 (अकाव ४६२७)",
+    "AKW-381 (अकव ३८१)",
+    "AKW-1071 / Purna (पूर्णा)",
+    "Vimal / AKAW-3722 (विमल)",
+    "AKDW-2997-16 / Sharad (शरद)",
+    "PDKV Sardar (पीडीकेव्ही सरदार)"
+  ],
+
+  "jowar": [
+    "Maldandi (मालदांडी)",
+    "Phule Yashoda (फुले यशोदा)",
+    "Phule Mauli (फुले माऊली)",
+    "Phule Chitra (फुले चित्रा)",
+    "Phule Vasudha (फुले वसुधा)",
+    "Phule Uttara (फुले उत्तरा)",
+    "Parbhani Shakti (परभणी शक्ती)",
+    "Parbhani Moti (परभणी मोती)",
+    "Parbhani Jyoti (परभणी ज्योती)",
+    "Parbhani Super Moti (परभणी सुपर मोती)",
+    "CSV-22 (सीएसव्ही २२)",
+    "PDKV Kartiki (पीडीकेव्ही कार्तिकी)"
+  ],
+
+  "rice": [
+    "Indrayani (इंद्रायणी)",
+    "Pavana (पवना)",
+    "Bhogawati (भोगावती)",
+    "Phule Maval (फुले मावळ)",
+    "Phule Radha (फुले राधा)",
+    "Phule Samruddhi (फुले समृद्धी)",
+    "Radhanagari (राधानगरी)",
+    "Parag (पराग)",
+    "PKV Tilak (पीकेव्ही तिलक)",
+    "PKV Kisan (पीकेव्ही किसान)",
+    "PKV HMT (पीकेव्ही एचएमटी)",
+    "Sakoli-6 (साकोली-६)",
+    "SKL-9 (एसकेएल-९)",
+    "SKL-10 (एसकेएल-१०)",
+    "Terna (तेरणा)"
+  ],
+
+  "paddy": [
+    "Indrayani (इंद्रायणी)",
+    "Pavana (पवना)",
+    "Bhogawati (भोगावती)",
+    "Phule Maval (फुले मावळ)",
+    "PKV Tilak (पीकेव्ही तिलक)",
+    "PKV Kisan (पीकेव्ही किसान)",
+    "PKV HMT (पीकेव्ही एचएमटी)",
+    "Sakoli-6 (साकोली-६)",
+    "SKL-9 (एसकेएल-९)",
+    "SKL-10 (एसकेएल-१०)"
+  ],
+
+  "ragi": [
+    "Phule Nachani (फुले नाचणी)",
+    "KOPN-493 (केओपीएन-४९३)"
+  ],
+
+  "bajra": [
+    "Shradha (श्रद्धा)",
+    "Saburi (सबुरी)",
+    "Shanti (शांती)",
+    "Phule Dhanashakti (फुले धनशक्ती)",
+    "Phule Mahashakti (फुले महाशक्ती)",
+    "Adishakti (आदिशक्ती)"
+  ],
+
+  "maize": [
+    "Karveer (करवीर)",
+    "Rajashri (राजश्री)",
+    "Phule Maharshi (फुले महर्षी)",
+    "Phule Madhu (फुले मधु)",
+    "PMH-19 (पीएमएच-१९)"
+  ],
+
+  "black_gram": [
+    "TAU-1 (टीएयू-१)",
+    "TAU-2 (टीएयू-२)",
+    "AKU-4 / Melghat (अकु-४ / मेळघाट)",
+    "PKV Udid-15 (पीकेव्ही उडीद-१५)",
+    "AKU 10-1 (अकु १०-१)",
+    "PDKV Black Gold (पीडीकेव्ही ब्लॅक गोल्ड)"
+  ],
+
+  "black_gram_dal": [
+    "TAU-1 (टीएयू-१)",
+    "TAU-2 (टीएयू-२)",
+    "AKU-4 / Melghat (अकु-४ / मेळघाट)",
+    "PKV Udid-15 (पीकेव्ही उडीद-१५)",
+    "AKU 10-1 (अकु १०-१)",
+    "PDKV Black Gold (पीडीकेव्ही ब्लॅक गोल्ड)"
+  ],
+
+  "horse_gram": [
+    "Man (मान)",
+    "Seena (सीना)",
+    "Phule Sakas (फुले साकस)"
+  ],
+
+  "cowpea_seed": [
+    "Phule Pandhari (फुले पांढरी)",
+    "Phule Vithai (फुले विठाई)"
+  ],
+
+  "cowpea_pods": [
+    "Phule Pandhari (फुले पांढरी)",
+    "Phule Vithai (फुले विठाई)"
+  ],
+
+  "cowpea_leaves": [
+    "Phule Pandhari (फुले पांढरी)",
+    "Phule Vithai (फुले विठाई)"
+  ],
+
+  "tur": [
+    "BSMR-736 (बीएसएमआर-७३६)",
+    "BSMR-853 / Vaishali (वैशाली)",
+    "BDN-708 / Amol (अमोल)",
+    "BDN-711 (बीडीएन-७११)",
+    "BDN-716 (बीडीएन-७१६)",
+    "BDN-2 (बीडीएन-२)",
+    "Vipula (विपुला)",
+    "Phule Rajeshwari (फुले राजेश्वरी)",
+    "Phule Trupti (फुले तृप्ती)",
+    "PKV Tara (पीकेव्ही तारा)"
+  ],
+
+  "tur_dal": [
+    "BSMR-736 (बीएसएमआर-७३६)",
+    "BSMR-853 / Vaishali (वैशाली)",
+    "BDN-708 / Amol (अमोल)",
+    "BDN-711 (बीडीएन-७११)",
+    "BDN-716 (बीडीएन-७१६)",
+    "Vipula (विपुला)",
+    "Phule Rajeshwari (फुले राजेश्वरी)"
+  ],
+
+  "peas": [
+    "Phule Priya (फुले प्रिया)",
+    "Arkel (आर्केल)",
+    "Bonvilla (बॉनव्हिला)"
+  ],
+
+  "peas_dry": [
+    "Phule Priya (फुले प्रिया)",
+    "Arkel (आर्केल)",
+    "Bonvilla (बॉनव्हिला)"
+  ],
+
+  "lentil": [
+    "No verified Maharashtra-specific cultivar"
+  ],
+
+  "lentil_dal": [
+    "No verified Maharashtra-specific cultivar"
+  ],
+
+  "green_gram": [
+    "TAP-7 (टीएपी-७)",
+    "AKM-8803 (एकेएम-८८०३)",
+    "TARM-1 (टार्म-१)",
+    "TARM-2 (टार्म-२)",
+    "TARM-18 (टार्म-१८)",
+    "PKV Green Gold (पीकेव्ही ग्रीन गोल्ड)",
+    "PKV AKM-4 (पीकेव्ही एकेएम-४)"
+  ],
+
+  "green_gram_dal": [
+    "TAP-7 (टीएपी-७)",
+    "AKM-8803 (एकेएम-८८०३)",
+    "TARM-1 (टार्म-१)",
+    "TARM-2 (टार्म-२)",
+    "TARM-18 (टार्म-१८)",
+    "PKV Green Gold (पीकेव्ही ग्रीन गोल्ड)",
+    "PKV AKM-4 (पीकेव्ही एकेएम-४)"
+  ],
+
+  "amaranth": [
+    "Phule Kartiki (फुले कार्तिकी)"
+  ],
+
+  "peas_dry": [
+    "Phule Priya (फुले प्रिया)",
+    "Arkel (आर्केल)",
+    "Bonvilla (बॉनव्हिला)"
+  ],
+
+  "chickpea": [
+    "Vijay (विजय)",
+    "Vishal (विशाल)",
+    "Digvijay (दिग्विजय)",
+    "Virat (विराट)",
+    "Phule Vikram (फुले विक्रम)",
+    "Phule Vikrant (फुले विक्रांत)",
+    "Jaki-9218 (जाकी-९२१८)",
+    "PDKV Kanchan (पीडीकेव्ही कांचन)",
+    "PKV Kabuli-2 (पीकेव्ही काबुली-२)",
+    "Caffa (काफा)"
+  ],
+
+  "chickpea_dal": [
+    "Vijay (विजय)",
+    "Vishal (विशाल)",
+    "Digvijay (दिग्विजय)",
+    "Virat (विराट)",
+    "Phule Vikram (फुले विक्रम)",
+    "Phule Vikrant (फुले विक्रांत)",
+    "Jaki-9218 (जाकी-९२१८)",
+    "PDKV Kanchan (पीडीकेव्ही कांचन)"
+  ],
+
+  "castor": [
+    "No verified Maharashtra-specific cultivar"
+  ],
+
+  "safflower": [
+    "Bhima (भीमा)",
+    "Girana (गिरणा)",
+    "Phule Kusuma (फुले कुसुमा)",
+    "SSF-658 (एसएसएफ-६५८)",
+    "SSF-708 (एसएसएफ-७०८)",
+    "Phule SSF-733 (फुले एसएसएफ-७३३)",
+    "Phule Chandrabhaga (फुले चंद्रभागा)"
+  ],
+
+  "sesame": [
+    "No verified Maharashtra-specific cultivar"
+  ],
+
+  "groundnut": [
+    "JL-24 / Phule Pragati (फुले प्रगती)",
+    "JL-220 / Phule Vyas (फुले व्यास)",
+    "TPG-41 (टीपीजी-४१)",
+    "Phule Varana / KDG-128 (फुले वरना)",
+    "Phule Morna / KDG-123 (फुले मोरणा)",
+    "KDG-160 (केडीजी-१६०)",
+    "Phule RHRG-6021 (फुले आरएचआरजी-६०२१)"
+  ],
+
+  "groundnut_green": [
+    "JL-24 / Phule Pragati (फुले प्रगती)",
+    "JL-220 / Phule Vyas (फुले व्यास)",
+    "Phule Varana / KDG-128 (फुले वरना)",
+    "Phule Morna / KDG-123 (फुले मोरणा)"
+  ],
+
+  "groundnut_dry": [
+    "JL-24 / Phule Pragati (फुले प्रगती)",
+    "JL-220 / Phule Vyas (फुले व्यास)",
+    "Phule Varana / KDG-128 (फुले वरना)",
+    "Phule Morna / KDG-123 (फुले मोरणा)"
+  ],
+
+  "mustard": [
+    "No verified Maharashtra-specific cultivar"
+  ],
+
+  "mustard_seed": [
+    "No verified Maharashtra-specific cultivar"
+  ],
+
+  "sunflower": [
+    "SS-56 (एसएस-५६)",
+    "Bhanu (भानू)",
+    "Phule Raviraj (फुले रविराज)",
+    "PDKVSH-952 (पीडीकेव्हीएसएच-९५२)"
+  ],
+
+  "soybean": [
+    "JS-335 (जेएस-३३५)",
+    "MACS-1188 (मॅक्स-११८८)",
+    "Phule Kalyani / DS-228 (फुले कल्याणी)",
+    "Phule Agrani / KDS-344 (फुले अग्रणी)",
+    "Phule Sangam / KDS-726 (फुले संगम)",
+    "Phule Durva / KDS-992 (फुले दुर्वा)",
+    "MAUS-71 / Samruddhi (समृद्धी)",
+    "MAUS-158 (मॉस-१५८)",
+    "MAUS-162 (मॉस-१६२)",
+    "MAUS-612 (मॉस-६१२)",
+    "MAUS-725 (मॉस-७२५)"
+  ],
+
+  "ambadi_leaves": [
+    "Local Ambadi (गावरान आंबाडी)",
+    "Phule Ambadi (फुले आंबाडी)"
+  ],
+
+  "taro": [
+    "Local (गावरान अळू)"
+  ],
+
+  "sorrel_leaves": [
+    "Ambat Chuka Local (आंबट चुका)"
+  ],
+
+  "iceberg_lettuce": [
+    "Phule Padma (फुले पद्मा)"
+  ],
+
+  "yam": [
+    "Local (गावरान कंद)"
+  ],
+
+  "safflower_leaves": [
+    "Bhima (भीमा)",
+    "Girana (गिरणा)",
+    "Phule Kusuma (फुले कुसुमा)"
+  ],
+
+  "onion": [
+    "N-2-4-1 (एन-२-४-१)",
+    "N-53 (एन-५३)",
+    "N-257-9-1 (एन-२५७-९-१)",
+    "Baswant-780 (बसवंत-७८०)",
+    "Phule Suvarna (फुले सुवर्णा)",
+    "Phule Samarth (फुले समर्थ)",
+    "Phule Safed (फुले सफेद)",
+    "Akola Safed (अकोला सफेद)"
+  ],
+
+  "onion_leaves": [
+    "N-2-4-1 (एन-२-४-१)",
+    "N-53 (एन-५३)",
+    "Baswant-780 (बसवंत-७८०)",
+    "Phule Suvarna (फुले सुवर्णा)",
+    "Phule Samarth (फुले समर्थ)"
+  ],
+
+  "cucumber": [
+    "Himangi (हिमांगी)",
+    "Phule Shubhangi (फुले शुभांगी)",
+    "Phule Prachi (फुले प्राची)",
+    "Phule Champa (फुले चंपा)"
+  ],
+
+  "bottle_gourd": [
+    "Samrat (सम्राट)"
+  ],
+
+  "bottle_gourd_alt": [
+    "Samrat (सम्राट)"
+  ],
+
+  "bitter_gourd": [
+    "Hirkani (हिरकणी)",
+    "Phule Green Gold (फुले ग्रीन गोल्ड)",
+    "Phule Ujwala (फुले उज्वला)",
+    "Phule Priyanka (फुले प्रियंका)"
+  ],
+
+  "raw_banana": [
+    "Grand Naine (ग्रँड नैन)",
+    "Phule Pride (फुले प्राईड)",
+    "Shrimanti (श्रीमंती)"
+  ],
+
+  "banana": [
+    "Grand Naine (ग्रँड नैन)",
+    "Phule Pride (फुले प्राईड)",
+    "Shrimanti (श्रीमंती)"
+  ],
+
+  "coriander": [
+    "Pant Haritma (पंत हरितमा)"
+  ],
+
+  "coriander_seed": [
+    "Pant Haritma (पंत हरितमा)"
+  ],
+
+  "cabbage": [
+    "Golden Acre (गोल्डन एकर)",
+    "Pusa Drum Head (पुसा ड्रम हेड)"
+  ],
+
+  "pumpkin": [
+    "Local (गावरान भोपळा)"
+  ],
+
+  "cluster_beans": [
+    "Phule Guar (फुले गवार)"
+  ],
+
+  "carrot": [
+    "Pusa Kesar (पुसा केसर)",
+    "Pusa Rudhira (पुसा रुधिरा)"
+  ],
+
+  "beans": [
+    "Phule Surekha (फुले सुरेखा)",
+    "Phule Suyash (फुले सुयश)"
+  ],
+
+  "beans_seed": [
+    "Phule Surekha (फुले सुरेखा)",
+    "Phule Suyash (फुले सुयश)"
+  ],
+
+  "ridge_gourd": [
+    "Phule Sucheta (फुले सुचेता)"
+  ],
+
+  "cherry_tomato": [
+    "Local Cherry (चेरी टोमॅटो)"
+  ],
+
+  "zucchini": [
+    "Local Green Zucchini (ग्रीन झुकिनी)"
+  ],
+
+  "tomato": [
+    "Bhagyashree (भाग्यश्री)",
+    "Dhanashree (धनश्री)",
+    "Rajashree (राजश्री)",
+    "Phule Raja (फुले राजा)",
+    "Phule Kesari (फुले केसरी)",
+    "Phule Jayshree (फुले जयश्री)"
+  ],
+
+  "capsicum": [
+    "California Wonder (कॅलिफोर्निया वंडर)",
+    "Indra (इंद्र)",
+    "Bomby (बॉम्बे)"
+  ],
+
+  "ivy_gourd": [
+    "Local (गावरान तोंडली)"
+  ],
+
+  "snake_gourd": [
+    "Phule Vaibhav (फुले वैभव)"
+  ],
+
+  "spinach": [
+    "Local Palak (गावरान पालक)",
+    "All Green (ऑल ग्रीन)"
+  ],
+
+  "mint": [
+    "Local Pudina (गावरान पुदिना)"
+  ],
+
+  "cauliflower": [
+    "Pusa Snowball (पुसा स्नोबॉल)",
+    "Pusa Snowball-16 (पुसा स्नोबॉल-१६)"
+  ],
+
+  "potato": [
+    "Kufri Jyoti (कुफरी ज्योती)",
+    "Kufri Pukhraj (कुफरी पुखराज)",
+    "Kufri Surya (कुफरी सूर्य)",
+    "Kufri Sindhuri (कुफरी सिंधुरी)",
+    "Kufri Chipsona-1 (कुफरी चिपसोना-१)"
+  ],
+
+  "beetroot": [
+    "Detroit Dark Red (डेट्रॉईट डार्क रेड)",
+    "Early Wonder (अर्ली वंडर)"
+  ],
+
+  "radish": [
+    "Pusa Chetki (पुसा चेतकी)",
+    "Pusa Reshmi (पुसा रेशमी)",
+    "Japanese White (जपानी व्हाइट)"
+  ],
+
+  "fenugreek_leaves": [
+    "Phule Kasturi (फुले कस्तुरी)",
+    "Local Methi (गावरान मेथी)"
+  ],
+
+  "fenugreek_seed": [
+    "Phule Kasturi (फुले कस्तुरी)",
+    "Local Methi (गावरान मेथी)"
+  ],
+
+  "sweet_potato": [
+    "Bhu Sona (भू सोना)",
+    "Bhu Krishna (भू कृष्ण)"
+  ],
+
+  "garlic": [
+    "Godawari (गोदावरी)",
+    "Sweta (श्वेता)",
+    "Phule Baswant (फुले बसवंत)",
+    "Phule Neelima (फुले नीलिमा)"
+  ],
+
+  "dry_garlic": [
+    "Godawari (गोदावरी)",
+    "Sweta (श्वेता)",
+    "Phule Baswant (फुले बसवंत)",
+    "Phule Neelima (फुले नीलिमा)"
+  ],
+
+  "brinjal": [
+    "Manjari Gota (मांजरी गोटा)",
+    "Vaishali (वैशाली)",
+    "Pragati (प्रगती)",
+    "Krishna (कृष्णा)",
+    "Phule Harit (फुले हरित)",
+    "Phule Arjun (फुले अर्जुन)"
+  ],
+
+  "dill": [
+    "Local Shepu (गावरान शेपू)"
+  ],
+
+  "drumstick": [
+    "PKM-1 (पीकेएम-१)",
+    "PKM-2 (पीकेएम-२)",
+    "Local Shevga (गावरान शेवगा)"
+  ],
+
+  "elephant_yam": [
+    "Local Suran (गावरान सुरण)"
+  ],
+
+  "salad": [
+    "Local Salad Greens (स्थानिक कोशिंबीर भाजी)"
+  ],
+
+  "fig": [
+    "Phule Rajewadi (फुले राजेवाडी)",
+    "Dinkar (दिनकर)",
+    "Diana (डायना)",
+    "Poona Fig (पुणे अंजीर)"
+  ],
+
+  "fig_dry": [
+    "Phule Rajewadi (फुले राजेवाडी)",
+    "Poona Fig (पुणे अंजीर)"
+  ],
+
+  "pineapple": [
+    "Kew (क्यू)",
+    "Queen (क्वीन)"
+  ],
+
+  "avocado": [
+    "Hass (हास)",
+    "Fuerte (फुएर्टे)"
+  ],
+
+  "mango": [
+    "Kesar (केसर)",
+    "Alphonso / Hapus (हापूस)",
+    "Ratna (रत्ना)",
+    "Sindhu (सिंधू)",
+    "Payari (पायरी)",
+    "Totapuri (तोतापुरी)",
+    "Sai Sugandh (साई सुगंध)",
+    "Phule Abhiruchi (फुले अभिरुची)"
+  ],
+
+  "raw_mango": [
+    "Kesar (केसर)",
+    "Alphonso / Hapus (हापूस)",
+    "Ratna (रत्ना)",
+    "Sindhu (सिंधू)",
+    "Payari (पायरी)",
+    "Totapuri (तोतापुरी)"
+  ],
+
+  "amla": [
+    "Local (गावरान आवळा)",
+    "NA-7 (एनए-७)",
+    "Krishna (कृष्णा)"
+  ],
+
+  "watermelon": [
+    "Sugar Baby (शुगर बेबी)",
+    "Arka Manik (अर्का माणिक)",
+    "Arka Muthu (अर्का मुथू)"
+  ],
+
+  "cashew": [
+    "Vengurla-1 (वेंगुर्ला-१)",
+    "Vengurla-4 (वेंगुर्ला-४)",
+    "Vengurla-6 (वेंगुर्ला-६)",
+    "Vengurla-7 (वेंगुर्ला-७)",
+    "Vengurla-8 (वेंगुर्ला-८)"
+  ],
+
+  "sapota": [
+    "Kalipatti (कालीपत्ती)",
+    "Cricket Ball (क्रिकेट बॉल)",
+    "DHS-1 (डीएचएस-१)"
+  ],
+
+  "chickoo": [
+    "Kalipatti (कालीपत्ती)",
+    "Cricket Ball (क्रिकेट बॉल)",
+    "DHS-1 (डीएचएस-१)"
+  ],
+
+  "kiwi": [
+    "Hayward (हेवर्ड)",
+    "Allison (अ‍ॅलिसन)"
+  ],
+
+  "muskmelon": [
+    "Hara Madhu (हरा मधु)",
+    "Pusa Madhuras (पुसा मधुरस)"
+  ],
+
+  "pomegranate": [
+    "Bhagwa (भगवा)",
+    "Ganesh (गणेश)",
+    "G-137 (जी-१३७)",
+    "Mridula (मृदुला)",
+    "Phule Arakta (फुले अर्कता)",
+    "Phule Bhagwa Super (फुले भगवा सुपर)",
+    "Phule Anardana (फुले अनारदाना)"
+  ],
+
+  "grapes": [
+    "Thompson Seedless (थॉम्पसन सीडलेस)",
+    "Sharad Seedless (शरद सीडलेस)",
+    "Sonaka (सोनाका)",
+    "Tas-A-Ganesh (तास-ए-गणेश)",
+    "Cheema Sahebi (चिमा साहेबी)"
+  ],
+
+  "coconut": [
+    "West Coast Tall (वेस्ट कोस्ट टॉल)",
+    "East Coast Tall (ईस्ट कोस्ट टॉल)",
+    "Pratap (प्रताप)"
+  ],
+
+  "coconut_water": [
+    "West Coast Tall (वेस्ट कोस्ट टॉल)",
+    "East Coast Tall (ईस्ट कोस्ट टॉल)"
+  ],
+
+  "papaya": [
+    "Phule Vijaya (फुले विजया)",
+    "Red Lady (रेड लेडी)",
+    "Taiwan-786 (तैवान-७८६)"
+  ],
+
+  "pear": [
+    "Baggugosha (बग्गुगोशा)",
+    "Patharnakh (पाथरनाख)"
+  ],
+
+  "guava": [
+    "Sardar / L-49 (सरदार)",
+    "Lalit (ललित)",
+    "Shweta (श्वेता)",
+    "Phule Amrut (फुले अमृत)"
+  ],
+
+  "plum": [
+    "Santa Rosa (सांता रोसा)",
+    "Kala Amritsari (काला अमृतसरी)"
+  ],
+
+  "jackfruit": [
+    "Local (गावरान फणस)",
+    "Konkan Prolific (कोकण प्रोलिफिक)"
+  ],
+
+  "almond": [
+    "Nonpareil (नॉनपॅरिल)",
+    "Texas (टेक्सास)"
+  ],
+
+  "raisins": [
+    "Thompson Seedless (थॉम्पसन सीडलेस)",
+    "Sharad Seedless (शरद सीडलेस)",
+    "Sonaka (सोनाका)",
+    "Tas-A-Ganesh (तास-ए-गणेश)"
+  ],
+
+  "ber": [
+    "Phule Shabari (फुले शबरी)",
+    "Umran (उमराण)",
+    "Gola (गोळा)",
+    "Kadaka (कडक)"
+  ],
+
+  "sweet_lime": [
+    "Mosambi (मोसंबी)",
+    "Phule Mosambi (फुले मोसंबी)"
+  ],
+
+  "custard_apple": [
+    "Balanagar (बालानगर)",
+    "Phule Purandar (फुले पुरंदर)",
+    "Phule Janaki (फुले जानकी)",
+    "Dharur-6 (धारूर-६)",
+    "Local (गावरान सीताफळ)"
+  ],
+
+  "custard_apple_alt": [
+    "Balanagar (बालानगर)",
+    "Phule Purandar (फुले पुरंदर)",
+    "Phule Janaki (फुले जानकी)",
+    "Dharur-6 (धारूर-६)",
+    "Local (गावरान सीताफळ)"
+  ],
+
+  "lemon": [
+    "Sai Sharbati (साई शरबती)",
+    "Phule Sharbati (फुले शरबती)",
+    "Kagzi Lemon (कागदी लिंबू)"
+  ],
+
+  "orange": [
+    "Nagpur Mandarin (नागपुरी संत्री)",
+    "Katol Gold (काटोल गोल्ड)"
+  ],
+
+  "apple": [
+    "Anna (अॅना)",
+    "Dorsett Golden (डॉर्सेट गोल्डन)"
+  ],
+
+  "betel_nut": [
+    "Mangala (मंगळा)",
+    "Sumangala (सुमंगला)",
+    "Mohitnagar (मोहितनगर)"
+  ],
+
+  "strawberry": [
+    "Chandler (चँडलर)",
+    "Sweet Charlie (स्वीट चार्ली)",
+    "Camarosa (कॅमरोसा)"
+  ],
+
+  "ginger": [
+    "Rio-de-Janeiro (रिओ-डी-जानेरो)",
+    "Nadia (नादिया)",
+    "IISR-Rejatha (आयआयएसआर रेजथा)"
+  ],
+
+  "dry_ginger": [
+    "Rio-de-Janeiro (रिओ-डी-जानेरो)",
+    "Nadia (नादिया)"
+  ],
+
+  "curry_leaves": [
+    "DWD-1 (डीडब्ल्यूडी-१)",
+    "Local Curry Leaf (गावरान कढीपत्ता)"
+  ],
+
+  "cumin": [
+    "Gujarat Cumin-1 / GC-1 (जीसी-१)",
+    "Gujarat Cumin-2 / GC-2 (जीसी-२)",
+    "Gujarat Cumin-4 / GC-4 (जीसी-४)"
+  ],
+
+  "cinnamon": [
+    "Sri Lankan Cinnamon (श्रीलंकन दालचिनी)",
+    "Ceylon Cinnamon (सिलोन दालचिनी)"
+  ],
+
+  "fennel": [
+    "Gujarat Fennel-1 / GF-1 (जीएफ-१)",
+    "Gujarat Fennel-2 / GF-2 (जीएफ-२)"
+  ],
+
+  "red_chilli": [
+    "Phule Jyoti (फुले ज्योती)",
+    "Agnirekha (अग्निरेखा)",
+    "Phule Suryamukhi (फुले सूर्यमुखी)",
+    "Phule Sai (फुले साई)",
+    "Phule Mukta (फुले मुक्ता)",
+    "PDKV Hirkani (पीडीकेव्ही हिरकणी)"
+  ],
+
+  "black_pepper": [
+    "Panniyur-1 (पन्नियूर-१)",
+    "Panniyur-5 (पन्नियूर-५)",
+    "Sreekara (श्रीकारा)"
+  ],
+
+  "cardamom": [
+    "Malabar (मलबार)",
+    "Vazhukka (वाझुक्का)"
+  ],
+
+  "turmeric": [
+    "Phule Swarupa (फुले स्वरूपा)",
+    "Salem (सालेम)",
+    "Rajapuri (राजापुरी)",
+    "Waigaon (वाईगाव)"
+  ],
+
+  "aster": [
+    "Phule Ganesh White (फुले गणेश व्हाईट)",
+    "Phule Ganesh Violet (फुले गणेश व्हायोलेट)",
+    "Phule Ganesh Pink (फुले गणेश पिंक)",
+    "Phule Ganesh Purple (फुले गणेश पर्पल)"
+  ],
+
+  "carnation": [
+    "Standard Carnation (स्टँडर्ड कार्नेशन)",
+    "Spray Carnation (स्प्रे कार्नेशन)"
+  ],
+
+  "rose": [
+    "Red Rose (लाल गुलाब)",
+    "Pink Rose (गुलाबी गुलाब)",
+    "Desi Rose (देशी गुलाब)"
+  ],
+
+  "gladiolus": [
+    "Phule Ganesh (फुले गणेश)",
+    "Phule Neelrekha (फुले नीलरेखा)",
+    "Phule Tejas (फुले तेजस)",
+    "Phule Prerna (फुले प्रेरणा)",
+    "Akola Roshani (अकोला रोशनी)"
+  ],
+
+  "marigold": [
+    "Pusa Narangi Gainda (पुसा नारंगी गेंदा)",
+    "Pusa Basanti Gainda (पुसा बसंती गेंदा)",
+    "Local Marigold (गावरान झेंडू)"
+  ],
+
+  "jasmine": [
+    "Mogra (मोगरा)",
+    "Jai (जाई)",
+    "Jui (जुई)"
+  ],
+
+  "chrysanthemum": [
+    "Phule Ganesh (फुले गणेश)",
+    "Bijali Supers (बिजली सुपर्स)",
+    "PKV Shubhra (पीकेव्ही शुभ्रा)"
+  ],
+
+  "cotton": [
+    "NH-615 / Anusaya (अनुसया)",
+    "NH-635 (एनएच-६३५)",
+    "NH-452 / Renuka (रेणुका)",
+    "NH-545 (एनएच-५४५)",
+    "NHH-44 (एनएचएच-४४)",
+    "NHH-250 (एनएचएच-२५०)",
+    "PH-316 / Ganga (गंगा)",
+    "PH-348 / Yamuna (यमुना)",
+    "NHH-715 (एनएचएच-७१५)",
+    "PA-255 / Parbhani Turab (परभणी तुरब)",
+    "PA-183 / Sawta (सावता)",
+    "PA-141 / Namdeo (नामदेव)",
+    "PA-402 / Vinayak (विनायक)",
+    "PPA-32 / Eknath (एकनाथ)",
+    "AKH-9916 (अखे-९९१६)",
+    "Phule Chetana (फुले चेतना)"
+  ],
+
+  "jaggery": [
+    "Co 86032 (को ८६०३२)",
+    "Phule 265 (फुले २६५)",
+    "Phule 10001 (फुले १०००१)",
+    "Phule 11082 (फुले ११०८२)",
+    "VSI 12121 (व्हीएसआय १२१२१)"
+  ],
+
+  "sugar": [
+    "Co 86032 (को ८६०३२)",
+    "Phule 265 (फुले २६५)",
+    "Phule 10001 (फुले १०००१)",
+    "Phule 11082 (फुले ११०८२)",
+    "VSI 12121 (व्हीएसआय १२१२१)"
+  ],
+
+  "sago": [
+    "Cassava / Tapioca (कसावा / साबुदाणा कंद)"
+  ]
+}
