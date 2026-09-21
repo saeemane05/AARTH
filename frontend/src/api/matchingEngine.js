@@ -372,7 +372,7 @@ export const matchingEngineApi = {
   */
 
   /*
-   * Returns only open buyer requirements.
+   * Returns only active buyer requirements.
    */
 
   async getOpenBuyerRequirements(
@@ -380,13 +380,13 @@ export const matchingEngineApi = {
   ) {
     return this.getFarmerRequirements({
       ...params,
-      status: "OPEN",
+      status: "ACTIVE",
     });
   },
 
 
   /*
-   * Returns open farmer lots.
+   * Returns active farmer lots.
    */
 
   async getOpenLots(
@@ -394,7 +394,7 @@ export const matchingEngineApi = {
   ) {
     return this.getBuyerLots({
       ...params,
-      status: "OPEN",
+      status: "ACTIVE",
     });
   },
 
@@ -563,4 +563,4 @@ export const matchingEngineApi = {
 |
 */
 
-export default matchingEngineApi; 
+export default matchingEngineApi;

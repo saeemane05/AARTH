@@ -1,41 +1,58 @@
 from __future__ import annotations
 
-from typing import Any, Literal
-from pydantic import BaseModel, Field
+from datetime import date
+from typing import Literal
 
+from pydantic import BaseModel, Field, model_validator
+
+QuantityUnit = Literal["kg", "quintal", "ton"]
+RequirementStatus = Literal["DRAFT", "ACTIVE", "PAUSED", "FULFILLED", "CANCELLED"]
 PriceMode = Literal["PREFERRED_RANGE", "MAXIMUM", "MARKET_LINKED"]
 
 
-class MarketPriceRequest(BaseModel):
-    crop_key: str = Field(min_length=2, max_length=100)
-    latitude: float | None = Field(default=None, ge=-90, le=90)
-    longitude: float | None = Field(default=None, ge=-180, le=180)
-    top_n: int = Field(default=8, ge=3, le=20)
+class RequirementPayload(BaseModel):
+    commodity_key: str | None = Field(default=None, max_length=100)
+    commodity_name: str | None = Field(default=None, max_length=120)
+    variety: str | None = Field(default=None, max_length=120)
+    quantity: float | None = Field(default=None, gt=0, le=10_000_000)
+    quantity_unit: QuantityUnit | None = None
+    quality_grade: str | None = Field(default=None, max_length=80)
+    size_calibre: str | None = Field(default=None, max_length=120)
+    quality_requirements: str | None = Field(default=None, max_length=2000)
+    delivery_location: str | None = Field(default=None, max_length=300)
+    delivery_district: str | None = Field(default=None, max_length=100)
+    delivery_taluka: str | None = Field(default=None, max_length=100)
+    delivery_city: str | None = Field(default=None, max_length=120)
+    delivery_latitude: float | None = Field(default=None, ge=-90, le=90)
+    delivery_longitude: float | None = Field(default=None, ge=-180, le=180)
+    delivery_start_date: date | None = None
+    delivery_end_date: date | None = None
+    packaging_requirement: str | None = Field(default="No specific requirement", max_length=80)
+    target_price: float | None = Field(default=None, ge=0, le=100_000_000)
+    target_price_min: float | None = Field(default=None, ge=0, le=100_000_000)
+    target_price_max: float | None = Field(default=None, ge=0, le=100_000_000)
+    target_price_unit: Literal["INR_PER_KG", "INR_PER_QUINTAL", "INR_PER_TON"] | None = None
+    price_mode: PriceMode = "PREFERRED_RANGE"
+    open_to_market_pricing: bool = False
+    additional_requirements: str | None = Field(default=None, max_length=3000)
+
+    @model_validator(mode="after")
+    def validate_dates_and_price(self):
+        if self.delivery_start_date and self.delivery_end_date and self.delivery_start_date > self.delivery_end_date:
+            raise ValueError("Delivery from date cannot be after delivery by date.")
+        if self.quantity is not None and self.quantity_unit is None:
+            raise ValueError("A quantity unit is required with quantity.")
+        if self.target_price_min is not None and self.target_price_max is not None and self.target_price_max < self.target_price_min:
+            raise ValueError("Maximum buying price cannot be lower than minimum buying price.")
+        if self.price_mode == "MARKET_LINKED":
+            if self.open_to_market_pricing is not True:
+                self.open_to_market_pricing = True
+        return self
 
 
-class DiscoveryQuery(BaseModel):
-    requirement_id: str | None = None
-    commodity_key: str | None = None
-    limit: int = Field(default=50, ge=1, le=100)
+class RequirementCreateRequest(RequirementPayload):
+    status: Literal["DRAFT"] = "DRAFT"
 
 
-class MatchExplanation(BaseModel):
-    label: str
-    value: str
-    tone: Literal["positive", "neutral", "warning", "blocked"] = "neutral"
-
-
-class MatchResult(BaseModel):
-    lot_id: str
-    requirement_id: str
-    match_type: Literal["DIRECT", "AGGREGATION_CANDIDATE"]
-    match_status: Literal["FEASIBLE", "NEEDS_AGGREGATION"]
-    score: float
-    score_percent: int
-    hard_constraints: dict[str, Any]
-    factors: dict[str, float]
-    explanations: list[MatchExplanation]
-    seller: dict[str, Any] | None = None
-    buyer: dict[str, Any] | None = None
-    lot: dict[str, Any] | None = None
-    requirement: dict[str, Any] | None = None
+class StatusRequest(BaseModel):
+    status: RequirementStatus

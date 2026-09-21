@@ -22,6 +22,10 @@ const empty = {
   delivery_city: "",
   delivery_latitude: null,
   delivery_longitude: null,
+  location_source: "MANUAL_SEARCH",
+  location_verified: false,
+  location_verified_at: null,
+  location_accuracy_m: null,
   delivery_start_date: "",
   delivery_end_date: "",
   packaging_requirement: "No specific requirement",
@@ -42,6 +46,12 @@ const steps = [
 ];
 const displayUnit = (unit) =>
   ({ kg: "Kg", quintal: "Quintals", ton: "Tonnes" })[unit] || unit;
+const todayDate = () => {
+  const now = new Date();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${now.getFullYear()}-${month}-${day}`;
+};
 const dateText = (value) =>
   value
     ? new Intl.DateTimeFormat("en-IN", {
@@ -86,33 +96,118 @@ export default function BuyerRequirementPage() {
   useEffect(() => {
     load();
   }, []);
-  // Mirrors the Farmer Lot location pattern: a verified/default location is not re-searched,
-  // while typing a different location opens the same shared location search.
+  /*
+   * Buyer delivery location uses the same verification model as Farmer Lot.
+   * A typed string is NOT considered verified until AARTH resolves it through
+   * the location service, or the buyer captures current device location.
+   */
   useEffect(() => {
     if (
       locationSearch.trim().length < 2 ||
-      (form.delivery_latitude !== null &&
-        form.delivery_longitude !== null &&
-        locationSearch === form.delivery_location)
-    )
-      return setLocations([]);
-    const timer = setTimeout(
-      () =>
-        locationApi
-          .search(locationSearch, form.delivery_district, form.delivery_taluka)
-          .then((r) => setLocations(r.suggestions || []))
-          .catch(() => setLocations([])),
-      350,
-    );
+      form.location_verified
+    ) {
+      setLocations([]);
+      return undefined;
+    }
+
+    const timer = setTimeout(() => {
+      locationApi
+        .search(
+          locationSearch,
+          form.delivery_district,
+          form.delivery_taluka,
+        )
+        .then((r) => setLocations(r.suggestions || []))
+        .catch(() => setLocations([]));
+    }, 350);
+
     return () => clearTimeout(timer);
   }, [
     locationSearch,
     form.delivery_district,
     form.delivery_taluka,
-    form.delivery_latitude,
-    form.delivery_longitude,
-    form.delivery_location,
+    form.location_verified,
   ]);
+
+  /*
+   * If Buyer Profile already contains an operating location, resolve it to
+   * coordinates instead of silently treating plain text as verified.
+   */
+  useEffect(() => {
+    let active = true;
+
+    async function resolveProfileLocation() {
+      const data = profile.profile_data || {};
+      const text = data.operating_location_text || "";
+
+      if (
+        !text ||
+        form.delivery_location ||
+        form.location_verified
+      ) {
+        return;
+      }
+
+      if (
+        data.operating_latitude != null &&
+        data.operating_longitude != null
+      ) {
+        try {
+          const verified = await locationApi.reverse(
+            Number(data.operating_latitude),
+            Number(data.operating_longitude),
+          );
+
+          if (!active) return;
+
+          setForm((current) => ({
+            ...current,
+            delivery_location:
+              verified.display_name || text,
+            delivery_district:
+              verified.district ||
+              data.operating_district ||
+              current.delivery_district,
+            delivery_taluka:
+              verified.taluka ||
+              data.operating_taluka ||
+              current.delivery_taluka,
+            delivery_city:
+              verified.village ||
+              data.operating_city ||
+              current.delivery_city,
+            delivery_latitude:
+              verified.latitude ??
+              Number(data.operating_latitude),
+            delivery_longitude:
+              verified.longitude ??
+              Number(data.operating_longitude),
+            location_source: "PROFILE_DEFAULT",
+            location_verified: true,
+            location_verified_at: new Date().toISOString(),
+            location_accuracy_m:
+              verified.accuracy_m || null,
+          }));
+
+          setLocationSearch(
+            verified.display_name || text,
+          );
+        } catch {
+          // Keep the profile text visible, but DO NOT mark it verified.
+          setLocationSearch(text);
+        }
+      } else {
+        setLocationSearch(text);
+      }
+    }
+
+    resolveProfileLocation();
+
+    return () => {
+      active = false;
+    };
+  }, [profile]);
+
   const suggestions = useMemo(
     () =>
       ALL_AARTH_CROPS.filter((crop) =>
@@ -120,6 +215,7 @@ export default function BuyerRequirementPage() {
       ),
     [profile],
   );
+
   const crops = useMemo(
     () =>
       ALL_AARTH_CROPS.filter((crop) =>
@@ -129,89 +225,393 @@ export default function BuyerRequirementPage() {
       ),
     [cropSearch],
   );
+
   const update = (key, value) => {
-    setForm((old) => ({ ...old, [key]: value }));
+    setForm((old) => {
+      const next = {
+        ...old,
+        [key]: value,
+      };
+
+      /* Changing the typed location invalidates the previous verification. */
+      if (key === "delivery_location") {
+        next.location_verified = false;
+        next.location_verified_at = null;
+        next.location_source = "MANUAL_SEARCH";
+        next.delivery_latitude = null;
+        next.delivery_longitude = null;
+        next.location_accuracy_m = null;
+      }
+
+      if (key === "delivery_start_date") {
+        if (
+          value &&
+          (!old.delivery_end_date ||
+            old.delivery_end_date < value)
+        ) {
+          next.delivery_end_date = value;
+        }
+      }
+
+      return next;
+    });
     setError("");
   };
-  const start = (item = null) => {
-    const d = profile.profile_data || {};
-    setEditing(item);
-    setForm(
-      item
-        ? {
-            ...empty,
-            ...item,
-            quantity: item.quantity ?? "",
-            target_price: item.target_price ?? "",
-            target_price_min: item.target_price_min ?? item.target_price ?? "",
-            target_price_max: item.target_price_max ?? item.target_price ?? "",
-            price_mode: item.price_mode || (item.open_to_market_pricing ? "MARKET_LINKED" : "PREFERRED_RANGE"),
-          }
-        : {
-            ...empty,
-            delivery_location: d.operating_location_text || "",
-            delivery_district: d.operating_district || "",
-            delivery_taluka: d.operating_taluka || "",
-            delivery_city: d.operating_city || "",
-            delivery_latitude: d.operating_latitude || null,
-            delivery_longitude: d.operating_longitude || null,
-          },
-    );
-    setLocationSearch(
-      item?.delivery_location || d.operating_location_text || "",
-    );
-    setStep(0);
-    setError("");
-    setNotice("");
-  };
+
   const selectLocation = async (item) => {
     try {
-      const place = await locationApi.reverse(item.latitude, item.longitude);
+      const place = await locationApi.reverse(
+        item.latitude,
+        item.longitude,
+      );
+
       setForm((old) => ({
         ...old,
-        delivery_location: place.display_name,
-        delivery_district: place.district || "",
-        delivery_taluka: place.taluka || "",
-        delivery_city: place.village || place.taluka || "",
-        delivery_latitude: place.latitude,
-        delivery_longitude: place.longitude,
+        delivery_location:
+          place.display_name || item.display_name,
+        delivery_district:
+          place.district || old.delivery_district,
+        delivery_taluka:
+          place.taluka || old.delivery_taluka,
+        delivery_city:
+          place.village ||
+          place.taluka ||
+          old.delivery_city,
+        delivery_latitude:
+          place.latitude ?? item.latitude,
+        delivery_longitude:
+          place.longitude ?? item.longitude,
+        location_source: "MANUAL_SEARCH",
+        location_verified: true,
+        location_verified_at: new Date().toISOString(),
+        location_accuracy_m: place.accuracy_m || null,
       }));
-      setLocationSearch(place.display_name);
+
+      setLocationSearch(
+        place.display_name || item.display_name,
+      );
       setLocations([]);
-    } catch {
-      setError("Unable to verify that location. Please try another location.");
+      setError("");
+      return true;
+    } catch (reason) {
+      setError(
+        reason.message ||
+          "Unable to verify that delivery location.",
+      );
+      return false;
     }
   };
-  const valid = () =>
-    form.commodity_key &&
-    Number(form.quantity) > 0 &&
-    form.quantity_unit &&
-    form.delivery_location &&
-    form.delivery_district &&
-    form.delivery_latitude !== null &&
-    form.delivery_longitude !== null &&
-    form.delivery_start_date &&
-    form.delivery_end_date &&
-    form.delivery_start_date <= form.delivery_end_date;
-  const payload = () => ({
-    ...form,
-    quantity: form.quantity === "" ? null : Number(form.quantity),
-    target_price: form.target_price === "" ? null : Number(form.target_price),
-  });
-  const save = async (publish = false) => {
-    if (publish && !valid()) {
+
+  const verifyEnteredLocation = async () => {
+    if (
+      form.location_verified &&
+      form.delivery_latitude != null &&
+      form.delivery_longitude != null
+    ) {
+      return true;
+    }
+
+    const query = (
+      locationSearch ||
+      form.delivery_location ||
+      ""
+    ).trim();
+
+    if (query.length < 2) {
       setError(
-        "Complete all required produce, quantity, delivery location and delivery date fields before publishing.",
+        "Enter a village, market or area and verify the delivery location before continuing.",
+      );
+      return false;
+    }
+
+    try {
+      setError("Verifying delivery location...");
+
+      const result = await locationApi.search(
+        query,
+        form.delivery_district,
+        form.delivery_taluka,
+      );
+
+      const suggestion = result.suggestions?.[0];
+
+      if (!suggestion) {
+        setError(
+          "AARTH could not verify this location. Select a search result or use live location.",
+        );
+        return false;
+      }
+
+      return await selectLocation(suggestion);
+    } catch (reason) {
+      setError(
+        reason.message ||
+          "Unable to verify the delivery location.",
+      );
+      return false;
+    }
+  };
+
+  const captureLiveLocation = () => {
+    if (!navigator.geolocation) {
+      setError(
+        "Live location is not supported by this browser.",
       );
       return;
     }
+
+    setError("Acquiring live location...");
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const verified = await locationApi.reverse(
+            position.coords.latitude,
+            position.coords.longitude,
+          );
+
+          setForm((old) => ({
+            ...old,
+            delivery_location:
+              verified.display_name || old.delivery_location,
+            delivery_district:
+              verified.district || old.delivery_district,
+            delivery_taluka:
+              verified.taluka || old.delivery_taluka,
+            delivery_city:
+              verified.village ||
+              verified.taluka ||
+              old.delivery_city,
+            delivery_latitude:
+              position.coords.latitude,
+            delivery_longitude:
+              position.coords.longitude,
+            location_source: "CURRENT_DEVICE",
+            location_verified: true,
+            location_verified_at: new Date().toISOString(),
+            location_accuracy_m:
+              position.coords.accuracy,
+          }));
+
+          setLocationSearch(
+            verified.display_name ||
+              `${position.coords.latitude}, ${position.coords.longitude}`,
+          );
+          setLocations([]);
+          setError("");
+        } catch (reason) {
+          setError(
+            reason.message ||
+              "Unable to verify your current location.",
+          );
+        }
+      },
+      (reason) =>
+        setError(
+          reason.code === 1
+            ? "Location permission was denied. Allow location access in the browser, then try again."
+            : "Unable to capture your current location. Move to an open area and try again.",
+        ),
+      {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 0,
+      },
+    );
+  };
+
+  const validDates =
+    Boolean(form.delivery_start_date) &&
+    Boolean(form.delivery_end_date) &&
+    form.delivery_start_date <= form.delivery_end_date &&
+    form.delivery_start_date >= todayDate();
+
+  const validPriceRange =
+    !form.target_price_min ||
+    !form.target_price_max ||
+    Number(form.target_price_max) >=
+      Number(form.target_price_min);
+
+  const valid = () =>
+    Boolean(
+      form.commodity_key &&
+        Number(form.quantity) > 0 &&
+        form.quantity_unit &&
+        form.delivery_location &&
+        form.delivery_district &&
+        form.location_verified &&
+        form.delivery_latitude !== null &&
+        form.delivery_longitude !== null &&
+        validDates &&
+        validPriceRange,
+    );
+
+  const validateStep = async (currentStep) => {
+    if (currentStep === 0) {
+      if (!form.commodity_key) {
+        setError("Select the commodity before continuing.");
+        return false;
+      }
+    }
+
+    if (currentStep === 1) {
+      if (!(Number(form.quantity) > 0)) {
+        setError("Enter a required quantity greater than zero.");
+        return false;
+      }
+    }
+
+    if (currentStep === 2) {
+      const verified = await verifyEnteredLocation();
+      if (!verified) return false;
+
+      if (!form.delivery_start_date) {
+        setError("Select the delivery-from date.");
+        return false;
+      }
+
+      if (!form.delivery_end_date) {
+        setError("Select the delivery-by date.");
+        return false;
+      }
+
+      if (form.delivery_start_date < todayDate()) {
+        setError("Delivery-from date cannot be in the past.");
+        return false;
+      }
+
+      if (form.delivery_end_date < form.delivery_start_date) {
+        setError(
+          "Delivery-by date must be on or after the delivery-from date.",
+        );
+        return false;
+      }
+    }
+
+    if (currentStep === 3 && !validPriceRange) {
+      setError(
+        "Maximum / preferred ceiling cannot be lower than the minimum buying price.",
+      );
+      return false;
+    }
+
+    setError("");
+    return true;
+  };
+
+  const goNext = async () => {
+    const okay = await validateStep(step);
+    if (okay) setStep((value) => value + 1);
+  };
+
+  const payload = () => {
+    const min =
+      form.target_price_min === ""
+        ? null
+        : Number(form.target_price_min);
+    const max =
+      form.target_price_max === ""
+        ? null
+        : Number(form.target_price_max);
+
+    let targetPrice =
+      form.target_price === ""
+        ? null
+        : Number(form.target_price);
+
+    if (targetPrice == null) {
+      if (form.price_mode === "MAXIMUM") {
+        targetPrice = max;
+      } else if (max != null) {
+        targetPrice = max;
+      } else if (min != null) {
+        targetPrice = min;
+      }
+    }
+
+    return {
+      commodity_key: form.commodity_key,
+      commodity_name: form.commodity_name,
+      variety: form.variety || null,
+      quantity:
+        form.quantity === ""
+          ? null
+          : Number(form.quantity),
+      quantity_unit: form.quantity_unit,
+      quality_grade:
+        form.quality_grade || null,
+      size_calibre:
+        form.size_calibre || null,
+      quality_requirements:
+        form.quality_requirements || null,
+      delivery_location:
+        form.delivery_location || null,
+      delivery_district:
+        form.delivery_district || null,
+      delivery_taluka:
+        form.delivery_taluka || null,
+      delivery_city:
+        form.delivery_city || null,
+      delivery_latitude:
+        form.delivery_latitude,
+      delivery_longitude:
+        form.delivery_longitude,
+      delivery_start_date:
+        form.delivery_start_date || null,
+      delivery_end_date:
+        form.delivery_end_date || null,
+      packaging_requirement:
+        form.packaging_requirement || null,
+      target_price: targetPrice,
+      target_price_min: min,
+      target_price_max: max,
+      target_price_unit:
+        form.target_price_unit,
+      price_mode:
+        form.price_mode,
+      open_to_market_pricing:
+        form.price_mode === "MARKET_LINKED",
+      additional_requirements:
+        form.additional_requirements || null,
+    };
+  };
+
+  const save = async (publish = false) => {
+    if (publish) {
+      const locationOkay = await verifyEnteredLocation();
+      if (!locationOkay) return;
+
+      if (!valid()) {
+        setError(
+          !validDates
+            ? "Delivery dates are invalid. Delivery-from must be today or later and delivery-by must be on or after delivery-from."
+            : !validPriceRange
+              ? "Maximum / preferred ceiling cannot be lower than the minimum buying price."
+              : "Complete all required fields before publishing the requirement.",
+        );
+        return;
+      }
+    }
+
     setSaving(true);
     setError("");
+
     try {
       const saved = editing
-        ? await buyerRequirementApi.update(editing.requirement_id, payload())
-        : await buyerRequirementApi.create(payload());
-      if (publish) await buyerRequirementApi.publish(saved.requirement_id);
+        ? await buyerRequirementApi.update(
+            editing.requirement_id,
+            payload(),
+          )
+        : await buyerRequirementApi.create(
+            payload(),
+          );
+
+      if (publish) {
+        await buyerRequirementApi.publish(
+          saved.requirement_id,
+        );
+      }
+
       setNotice(
         publish
           ? "Requirement published successfully."
@@ -224,13 +624,14 @@ export default function BuyerRequirementPage() {
       setError(
         reason.message ||
           (publish
-            ? "Requirement could not be published. Please review the highlighted fields."
+            ? "Requirement could not be published. Please review the required fields."
             : "Unable to save this requirement. Please try again."),
       );
     } finally {
       setSaving(false);
     }
   };
+
   const status = async (id, next) => {
     try {
       await buyerRequirementApi.transition(id, next);
@@ -618,13 +1019,33 @@ function Form(props) {
                 Search and verify delivery location *
                 <input
                   value={locationSearch}
-                  onChange={(e) => setLocationSearch(e.target.value)}
+                  onChange={(e) => {
+                    setLocationSearch(e.target.value);
+                    update("delivery_location", e.target.value);
+                  }}
                   placeholder="Village, market or area"
                 />
+                <div className="req-location-actions">
+                  <button
+                    type="button"
+                    className="req-location-action"
+                    onClick={verifyEnteredLocation}
+                  >
+                    Verify location
+                  </button>
+                  <button
+                    type="button"
+                    className="req-location-action live"
+                    onClick={captureLiveLocation}
+                  >
+                    Use my live location
+                  </button>
+                </div>
                 {locations.map((item) => (
                   <button
+                    type="button"
                     className="req-location"
-                    key={item.display_name}
+                    key={`${item.display_name}-${item.latitude}-${item.longitude}`}
                     onClick={() => selectLocation(item)}
                   >
                     {item.display_name}
@@ -632,13 +1053,20 @@ function Form(props) {
                 ))}
               </label>
               {form.delivery_location && (
-                <p className="req-verified">✓ {form.delivery_location}</p>
+                <div className={`req-verified ${form.location_verified ? "verified" : "unverified"}`}>
+                  <strong>{form.location_verified ? "✓ Location verified" : "⚠ Location not yet verified"}</strong>
+                  <span>{form.delivery_location}</span>
+                  {form.location_verified && form.location_source === "CURRENT_DEVICE" && (
+                    <small>Verified from current device location{form.location_accuracy_m ? ` · ±${Math.round(form.location_accuracy_m)} m` : ""}.</small>
+                  )}
+                </div>
               )}
-              <div className="req-fields">
+              <div className="req-fields req-date-fields">
                 <label>
                   Delivery from *
                   <input
                     type="date"
+                    min={todayDate()}
                     value={form.delivery_start_date}
                     onChange={(e) =>
                       update("delivery_start_date", e.target.value)
@@ -649,6 +1077,7 @@ function Form(props) {
                   Delivery by *
                   <input
                     type="date"
+                    min={form.delivery_start_date || todayDate()}
                     value={form.delivery_end_date}
                     onChange={(e) =>
                       update("delivery_end_date", e.target.value)
@@ -656,6 +1085,9 @@ function Form(props) {
                   />
                 </label>
               </div>
+              {form.delivery_start_date && form.delivery_end_date && form.delivery_end_date < form.delivery_start_date && (
+                <p className="req-date-error">Delivery by must be on or after Delivery from.</p>
+              )}
             </>
           )}
           {step === 3 && (
@@ -736,7 +1168,7 @@ function Form(props) {
             {step > 0 ? "Back" : "Save as Draft"}
           </button>
           {step < 4 ? (
-            <button className="req-primary" onClick={() => setStep(step + 1)}>
+            <button className="req-primary" onClick={goNext} disabled={saving}>
               Continue
             </button>
           ) : (
@@ -747,7 +1179,7 @@ function Form(props) {
               <button
                 className="req-primary"
                 onClick={() => save(true)}
-                disabled={saving || !valid()}
+                disabled={saving}
               >
                 {saving ? "Publishing..." : "Publish Requirement"}
               </button>
@@ -770,7 +1202,7 @@ function Review({ form }) {
     ],
     ["Quality grade", form.quality_grade || "Any"],
     ["Size / calibre", form.size_calibre || "Any"],
-    ["Delivery location", form.delivery_location],
+    ["Delivery location", `${form.delivery_location || "Not set"}${form.location_verified ? " · Verified" : " · Not verified"}`],
     [
       "Delivery window",
       `${dateText(form.delivery_start_date)} – ${dateText(form.delivery_end_date)}`,
