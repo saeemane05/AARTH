@@ -470,6 +470,10 @@ export default function RoleProfileDashboard({
     };
     const selectFarmerNav = (label) => {
       setActiveNav(label);
+      if (label === "Market Insights") {
+        navigate("/farmer/market-insights");
+        return;
+      }
       if (label === "Create Lot") {
         navigate("/farmer/lots/new");
         return;

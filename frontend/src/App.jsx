@@ -19,6 +19,7 @@ import BuyerDiscoverLotsPage from "./pages/BuyerDiscoverLotsPage";
 import LogisticsDashboard from "./pages/LogisticsDashboard";
 import StorageDashboard from "./pages/StorageDashboard";
 import AarthScanPage from "./pages/AarthScanPage";
+import ProfitLossPage from "./market_intelligence/ProfitLossPage.tsx";
 
 import { authApi, dashboardPath } from "./api/auth";
 
@@ -167,6 +168,7 @@ export default function App() {
       <Route path="/farmer/lots/new" element={<ProtectedRole role="FARMER"><FarmerLotPage mode="create" /></ProtectedRole>} />
       <Route path="/fpo/scan" element={<ProtectedRole role="FPO"><AarthScanPage /></ProtectedRole>} />
       <Route path="/farmer/scan" element={<ProtectedRole role="FARMER"><AarthScanPage /></ProtectedRole>} />
+      <Route path="/farmer/market-insights" element={<ProtectedRole role="FARMER"><ProfitLossPage /></ProtectedRole>} />
 
       <Route
         path="/fpo"
