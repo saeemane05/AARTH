@@ -4,11 +4,16 @@ from datetime import date
 
 import pandas as pd
 
-from backend.market_intelligence.market_rates import fetch_msamb_data
-from backend.market_intelligence.travel_expense import haversine, load_apmc_data
+from ProfitLoss.market_rates import fetch_msamb_data
+from ProfitLoss.travel_expense import haversine, load_apmc_data
 
 
-def live_market_prices(crop_key: str, latitude: float | None, longitude: float | None, top_n: int = 8) -> dict:
+def live_market_prices(
+    crop_key: str,
+    latitude: float | None,
+    longitude: float | None,
+    top_n: int = 8,
+) -> dict:
     """
     Adapter for the existing MSAMB/APMC implementation.
 
@@ -17,6 +22,7 @@ def live_market_prices(crop_key: str, latitude: float | None, longitude: float |
     creation must not require a vehicle to be configured first.
     """
     crop_key = (crop_key or "").strip().lower()
+
     if not crop_key:
         raise ValueError("Crop key is required.")
 
@@ -24,6 +30,7 @@ def live_market_prices(crop_key: str, latitude: float | None, longitude: float |
 
     if latitude is not None and longitude is not None:
         apmc_df = apmc_df.copy()
+
         apmc_df["distance_km"] = apmc_df.apply(
             lambda row: haversine(
                 float(latitude),
@@ -33,7 +40,11 @@ def live_market_prices(crop_key: str, latitude: float | None, longitude: float |
             ),
             axis=1,
         )
-        apmc_df = apmc_df.sort_values("distance_km").head(max(top_n * 2, top_n))
+
+        apmc_df = apmc_df.sort_values("distance_km").head(
+            max(top_n * 2, top_n)
+        )
+
     else:
         apmc_df = apmc_df.head(max(top_n * 2, top_n)).copy()
         apmc_df["distance_km"] = None
@@ -45,7 +56,9 @@ def live_market_prices(crop_key: str, latitude: float | None, longitude: float |
     )
 
     if result_df.empty:
-        raise RuntimeError("No recent APMC observations were returned for this crop.")
+        raise RuntimeError(
+            "No recent APMC observations were returned for this crop."
+        )
 
     # Restore the distance information by APMC code where available.
     if "distance_km" in apmc_df.columns:
@@ -58,8 +71,10 @@ def live_market_prices(crop_key: str, latitude: float | None, longitude: float |
         distances = {}
 
     rows = []
+
     for _, row in result_df.head(top_n).iterrows():
         code = str(row.get("apmc_code", ""))
+
         rows.append(
             {
                 "apmc_code": code,
@@ -73,7 +88,9 @@ def live_market_prices(crop_key: str, latitude: float | None, longitude: float |
         )
 
     if not rows:
-        raise RuntimeError("No usable APMC price observations were returned.")
+        raise RuntimeError(
+            "No usable APMC price observations were returned."
+        )
 
     mins = [row["min_price"] for row in rows]
     maxs = [row["max_price"] for row in rows]
@@ -82,12 +99,16 @@ def live_market_prices(crop_key: str, latitude: float | None, longitude: float |
     return {
         "available": True,
         "crop_key": crop_key,
-        "crop_name": str(result_df.iloc[0].get("crop", crop_key)),
+        "crop_name": str(
+            result_df.iloc[0].get("crop", crop_key)
+        ),
         "as_of": date.today().isoformat(),
         "summary": {
             "min_price_per_quintal": min(mins),
             "max_price_per_quintal": max(maxs),
-            "representative_modal_per_quintal": sorted(modals)[len(modals) // 2],
+            "representative_modal_per_quintal": sorted(modals)[
+                len(modals) // 2
+            ],
         },
         "apmcs": [
             {
