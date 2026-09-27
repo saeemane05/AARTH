@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
-import { Navigate, Route, Routes, useNavigate, useParams } from "react-router-dom";
+
+import {
+  Navigate,
+  Route,
+  Routes,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
+
 import FarmerDashboard from "./pages/FarmerDashboard";
+
 import FpoDashboard from "./pages/FpoDashboard";
 import FpoLotCreationBridge from "./pages/FpoLotCreationBridge";
 import FpoJoinPage from "./pages/FpoJoinPage";
@@ -12,9 +21,14 @@ import FpoSettings from "./pages/FpoSettings";
 import FpoStaffPage from "./pages/FpoStaffPage";
 import FpoOrganisationPage from "./pages/FpoOrganisationPage";
 import FpoVerificationPage from "./pages/FpoVerificationPage";
+
 import FarmerLotPage from "./pages/FarmerLotPage";
 
-import { FpoClaim, FpoDetail, FpoDirectory } from "./pages/FpoFoundation";
+import {
+  FpoClaim,
+  FpoDetail,
+  FpoDirectory,
+} from "./pages/FpoFoundation";
 
 import BuyerDashboard from "./pages/BuyerDashboard";
 import BuyerRequirementPage from "./pages/BuyerRequirementPage";
@@ -24,11 +38,9 @@ import LogisticsDashboard from "./pages/LogisticsDashboard";
 import StorageDashboard from "./pages/StorageDashboard";
 
 import AarthScanPage from "./pages/AarthScanPage";
-<<<<<<< HEAD
+
 import ProfitLossPage from "./market_intelligence/ProfitLossPage.tsx";
-=======
 import PrototypeWorkspacePage from "./pages/PrototypeWorkspacePage";
->>>>>>> f6b12ac (FEAT : ADDED THE SECTIONS FOR REJECTED LOT RECOVERY MULTI CROP MATCHING , REQUIREMENTS , etc)
 
 import { authApi, dashboardPath } from "./api/auth";
 
@@ -51,35 +63,53 @@ function ProtectedRole({ role, children }) {
 
   const isDemo = () => {
     try {
-      return sessionStorage.getItem("sih26193_demo") === "true" && sessionStorage.getItem("sih26193_demo_role")?.toUpperCase() === role;
+      return (
+        sessionStorage.getItem("sih26193_demo") === "true" &&
+        sessionStorage
+          .getItem("sih26193_demo_role")
+          ?.toUpperCase() === role
+      );
     } catch {
       return false;
     }
   };
 
+
   const [checking, setChecking] = useState(() => {
     if (isDemo()) return false;
+
     const session = authApi.getSession();
+
     return session?.profile?.role !== role;
   });
 
+
   const [allowed, setAllowed] = useState(() => {
     if (isDemo()) return true;
+
     const session = authApi.getSession();
+
     return session?.profile?.role === role;
   });
+
 
   useEffect(() => {
     let active = true;
 
+
     if (isDemo()) {
       setAllowed(true);
       setChecking(false);
-      return () => { active = false; };
+
+      return () => {
+        active = false;
+      };
     }
+
 
     async function verifySession() {
       const session = authApi.getSession();
+
 
       if (!session?.access_token) {
         if (active) {
@@ -89,12 +119,15 @@ function ProtectedRole({ role, children }) {
         return;
       }
 
+
       try {
         const profile = await authApi.me();
+
 
         if (!active) {
           return;
         }
+
 
         /*
          * IMPORTANT:
@@ -111,19 +144,23 @@ function ProtectedRole({ role, children }) {
           return;
         }
 
+
         const updatedSession = {
           ...session,
           profile,
         };
+
 
         localStorage.setItem(
           "aarth_session",
           JSON.stringify(updatedSession)
         );
 
+
         setAllowed(true);
       } catch {
         authApi.clearSession();
+
 
         if (active) {
           navigate("/login", {
@@ -137,7 +174,9 @@ function ProtectedRole({ role, children }) {
       }
     }
 
+
     verifySession();
+
 
     return () => {
       active = false;
@@ -149,65 +188,128 @@ function ProtectedRole({ role, children }) {
     return <LoadingScreen />;
   }
 
+
   if (!allowed) {
     return <Navigate to="/login" replace />;
   }
+
 
   return children;
 }
 
 
 const SIH26193_ROLES = {
-  farmer: { role: "FARMER", target: "/farmer", prefix: "FAR" },
-  buyer: { role: "BUYER", target: "/buyer", prefix: "BUY" },
-  fpo: { role: "FPO", target: "/fpo/dashboard", prefix: "FPO" },
-  logistics: { role: "LOGISTICS_PARTNER", target: "/logistics-partner", prefix: "LOG" },
-  storage: { role: "STORAGE_PARTNER", target: "/storage-partner", prefix: "STO" },
+  farmer: {
+    role: "FARMER",
+    target: "/farmer",
+    prefix: "FAR",
+  },
+
+  buyer: {
+    role: "BUYER",
+    target: "/buyer",
+    prefix: "BUY",
+  },
+
+  fpo: {
+    role: "FPO",
+    target: "/fpo/dashboard",
+    prefix: "FPO",
+  },
+
+  logistics: {
+    role: "LOGISTICS_PARTNER",
+    target: "/logistics-partner",
+    prefix: "LOG",
+  },
+
+  storage: {
+    role: "STORAGE_PARTNER",
+    target: "/storage-partner",
+    prefix: "STO",
+  },
 };
+
 
 function SIH26193Entry() {
   const { role = "farmer" } = useParams();
   const navigate = useNavigate();
 
+
   useEffect(() => {
-    const config = SIH26193_ROLES[role] || SIH26193_ROLES.farmer;
+    const config =
+      SIH26193_ROLES[role] || SIH26193_ROLES.farmer;
+
     const counterKey = `sih26193_${config.prefix}_id`;
+
     let demoId = localStorage.getItem(counterKey);
+
+
     if (!demoId) {
       demoId = `SIH26193-${config.prefix}-0001`;
+
       localStorage.setItem(counterKey, demoId);
     }
+
 
     const demoProfile = {
       user_id: `sih-demo-${config.prefix.toLowerCase()}`,
       username: `sih26193_${role}`,
       email: `${role}@sih26193.demo`,
       phone: "+91 90000 26193",
+
       role: config.role,
+
       role_id: demoId,
       aarth_id: demoId,
+
       status: "ACTIVE",
     };
 
-    sessionStorage.setItem("sih26193_demo", "true");
-    sessionStorage.setItem("sih26193_demo_role", role);
-    sessionStorage.setItem("sih26193_demo_id", demoId);
-    localStorage.setItem("aarth_session", JSON.stringify({
-      access_token: "sih26193-demo-token",
-      profile: demoProfile,
-    }));
 
-    navigate(config.target, { replace: true });
+    sessionStorage.setItem(
+      "sih26193_demo",
+      "true"
+    );
+
+    sessionStorage.setItem(
+      "sih26193_demo_role",
+      role
+    );
+
+    sessionStorage.setItem(
+      "sih26193_demo_id",
+      demoId
+    );
+
+
+    localStorage.setItem(
+      "aarth_session",
+      JSON.stringify({
+        access_token: "sih26193-demo-token",
+        profile: demoProfile,
+      })
+    );
+
+
+    navigate(config.target, {
+      replace: true,
+    });
   }, [navigate, role]);
+
 
   return <LoadingScreen />;
 }
+
 
 function AdminPage() {
   return (
     <div style={{ padding: 40 }}>
       <h1>AARTH Administration</h1>
-      <p>Administrator dashboard foundation.</p>
+
+      <p>
+        Administrator dashboard foundation.
+      </p>
     </div>
   );
 }
@@ -220,6 +322,7 @@ export default function App() {
       {/* =========================
           PUBLIC HOMEPAGE
       ========================== */}
+
       <Route
         path="/"
         element={<HomePage />}
@@ -232,16 +335,29 @@ export default function App() {
 
       <Route
         path="/login"
-        element={<LoginPage initialMode="login" />}
+        element={
+          <LoginPage initialMode="login" />
+        }
       />
+
 
       <Route
         path="/register"
-        element={<LoginPage initialMode="register" />}
+        element={
+          <LoginPage initialMode="register" />
+        }
       />
 
-      {/* SIH26193: direct presentation access to the existing dashboards. */}
-      <Route path="/sih26193/:role" element={<SIH26193Entry />} />
+
+      {/* SIH26193:
+          Direct presentation access
+          to the existing dashboards.
+      */}
+
+      <Route
+        path="/sih26193/:role"
+        element={<SIH26193Entry />}
+      />
 
 
       {/* =========================
@@ -257,19 +373,10 @@ export default function App() {
         }
       />
 
-<<<<<<< HEAD
-      <Route path="/farmer/lots" element={<ProtectedRole role="FARMER"><FarmerLotPage mode="list" /></ProtectedRole>} />
-      <Route path="/farmer/lots/:lotId" element={<ProtectedRole role="FARMER"><FarmerLotPage mode="detail" /></ProtectedRole>} />
-      <Route path="/farmer/lots/new" element={<ProtectedRole role="FARMER"><FarmerLotPage mode="create" /></ProtectedRole>} />
-      <Route path="/fpo/scan" element={<ProtectedRole role="FPO"><AarthScanPage /></ProtectedRole>} />
-      <Route path="/farmer/scan" element={<ProtectedRole role="FARMER"><AarthScanPage /></ProtectedRole>} />
-      <Route path="/farmer/market-insights" element={<ProtectedRole role="FARMER"><ProfitLossPage /></ProtectedRole>} />
-=======
-      {/* Existing FarmerLotPage handles:
-          list
-          detail
-          create
-      */}
+
+      {/* =========================
+          FARMER LOTS
+      ========================== */}
 
       <Route
         path="/farmer/lots"
@@ -280,6 +387,7 @@ export default function App() {
         }
       />
 
+
       <Route
         path="/farmer/lots/:lotId"
         element={
@@ -288,6 +396,7 @@ export default function App() {
           </ProtectedRole>
         }
       />
+
 
       <Route
         path="/farmer/lots/new"
@@ -298,6 +407,11 @@ export default function App() {
         }
       />
 
+
+      {/* =========================
+          AARTH SCAN
+      ========================== */}
+
       <Route
         path="/fpo/scan"
         element={
@@ -306,6 +420,7 @@ export default function App() {
           </ProtectedRole>
         }
       />
+
 
       <Route
         path="/farmer/scan"
@@ -317,37 +432,57 @@ export default function App() {
       />
 
 
+      {/* =========================
+          FARMER MARKET INTELLIGENCE
+      ========================== */}
+
       <Route
         path="/farmer/market-insights"
         element={
           <ProtectedRole role="FARMER">
-            <Navigate to="/farmer/profit-loss" replace />
+            <ProfitLossPage />
           </ProtectedRole>
         }
       />
+
+
+      {/* =========================
+          FARMER PROFIT & LOSS
+      ========================== */}
 
       <Route
         path="/farmer/profit-loss"
         element={
           <ProtectedRole role="FARMER">
-            <PrototypeWorkspacePage role="FARMER" initialTab="Profit & Loss" />
+            <PrototypeWorkspacePage
+              role="FARMER"
+              initialTab="Profit & Loss"
+            />
           </ProtectedRole>
         }
       />
+
+
+      {/* =========================
+          FARMER OPERATIONS
+      ========================== */}
 
       <Route
         path="/farmer/operations"
         element={
           <ProtectedRole role="FARMER">
-            <PrototypeWorkspacePage role="FARMER" initialTab="Operations" />
+            <PrototypeWorkspacePage
+              role="FARMER"
+              initialTab="Operations"
+            />
           </ProtectedRole>
         }
       />
 
-      <Route path="/farmer/recovery" element={<ProtectedRole role="FARMER"><PrototypeWorkspacePage role="FARMER" initialTab="Rejected Recovery" /></ProtectedRole>} />
-      <Route path="/farmer/residue" element={<ProtectedRole role="FARMER"><PrototypeWorkspacePage role="FARMER" initialTab="Residue" /></ProtectedRole>} />
 
-
+      {/* =========================
+          REJECTED LOT RECOVERY
+      ========================== */}
 
       <Route
         path="/farmer/recovery"
@@ -360,6 +495,11 @@ export default function App() {
           </ProtectedRole>
         }
       />
+
+
+      {/* =========================
+          RESIDUE
+      ========================== */}
 
       <Route
         path="/farmer/residue"
@@ -377,7 +517,6 @@ export default function App() {
       {/* =========================
           FPO PUBLIC
       ========================== */}
->>>>>>> f6b12ac (FEAT : ADDED THE SECTIONS FOR REJECTED LOT RECOVERY MULTI CROP MATCHING , REQUIREMENTS , etc)
 
       <Route
         path="/fpo"
@@ -391,29 +530,36 @@ export default function App() {
         }
       />
 
+
       <Route
         path="/fpos"
         element={<FpoDirectory />}
       />
+
 
       <Route
         path="/fpos/:id"
         element={<FpoDetail />}
       />
 
+
       <Route
         path="/fpo/join/:inviteCode"
         element={<FpoJoinPage />}
       />
+
 
       <Route
         path="/fpo/claim/:id"
         element={<FpoClaim />}
       />
 
+
       <Route
         path="/fpo/login"
-        element={<LoginPage initialMode="login" />}
+        element={
+          <LoginPage initialMode="login" />
+        }
       />
 
 
@@ -430,6 +576,7 @@ export default function App() {
         }
       />
 
+
       <Route
         path="/fpo/lots/create"
         element={
@@ -438,6 +585,7 @@ export default function App() {
           </ProtectedRole>
         }
       />
+
 
       <Route
         path="/fpo/farmers"
@@ -448,6 +596,7 @@ export default function App() {
         }
       />
 
+
       <Route
         path="/fpo/organisation"
         element={
@@ -456,6 +605,7 @@ export default function App() {
           </ProtectedRole>
         }
       />
+
 
       <Route
         path="/fpo/farmers/:id"
@@ -466,6 +616,7 @@ export default function App() {
         }
       />
 
+
       <Route
         path="/fpo/settings"
         element={
@@ -474,6 +625,7 @@ export default function App() {
           </ProtectedRole>
         }
       />
+
 
       <Route
         path="/fpo/staff"
@@ -484,6 +636,7 @@ export default function App() {
         }
       />
 
+
       <Route
         path="/fpo/verification"
         element={
@@ -493,11 +646,14 @@ export default function App() {
         }
       />
 
+
       <Route
         path="/fpo/operations"
         element={
           <ProtectedRole role="FPO">
-            <PrototypeWorkspacePage role="FPO" />
+            <PrototypeWorkspacePage
+              role="FPO"
+            />
           </ProtectedRole>
         }
       />
@@ -516,6 +672,7 @@ export default function App() {
         }
       />
 
+
       <Route
         path="/buyer/requirements"
         element={
@@ -524,6 +681,7 @@ export default function App() {
           </ProtectedRole>
         }
       />
+
 
       <Route
         path="/buyer/discover-lots"
@@ -534,18 +692,95 @@ export default function App() {
         }
       />
 
-      <Route path="/buyer/orders" element={<ProtectedRole role="BUYER"><PrototypeWorkspacePage role="BUYER" initialTab="Orders" /></ProtectedRole>} />
-      <Route path="/buyer/search-produce" element={<ProtectedRole role="BUYER"><PrototypeWorkspacePage role="BUYER" initialTab="Search Produce" /></ProtectedRole>} />
-      <Route path="/buyer/suppliers" element={<ProtectedRole role="BUYER"><PrototypeWorkspacePage role="BUYER" initialTab="Supplier Network" /></ProtectedRole>} />
-      <Route path="/buyer/market-insights" element={<ProtectedRole role="BUYER"><PrototypeWorkspacePage role="BUYER" initialTab="Market Insights" /></ProtectedRole>} />
-      <Route path="/buyer/support" element={<ProtectedRole role="BUYER"><PrototypeWorkspacePage role="BUYER" initialTab="Support" /></ProtectedRole>} />
+
+      <Route
+        path="/buyer/orders"
+        element={
+          <ProtectedRole role="BUYER">
+            <PrototypeWorkspacePage
+              role="BUYER"
+              initialTab="Orders"
+            />
+          </ProtectedRole>
+        }
+      />
+
+
+      <Route
+        path="/buyer/search-produce"
+        element={
+          <ProtectedRole role="BUYER">
+            <PrototypeWorkspacePage
+              role="BUYER"
+              initialTab="Search Produce"
+            />
+          </ProtectedRole>
+        }
+      />
+
+
+      <Route
+        path="/buyer/suppliers"
+        element={
+          <ProtectedRole role="BUYER">
+            <PrototypeWorkspacePage
+              role="BUYER"
+              initialTab="Supplier Network"
+            />
+          </ProtectedRole>
+        }
+      />
+
+
+      <Route
+        path="/buyer/market-insights"
+        element={
+          <ProtectedRole role="BUYER">
+            <PrototypeWorkspacePage
+              role="BUYER"
+              initialTab="Market Insights"
+            />
+          </ProtectedRole>
+        }
+      />
+
+
+      <Route
+        path="/buyer/support"
+        element={
+          <ProtectedRole role="BUYER">
+            <PrototypeWorkspacePage
+              role="BUYER"
+              initialTab="Support"
+            />
+          </ProtectedRole>
+        }
+      />
+
+
       <Route
         path="/buyer/operations"
-        element={<ProtectedRole role="BUYER"><PrototypeWorkspacePage role="BUYER" initialTab="Operations" /></ProtectedRole>}
+        element={
+          <ProtectedRole role="BUYER">
+            <PrototypeWorkspacePage
+              role="BUYER"
+              initialTab="Operations"
+            />
+          </ProtectedRole>
+        }
       />
+
+
       <Route
         path="/buyer/recovery"
-        element={<ProtectedRole role="BUYER"><PrototypeWorkspacePage role="BUYER" initialTab="Recovered Lots" /></ProtectedRole>}
+        element={
+          <ProtectedRole role="BUYER">
+            <PrototypeWorkspacePage
+              role="BUYER"
+              initialTab="Recovered Lots"
+            />
+          </ProtectedRole>
+        }
       />
 
 
@@ -561,6 +796,7 @@ export default function App() {
           </ProtectedRole>
         }
       />
+
 
       <Route
         path="/logistics-partner/operations"
@@ -587,12 +823,83 @@ export default function App() {
         }
       />
 
-      <Route path="/storage-partner/requests" element={<ProtectedRole role="STORAGE_PARTNER"><PrototypeWorkspacePage role="STORAGE_PARTNER" initialTab="Storage Requests" /></ProtectedRole>} />
-      <Route path="/storage-partner/facilities" element={<ProtectedRole role="STORAGE_PARTNER"><PrototypeWorkspacePage role="STORAGE_PARTNER" initialTab="My Facilities" /></ProtectedRole>} />
-      <Route path="/storage-partner/capacity" element={<ProtectedRole role="STORAGE_PARTNER"><PrototypeWorkspacePage role="STORAGE_PARTNER" initialTab="Capacity" /></ProtectedRole>} />
-      <Route path="/storage-partner/bookings" element={<ProtectedRole role="STORAGE_PARTNER"><PrototypeWorkspacePage role="STORAGE_PARTNER" initialTab="Bookings" /></ProtectedRole>} />
-      <Route path="/storage-partner/operations" element={<ProtectedRole role="STORAGE_PARTNER"><PrototypeWorkspacePage role="STORAGE_PARTNER" initialTab="Operations" /></ProtectedRole>} />
-      <Route path="/storage-partner/support" element={<ProtectedRole role="STORAGE_PARTNER"><PrototypeWorkspacePage role="STORAGE_PARTNER" initialTab="Support" /></ProtectedRole>} />
+
+      <Route
+        path="/storage-partner/requests"
+        element={
+          <ProtectedRole role="STORAGE_PARTNER">
+            <PrototypeWorkspacePage
+              role="STORAGE_PARTNER"
+              initialTab="Storage Requests"
+            />
+          </ProtectedRole>
+        }
+      />
+
+
+      <Route
+        path="/storage-partner/facilities"
+        element={
+          <ProtectedRole role="STORAGE_PARTNER">
+            <PrototypeWorkspacePage
+              role="STORAGE_PARTNER"
+              initialTab="My Facilities"
+            />
+          </ProtectedRole>
+        }
+      />
+
+
+      <Route
+        path="/storage-partner/capacity"
+        element={
+          <ProtectedRole role="STORAGE_PARTNER">
+            <PrototypeWorkspacePage
+              role="STORAGE_PARTNER"
+              initialTab="Capacity"
+            />
+          </ProtectedRole>
+        }
+      />
+
+
+      <Route
+        path="/storage-partner/bookings"
+        element={
+          <ProtectedRole role="STORAGE_PARTNER">
+            <PrototypeWorkspacePage
+              role="STORAGE_PARTNER"
+              initialTab="Bookings"
+            />
+          </ProtectedRole>
+        }
+      />
+
+
+      <Route
+        path="/storage-partner/operations"
+        element={
+          <ProtectedRole role="STORAGE_PARTNER">
+            <PrototypeWorkspacePage
+              role="STORAGE_PARTNER"
+              initialTab="Operations"
+            />
+          </ProtectedRole>
+        }
+      />
+
+
+      <Route
+        path="/storage-partner/support"
+        element={
+          <ProtectedRole role="STORAGE_PARTNER">
+            <PrototypeWorkspacePage
+              role="STORAGE_PARTNER"
+              initialTab="Support"
+            />
+          </ProtectedRole>
+        }
+      />
 
 
       {/* =========================
@@ -615,7 +922,9 @@ export default function App() {
 
       <Route
         path="/prototype"
-        element={<PrototypeWorkspacePage />}
+        element={
+          <PrototypeWorkspacePage />
+        }
       />
 
 
@@ -625,7 +934,12 @@ export default function App() {
 
       <Route
         path="*"
-        element={<Navigate to="/" replace />}
+        element={
+          <Navigate
+            to="/"
+            replace
+          />
+        }
       />
 
     </Routes>
