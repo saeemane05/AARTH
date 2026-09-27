@@ -5,7 +5,7 @@ from statistics import median
 from typing import Any
 
 from backend.auth.service import _client, profile_for_user
-from ProfitLoss.market_rates import (
+from backend.ProfitLoss.market_rates import (
     MSAMB_CODE_TO_MR,
     _get_cached_prices,
     _set_cached_prices,
@@ -15,7 +15,7 @@ from ProfitLoss.market_rates import (
     MAIN_PAGE,
     HEADERS,
 )
-from ProfitLoss.travel_expense import haversine, load_apmc_data
+from backend.ProfitLoss.travel_expense import haversine, load_apmc_data
 
 ENGINE_VERSION = "MATCH_V1"
 PRICE_TOLERANCE_RATIO = 0.12

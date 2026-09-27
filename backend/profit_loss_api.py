@@ -26,16 +26,6 @@ PROFIT_LOSS_CACHE_TTL_SEC = 15 * 60
 MARKET_RATES_CACHE_TTL_SEC = 15 * 60
 
 
-_BACKEND_DIR = os.path.dirname(
-    os.path.abspath(__file__)
-)
-
-sys.path.insert(
-    0,
-    _BACKEND_DIR,
-)
-
-
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(
         encoding="utf-8",
@@ -53,17 +43,17 @@ try:
     # AARTH Market Intelligence Engine
     # Single source of truth: backend/ProfitLoss/
 
-    from ProfitLoss.profit_loss import (
+    from backend.ProfitLoss.profit_loss import (
         calculate_net_profit
     )
 
-    from ProfitLoss.market_rates import (
+    from backend.ProfitLoss.market_rates import (
         fetch_msamb_data,
         crop_master,
         MSAMB_CODE_TO_MR,
     )
 
-    from ProfitLoss.market_trend_analysis import (
+    from backend.ProfitLoss.market_trend_analysis import (
         fetch_nearby_market_data
     )
 

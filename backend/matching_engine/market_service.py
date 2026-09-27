@@ -4,8 +4,8 @@ from datetime import date
 
 import pandas as pd
 
-from ProfitLoss.market_rates import fetch_msamb_data
-from ProfitLoss.travel_expense import haversine, load_apmc_data
+from backend.ProfitLoss.market_rates import fetch_msamb_data
+from backend.ProfitLoss.travel_expense import haversine, load_apmc_data
 
 
 def live_market_prices(
