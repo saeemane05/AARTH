@@ -76,6 +76,9 @@ const farmerConfig = {
       label: "Weather",
       icon: "cloud",
     },
+    { label: "Operations", icon: "grid" },
+    { label: "Rejected Recovery", icon: "recovery" },
+    { label: "Residue", icon: "leaf" },
     {
       label: "Support",
       icon: "headset",
@@ -216,7 +219,7 @@ const farmerConfig = {
     "visual-farmer",
 
   visualImage:
-    "/farmer-apmc-market.png",
+    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Lov.png?width=1200",
 
   visualIcon: "🌾",
 

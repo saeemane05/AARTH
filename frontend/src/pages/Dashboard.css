@@ -1962,3 +1962,147 @@ select {
     margin-right: -14px;
   }
 }
+
+
+/* SIH presentation refinement — shared Farmer / Storage profile language */
+.portal-header{min-height:116px;padding:16px 0;position:relative;}
+.portal-header h1{font-size:28px;}.portal-header p{font-size:14px;line-height:1.5;}.portal-tagline{font-size:12px;}
+.portal-brand img{width:82px;height:82px}.portal-brand strong{font-size:25px}.portal-brand small{font-size:7px}.portal-sidebar nav button,.logout{font-size:13px;padding:13px 12px}.role-dashboard-strip > div{min-height:72px;padding:13px 15px}.strip-label{font-size:10px}.role-dashboard-strip strong{font-size:15px}.form-card,.profile-aside .readiness-card,.profile-aside .tip-card,.profile-aside .quick-card{font-size:14px}.form-title h2{font-size:30px}.form-description{font-size:14px}.details-box h3{font-size:21px}.field-grid label,.profile-field{font-size:13px}.field-grid input,.field-grid select,.profile-field input,.profile-field select,.profile-field textarea{font-size:14px;padding:13px}.stepper small{font-size:12px}.readiness-card h3{font-size:20px}.readiness-card p,.tip-card p,.quick-card p{font-size:13px;line-height:1.5}.role-visual{min-height:280px;background-size:cover;background-position:center;}.role-storage .role-visual{background-image:linear-gradient(160deg,rgba(58,44,70,.18),rgba(54,40,68,.76)),url("https://blog.fleetx.ai/content/images/2026/04/ChatGPT-Image-Apr-13--2026--12_13_15-PM.png");}
+.role-storage .role-dashboard-strip > div:last-child,.role-farmer .role-dashboard-strip > div:last-child{position:relative}.role-storage .role-dashboard-strip > div:last-child::after,.role-farmer .role-dashboard-strip > div:last-child::after{content:"✓ VERIFIED DEMO";display:inline-flex;margin-left:9px;padding:5px 8px;border-radius:999px;background:#e4f6ec;color:#166b45;font-size:9px;font-weight:900;letter-spacing:.35px;vertical-align:middle;}
+@media(max-width:900px){.portal-header{min-height:105px}.portal-header h1{font-size:24px}.role-dashboard-strip strong{font-size:14px}}
+
+
+/* =========================================================
+   SIH26193 DASHBOARD PRESENTATION REFINEMENT
+   Additive only: existing dashboard logic/layout is preserved.
+========================================================= */
+.role-demo-verified {
+  display:inline-flex;
+  align-items:center;
+  margin-top:10px;
+  padding:7px 11px;
+  border-radius:999px;
+  background:#eaf8ef;
+  border:1px solid #b9ddc7;
+  color:#08764d;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.03em;
+}
+
+/* Make the existing RoleProfile dashboards much easier to read. */
+.onboarding .portal-sidebar nav button { font-size:14px; }
+.onboarding .portal-sidebar nav button span { font-size:18px; }
+.onboarding .portal-header h1 { font-size:32px; }
+.onboarding .portal-header p { font-size:15px; }
+.onboarding .form-title h2 { font-size:31px; }
+.onboarding .form-description { font-size:15px; line-height:1.65; }
+.onboarding .profile-field { font-size:14px; }
+.onboarding .profile-field input,
+.onboarding .profile-field select,
+.onboarding .profile-field textarea { font-size:14px; padding:13px; }
+.onboarding .profile-aside h3 { font-size:19px; }
+.onboarding .profile-aside p { font-size:13px; line-height:1.6; }
+
+/* Storage gets the same dashboard language with its own muted accent. */
+.role-storage .portal-sidebar {
+  background:#3f504c;
+}
+.role-storage .portal-sidebar nav button.active,
+.role-storage .portal-sidebar nav button:hover {
+  background:#596b67;
+}
+.role-storage .portal-sidebar .role-sidebar-title {
+  color:#dce7e3;
+}
+.role-storage .redesigned-primary,
+.role-storage .continue {
+  background:#596b67 !important;
+  border-color:#596b67 !important;
+}
+.role-storage .readiness-progress-track span {
+  background:#596b67 !important;
+}
+.role-storage .maharashtra-badge {
+  color:#596b67;
+}
+.role-storage .farmer-hero-image {
+  background-size:cover !important;
+  background-position:center !important;
+}
+.role-storage .farmer-hero-image::after {
+  content:"✓ VERIFIED STORAGE PARTNER · SIH26193 DEMO";
+  position:absolute;
+  right:22px;
+  top:18px;
+  z-index:5;
+  padding:8px 11px;
+  border-radius:999px;
+  background:#eaf8ef;
+  color:#08764d;
+  font-size:10px;
+  font-weight:900;
+  box-shadow:0 6px 16px rgba(0,0,0,.12);
+}
+.role-storage .redesigned-form-card,
+.role-storage .details-box {
+  border-color:#d9e3df;
+}
+
+/* Farmer hero: clearly identify the demo and use the existing farm/market art. */
+.role-farmer .farmer-welcome-hero::after {
+  content:"✓ VERIFIED FARMER · SIH26193 DEMO";
+  position:absolute;
+  right:24px;
+  top:18px;
+  z-index:5;
+  padding:8px 11px;
+  border-radius:999px;
+  background:#eaf8ef;
+  color:#08764d;
+  font-size:10px;
+  font-weight:900;
+  box-shadow:0 6px 16px rgba(0,0,0,.10);
+}
+
+/* Generic role visual: keep the real agricultural photograph prominent. */
+.role-storage .role-visual img,
+.role-farmer .role-visual img {
+  object-fit:cover;
+}
+
+@media(max-width:700px){
+  .role-farmer .farmer-welcome-hero::after,
+  .role-storage .farmer-hero-image::after { right:12px; top:12px; font-size:9px; }
+  .role-demo-verified { font-size:10px; }
+}
+
+/* =========================================================
+   AARTH FARMER — LIVE SERVICE MARQUEE
+   Additive only. Existing dashboard styles remain intact.
+========================================================= */
+.farmer-service-marquee{height:78px;background:#fff;border-bottom:1px solid #dce9e4;overflow:hidden;position:relative;z-index:3}.farmer-service-marquee-track{display:flex;flex-wrap:nowrap;width:max-content;height:100%;will-change:transform;animation:farmer-service-marquee 24s linear infinite}.farmer-service-marquee:hover .farmer-service-marquee-track{animation-play-state:paused}.farmer-service-marquee-item{width:260px;min-width:260px;display:flex;align-items:center;gap:11px;padding:0 26px;border-right:1px solid #e2ebe8;white-space:nowrap;box-sizing:border-box}.farmer-service-marquee-item>i{width:34px;height:34px;display:grid;place-items:center;flex:0 0 34px;border:1px solid #cfe3dc;border-radius:10px;background:#f1faf7;color:#148272;font-size:18px;font-style:normal}.farmer-service-marquee-item span{display:grid;gap:2px}.farmer-service-marquee-item strong{font-size:13px;color:#163f38}.farmer-service-marquee-item small{font-size:9px;color:#7c908a}@keyframes farmer-service-marquee{from{transform:translate3d(0,0,0)}to{transform:translate3d(-1560px,0,0)}}
+
+/* Farmer dashboard presentation refinement. */
+.role-farmer .aarth-main-nav{gap:7px}.role-farmer .aarth-main-nav button{padding:10px 14px;font-size:15px;white-space:nowrap}.role-farmer .aarth-main-nav button span{letter-spacing:.05px}.role-farmer .redesigned-farmer-main{padding-top:4px}.role-farmer .farmer-welcome-hero{margin-top:0}.role-farmer .farmer-welcome-hero::after{content:"LIVE MARKET LINKAGE · UPDATED 2 MIN AGO";position:absolute;right:22px;top:16px;z-index:4;padding:7px 10px;border-radius:999px;background:#ffffffdc;color:#0c776b;font-size:8px;font-weight:900;letter-spacing:.8px;box-shadow:0 6px 15px #124d4120}
+@media(max-width:1100px){.farmer-service-marquee-item{width:220px;padding:0 18px}.role-farmer .aarth-main-nav button{font-size:13px;padding:9px 11px}}
+@media(max-width:700px){.farmer-service-marquee{height:68px}.farmer-service-marquee-item{width:205px}.farmer-service-marquee-item strong{font-size:11px}.farmer-service-marquee-item small{font-size:8px}.role-farmer .farmer-welcome-hero::after{right:10px;top:10px;font-size:7px}.role-farmer .aarth-main-nav button{font-size:12px}}
+
+/* AARTH service rail: seamless right-to-left marquee */
+.role-farmer .farmer-service-marquee{height:86px;background:rgba(255,255,255,.97);box-shadow:0 8px 24px rgba(26,77,62,.05);mask-image:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%);}
+.role-farmer .farmer-service-marquee-track{will-change:transform;animation:farmer-service-marquee 30s linear infinite;}
+.role-farmer .farmer-service-marquee-item{width:270px;height:86px;padding:0 28px;gap:13px;}
+.role-farmer .farmer-service-marquee-item>i{width:38px;height:38px;border-radius:11px;font-size:19px;}
+.role-farmer .farmer-service-marquee-item strong{font-size:14px;}
+.role-farmer .farmer-service-marquee-item small{font-size:10px;}
+@keyframes farmer-service-marquee{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(-50%,0,0)}}
+
+/* Storage workspace: stronger service navigation and operational presentation */
+.role-storage .portal-sidebar{background:linear-gradient(180deg,#5b4c68,#463a50);box-shadow:10px 0 30px rgba(50,35,66,.08)}
+.role-storage .portal-sidebar nav button{font-size:14px;min-height:48px;border-radius:11px;margin:3px 10px;}
+.role-storage .portal-sidebar nav button.active,.role-storage .portal-sidebar nav button:hover{background:rgba(255,255,255,.13);color:#fff;}
+.role-storage .portal-main{background:linear-gradient(180deg,#faf8fb,#f2eef5);}
+.role-storage .portal-header{border-radius:20px;box-shadow:0 12px 32px rgba(76,58,92,.08);}
+.role-storage .role-dashboard-strip{border-radius:16px;box-shadow:0 10px 24px rgba(76,58,92,.06);}
+.role-storage .form-card,.role-storage .readiness-card,.role-storage .tip-card,.role-storage .quick-card{border-radius:16px;box-shadow:0 10px 28px rgba(76,58,92,.06);}
+.role-storage .portal-content{gap:20px;}

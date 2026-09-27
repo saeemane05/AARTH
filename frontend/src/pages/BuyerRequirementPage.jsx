@@ -6,6 +6,7 @@ import { ALL_AARTH_CROPS } from "../data/farmerCropMaster";
 import { hasVarietyChoices, varietiesForCrop } from "../data/cropVarieties";
 import logo from "../assets/aarth-logo.png";
 import "./BuyerRequirementPage.css";
+import { demoRequirements } from "../data/prototypeData";
 
 const empty = {
   commodity_key: "",
@@ -82,13 +83,12 @@ export default function BuyerRequirementPage() {
         buyerRequirementApi.list(),
       ]);
       setProfile(me);
-      setItems(result.requirements || []);
+      setItems((result.requirements || []).length ? result.requirements : demoRequirements.map((r) => ({
+        requirement_id: r.id, commodity_name: r.crop, variety: r.variety, quantity: r.quantity, quantity_unit: "ton", quality_grade: r.grade, size_calibre: r.size, delivery_location: r.location, delivery_end_date: r.deadline, status: "ACTIVE", target_price: 0,
+      })));
     } catch (reason) {
-      setError(
-        reason.message?.includes("503")
-          ? "Buyer requirement service is temporarily unavailable. Please try again."
-          : "Unable to load your requirements. Please try again.",
-      );
+      setItems(demoRequirements.map((r) => ({ requirement_id: r.id, commodity_name: r.crop, variety: r.variety, quantity: r.quantity, quantity_unit: "ton", quality_grade: r.grade, size_calibre: r.size, delivery_location: r.location, delivery_end_date: r.deadline, status: "ACTIVE", target_price: 0 })));
+      setError("Live requirement service unavailable — showing SIH prototype requirements.");
     } finally {
       setLoading(false);
     }
@@ -645,6 +645,53 @@ export default function BuyerRequirementPage() {
     try { await buyerRequirementApi.delete(id); setItems((current) => current.filter((item) => item.requirement_id !== id)); setNotice("Draft requirement deleted."); }
     catch (reason) { setError(reason.message || "Unable to delete this requirement."); }
   };
+  const start = (item = null) => {
+    if (item) {
+      setEditing(item);
+      setForm({
+        ...empty,
+        commodity_key: item.commodity_key || "",
+        commodity_name: item.commodity_name || "",
+        variety: item.variety || "",
+        quantity: item.quantity ?? "",
+        quantity_unit: item.quantity_unit || "ton",
+        quality_grade: item.quality_grade || "Any",
+        size_calibre: item.size_calibre || "",
+        quality_requirements: item.quality_requirements || "",
+        delivery_location: item.delivery_location || "",
+        delivery_district: item.delivery_district || "",
+        delivery_taluka: item.delivery_taluka || "",
+        delivery_city: item.delivery_city || "",
+        delivery_latitude: item.delivery_latitude ?? null,
+        delivery_longitude: item.delivery_longitude ?? null,
+        location_source: item.location_source || "MANUAL_SEARCH",
+        location_verified: Boolean(item.location_verified),
+        location_verified_at: item.location_verified_at || null,
+        location_accuracy_m: item.location_accuracy_m || null,
+        delivery_start_date: item.delivery_start_date || "",
+        delivery_end_date: item.delivery_end_date || "",
+        packaging_requirement: item.packaging_requirement || "No specific requirement",
+        target_price: item.target_price ?? "",
+        target_price_min: item.target_price_min ?? "",
+        target_price_max: item.target_price_max ?? "",
+        target_price_unit: item.target_price_unit || "INR_PER_QUINTAL",
+        price_mode: item.price_mode || "PREFERRED_RANGE",
+        open_to_market_pricing: Boolean(item.open_to_market_pricing),
+        additional_requirements: item.additional_requirements || "",
+      });
+      setLocationSearch(item.delivery_location || "");
+    } else {
+      setEditing(null);
+      setForm({ ...empty });
+      setCropSearch("");
+      setLocationSearch("");
+      setLocations([]);
+    }
+    setError("");
+    setNotice("");
+    setStep(0);
+  };
+
   const nav = (item) =>
     item === "Home"
       ? navigate("/buyer")
@@ -709,6 +756,8 @@ export default function BuyerRequirementPage() {
             setCropSearch={setCropSearch}
             locations={locations}
             selectLocation={selectLocation}
+            verifyEnteredLocation={verifyEnteredLocation}
+            captureLiveLocation={captureLiveLocation}
             locationSearch={locationSearch}
             setLocationSearch={setLocationSearch}
             valid={valid}
@@ -860,6 +909,8 @@ function Form(props) {
     setCropSearch,
     locations,
     selectLocation,
+    verifyEnteredLocation,
+    captureLiveLocation,
     locationSearch,
     setLocationSearch,
     valid,

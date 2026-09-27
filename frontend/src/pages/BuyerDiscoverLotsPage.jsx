@@ -4,6 +4,7 @@ import { authApi, buyerRequirementApi } from "../api/auth";
 import { matchingEngineApi } from "../api/matchingEngine";
 import logo from "../assets/aarth-logo.png";
 import "./MarketplaceDiscovery.css";
+import { demoLots, demoRequirements } from "../data/prototypeData";
 
 const unit = { kg: "kg", quintal: "quintal", ton: "MT" };
 const quantity = (item) => item?.quantity ? `${Number(item.quantity).toLocaleString("en-IN")} ${unit[item.quantity_unit] || item.quantity_unit}` : "—";
@@ -29,15 +30,44 @@ export default function BuyerDiscoverLotsPage() {
     try {
       const [me, reqResult] = await Promise.all([authApi.me(), buyerRequirementApi.list()]);
       const active = (reqResult.requirements || []).filter((x) => x.status === "ACTIVE");
-      setProfile(me); setRequirements(active);
-      const requirementId = selectedRequirement || active[0]?.requirement_id || "";
+      setProfile(me);
+      if (!active.length) {
+        const mockRequirements = demoRequirements.map((r, index) => ({
+          requirement_id: r.id, commodity_name: r.crop, variety: r.variety, quantity: r.quantity, quantity_unit: "ton",
+          quality_grade: r.grade, size_calibre: r.size, delivery_location: r.location, delivery_end_date: r.deadline, status: "ACTIVE",
+        }));
+        setRequirements(mockRequirements);
+      } else {
+        setRequirements(active);
+      }
+      const requirementId = selectedRequirement || active[0]?.requirement_id || demoRequirements[0].id;
       if (requirementId && !selectedRequirement) setSelectedRequirement(requirementId);
-      if (requirementId) {
+      if (active.length && requirementId) {
         const result = await matchingEngineApi.buyerLots({ requirementId, limit: 80 });
-        setItems(result.items || []);
-      } else setItems([]);
+        if (result.items?.length) setItems(result.items);
+        else setItems([]);
+      } else {
+        const items = demoLots.map((lot) => ({
+          lot_id: lot.id,
+          lot: { commodity_name: lot.commodity, variety: lot.variety, pickup_district: lot.district, pickup_village: lot.farmer.village, quantity: lot.qty, quantity_unit: "ton", expected_price: lot.price, grade: lot.grade, size_calibre: lot.size, market_status: "OPEN", evidence_status: "SUBMITTED", available_from: "2026-09-28", pickup_until: "2026-10-05" },
+          seller: { name: lot.farmer.name, district: lot.district },
+          score_percent: lot.match, match_type: lot.mode === "Pooled candidate" ? "AGGREGATED" : "DIRECT", distance_km: lot.distance,
+          factors: { quantity_fit: lot.match / 100, quality_fit: lot.match / 100, location_fit: Math.max(.65, lot.match / 100 - .03) },
+          explanations: [
+            { label: "Quantity", value: lot.mode === "Pooled candidate" ? "Suitable as part of a pooled lot" : `${lot.qty} ${lot.unit} available` },
+            { label: "Quality", value: `${lot.grade} · ${lot.size}` },
+            { label: "Seller", value: "KYC verified farmer / FPO member" },
+          ],
+        }));
+        setItems(items);
+      }
       setLastSync(new Date()); setError("");
-    } catch (reason) { setError(reason.message || "Unable to load live farmer lots."); }
+    } catch (reason) {
+      const mockRequirements = demoRequirements.map((r) => ({ requirement_id: r.id, commodity_name: r.crop, variety: r.variety, quantity: r.quantity, quantity_unit: "ton", quality_grade: r.grade, size_calibre: r.size, delivery_location: r.location, delivery_end_date: r.deadline, status: "ACTIVE" }));
+      setRequirements(mockRequirements);
+      setItems(demoLots.map((lot) => ({ lot_id: lot.id, lot: { commodity_name: lot.commodity, variety: lot.variety, pickup_district: lot.district, pickup_village: lot.farmer.village, quantity: lot.qty, quantity_unit: "ton", expected_price: lot.price, grade: lot.grade, size_calibre: lot.size, market_status: "OPEN", evidence_status: "SUBMITTED", available_from: "2026-09-28", pickup_until: "2026-10-05" }, seller: { name: lot.farmer.name, district: lot.district }, score_percent: lot.match, match_type: lot.mode === "Pooled candidate" ? "AGGREGATED" : "DIRECT", distance_km: lot.distance, factors: { quantity_fit: lot.match / 100, quality_fit: lot.match / 100, location_fit: Math.max(.65, lot.match / 100 - .03) }, explanations: [{ label: "Quantity", value: lot.mode === "Pooled candidate" ? "Suitable as part of a pooled lot" : `${lot.qty} ${lot.unit} available` }, { label: "Quality", value: `${lot.grade} · ${lot.size}` }, { label: "Seller", value: "KYC verified farmer / FPO member" }] })));
+      setLastSync(new Date()); setError(`Live matching unavailable — showing SIH prototype data (${reason.message || "demo mode"}).`);
+    }
     finally { setLoading(false); }
   };
   useEffect(() => { load(); const timer = setInterval(load, 8000); const onFocus = () => load(); window.addEventListener("focus", onFocus); return () => { clearInterval(timer); window.removeEventListener("focus", onFocus); }; }, [selectedRequirement]);

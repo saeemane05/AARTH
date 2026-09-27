@@ -1,0 +1,4076 @@
+* {
+
+  box-sizing: border-box;
+
+}
+
+
+
+.aarth-home {
+
+  width: 100%;
+
+  min-height: 100vh;
+
+  background: #ffffff;
+
+  color: #12344d;
+
+  font-family:
+
+    Inter,
+
+    system-ui,
+
+    -apple-system,
+
+    BlinkMacSystemFont,
+
+    "Segoe UI",
+
+    sans-serif;
+
+  overflow-x: hidden;
+
+}
+
+
+
+.aarth-home a {
+
+  text-decoration: none;
+
+}
+
+
+
+.aarth-navbar {
+
+  height: 72px;
+
+  width: 100%;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #e9eeee;
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 100;
+
+}
+
+
+
+.aarth-nav-inner {
+
+  width: min(1450px, 94%);
+
+  height: 100%;
+
+  margin: auto;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+}
+
+
+
+.aarth-logo {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  min-width: 150px;
+
+}
+
+
+
+.aarth-logo-mark {
+
+  font-size: 30px;
+
+}
+
+
+
+.aarth-logo-name {
+
+  color: #078552;
+
+  font-size: 25px;
+
+  font-weight: 900;
+
+  line-height: 20px;
+
+}
+
+
+
+.aarth-logo-tagline {
+
+  color: #60747b;
+
+  font-size: 7px;
+
+  font-weight: 700;
+
+  margin-top: 3px;
+
+}
+
+
+
+.aarth-nav-links {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 24px;
+
+  flex: 1;
+
+}
+
+
+
+.aarth-nav-links a {
+
+  color: #28495a;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  transition: 0.2s;
+
+}
+
+
+
+.aarth-nav-links a:hover {
+
+  color: #008b59;
+
+}
+
+
+
+.aarth-nav-right {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+}
+
+
+
+.language-button {
+
+  border: 0;
+
+  background: transparent;
+
+  color: #334d58;
+
+  font-size: 11px;
+
+  cursor: pointer;
+
+}
+
+
+
+.search-icon {
+
+  font-size: 22px;
+
+  color: #46616b;
+
+}
+
+
+
+.nav-login,
+
+.nav-register {
+
+  padding: 10px 18px;
+
+  border-radius: 6px;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+}
+
+
+
+.nav-login {
+
+  border: 1px solid #0a7c58;
+
+  color: #075f45;
+
+  background: #ffffff;
+
+}
+
+
+
+.nav-register {
+
+  background: #087f59;
+
+  color: #ffffff;
+
+}
+
+
+
+
+
+/* HERO */
+
+
+
+.aarth-hero {
+
+  position: relative;
+
+  min-height: 500px;
+
+  background-size: cover;
+
+  background-position: center;
+
+  display: flex;
+
+  align-items: center;
+
+  overflow: hidden;
+
+}
+
+
+
+.aarth-hero-overlay {
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+
+    linear-gradient(
+
+      90deg,
+
+      rgba(3, 40, 48, 0.93) 0%,
+
+      rgba(3, 53, 56, 0.78) 34%,
+
+      rgba(4, 55, 55, 0.28) 66%,
+
+      rgba(0, 0, 0, 0.12) 100%
+
+    );
+
+}
+
+
+
+.aarth-hero-content {
+
+  width: min(1450px, 94%);
+
+  margin: auto;
+
+  position: relative;
+
+  z-index: 2;
+
+  padding: 80px 0;
+
+}
+
+
+
+.hero-eyebrow {
+
+  color: #d9ede4;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.4px;
+
+  margin-bottom: 20px;
+
+}
+
+
+
+.aarth-hero h1 {
+
+  color: white;
+
+  font-size: clamp(46px, 5vw, 72px);
+
+  line-height: 1.02;
+
+  margin: 0;
+
+  font-weight: 900;
+
+  letter-spacing: -2px;
+
+}
+
+
+
+.aarth-hero p {
+
+  max-width: 590px;
+
+  color: #f2f7f5;
+
+  font-size: 16px;
+
+  line-height: 1.5;
+
+  margin: 22px 0 28px;
+
+}
+
+
+
+.hero-buttons {
+
+  display: flex;
+
+  gap: 15px;
+
+}
+
+
+
+.hero-primary-button,
+
+.hero-secondary-button {
+
+  padding: 15px 27px;
+
+  border-radius: 6px;
+
+  font-weight: 800;
+
+  font-size: 13px;
+
+}
+
+
+
+.hero-primary-button {
+
+  background: #008d5d;
+
+  color: white;
+
+}
+
+
+
+.hero-secondary-button {
+
+  color: white;
+
+  border: 1px solid rgba(255, 255, 255, 0.7);
+
+}
+
+
+
+.hero-quote-card {
+
+  position: absolute;
+
+  right: 7%;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  z-index: 3;
+
+  background: rgba(255, 255, 255, 0.94);
+
+  border-radius: 7px;
+
+  padding: 20px 25px;
+
+  min-width: 220px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+}
+
+
+
+.quote-marathi {
+
+  color: #245c49;
+
+  font-size: 18px;
+
+  line-height: 1.35;
+
+  font-weight: 800;
+
+}
+
+
+
+.quote-brand {
+
+  color: #008354;
+
+  font-size: 12px;
+
+  font-weight: 900;
+
+  margin-top: 10px;
+
+}
+
+
+
+
+
+/* QUICK STRIP */
+
+
+
+.aarth-quick-strip {
+
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns: repeat(6, 1fr);
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #e7eeee;
+
+}
+
+
+
+.quick-item {
+
+  min-height: 105px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  border-right: 1px solid #e7eeee;
+
+}
+
+
+
+.quick-icon {
+
+  font-size: 28px;
+
+}
+
+
+
+.quick-title {
+
+  color: #163d51;
+
+  font-weight: 900;
+
+  font-size: 12px;
+
+}
+
+
+
+.quick-subtitle {
+
+  color: #71838a;
+
+  font-size: 9px;
+
+  margin-top: 4px;
+
+}
+
+
+
+
+
+/* TRUST */
+
+
+
+.aarth-trust-strip {
+
+  background: #fafafa;
+
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  min-height: 120px;
+
+  border-bottom: 1px solid #eeeeee;
+
+}
+
+
+
+.trust-item {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-direction: column;
+
+  gap: 3px;
+
+  border-right: 1px solid #eeeeee;
+
+  color: #233e4b;
+
+  text-align: center;
+
+}
+
+
+
+.trust-item strong {
+
+  font-size: 19px;
+
+}
+
+
+
+.trust-item span,
+
+.trust-item b {
+
+  font-size: 12px;
+
+}
+
+
+
+.trust-item small {
+
+  color: #829197;
+
+  font-size: 9px;
+
+}
+
+
+
+.g20-text {
+
+  color: #087b60;
+
+}
+
+
+
+.startup-text {
+
+  color: #e56a2e;
+
+}
+
+
+
+
+
+/* COMMON */
+
+
+
+.aarth-section {
+
+  width: min(1380px, 92%);
+
+  margin: auto;
+
+  padding: 95px 0;
+
+}
+
+
+
+.aarth-section-label {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #00845a;
+
+  font-size: 11px;
+
+  font-weight: 900;
+
+  margin-bottom: 15px;
+
+}
+
+
+
+.aarth-section-label span {
+
+  width: 19px;
+
+  height: 2px;
+
+  background: #00845a;
+
+}
+
+
+
+.aarth-section h2 {
+
+  color: #123b57;
+
+  font-size: clamp(30px, 3vw, 43px);
+
+  line-height: 1.1;
+
+  margin: 0;
+
+  font-weight: 900;
+
+  letter-spacing: -1px;
+
+}
+
+
+
+.section-description {
+
+  color: #61757e;
+
+  font-size: 15px;
+
+  margin-top: 12px;
+
+}
+
+
+
+
+
+/* MISSION */
+
+
+
+.mission-section {
+
+  display: grid;
+
+  grid-template-columns: 0.9fr 1.1fr;
+
+  gap: 80px;
+
+  align-items: center;
+
+}
+
+
+
+.mission-content p,
+
+.insights-content p {
+
+  color: #61747b;
+
+  font-size: 15px;
+
+  line-height: 1.65;
+
+  max-width: 570px;
+
+  margin: 24px 0;
+
+}
+
+
+
+.green-button {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  background: #008b59;
+
+  color: white;
+
+  padding: 14px 22px;
+
+  border-radius: 5px;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+}
+
+
+
+.mission-image-container {
+
+  position: relative;
+
+}
+
+
+
+.mission-image-container img {
+
+  width: 100%;
+
+  height: 420px;
+
+  object-fit: cover;
+
+  border-radius: 9px;
+
+}
+
+
+
+.mission-image-quote {
+
+  position: absolute;
+
+  top: 30px;
+
+  left: 35px;
+
+  background: rgba(255, 255, 255, 0.93);
+
+  padding: 17px 22px;
+
+  border-radius: 8px;
+
+  color: #235d49;
+
+}
+
+
+
+.mission-image-quote strong {
+
+  font-size: 16px;
+
+  line-height: 1.5;
+
+}
+
+
+
+.mission-image-quote span {
+
+  display: block;
+
+  margin-top: 8px;
+
+  color: #078653;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+}
+
+
+
+
+
+/* IMPACT */
+
+
+
+.impact-strip {
+
+  width: min(1380px, 92%);
+
+  margin: -25px auto 30px;
+
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 20px;
+
+}
+
+
+
+.impact-item {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  color: #1a4b4a;
+
+  font-size: 11px;
+
+}
+
+
+
+.impact-item span {
+
+  font-size: 23px;
+
+}
+
+
+
+
+
+/* PROCESS */
+
+
+
+.process-section {
+
+  text-align: center;
+
+}
+
+
+
+.process-section .aarth-section-label {
+
+  justify-content: center;
+
+}
+
+
+
+.process-container {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: center;
+
+  margin-top: 55px;
+
+  gap: 15px;
+
+}
+
+
+
+.process-step {
+
+  width: 180px;
+
+}
+
+
+
+.process-circle {
+
+  width: 58px;
+
+  height: 58px;
+
+  border-radius: 50%;
+
+  margin: auto;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 23px;
+
+  background: #087e5a;
+
+  color: white;
+
+  border: 5px solid #e6f5ef;
+
+}
+
+
+
+.step-3 {
+
+  background: #2685d7;
+
+}
+
+
+
+.step-5 {
+
+  background: #ef7c20;
+
+}
+
+
+
+.process-number {
+
+  width: 24px;
+
+  height: 24px;
+
+  margin: 8px auto;
+
+  background: #087e5a;
+
+  color: white;
+
+  border-radius: 50%;
+
+  font-size: 11px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-weight: 800;
+
+}
+
+
+
+.process-step h3 {
+
+  font-size: 14px;
+
+  color: #143e55;
+
+  margin: 8px 0;
+
+}
+
+
+
+.process-step p {
+
+  color: #77878d;
+
+  font-size: 10px;
+
+  line-height: 1.4;
+
+}
+
+
+
+.process-arrow {
+
+  font-size: 25px;
+
+  color: #6f8d8d;
+
+  padding-top: 20px;
+
+}
+
+
+
+.process-detail-button {
+
+  display: inline-block;
+
+  margin-top: 40px;
+
+  padding: 12px 24px;
+
+  border: 1px solid #4b9183;
+
+  border-radius: 5px;
+
+  color: #174b55;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+}
+
+
+
+
+
+/* FEATURES */
+
+
+
+.features-section {
+
+  text-align: center;
+
+  background: #fbfdfc;
+
+}
+
+
+
+.features-section .aarth-section-label {
+
+  justify-content: center;
+
+}
+
+
+
+.feature-grid {
+
+  margin-top: 40px;
+
+  display: grid;
+
+  grid-template-columns: repeat(6, 1fr);
+
+  gap: 14px;
+
+}
+
+
+
+.feature-card {
+
+  background: white;
+
+  border: 1px solid #e4eaea;
+
+  border-radius: 8px;
+
+  overflow: hidden;
+
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+
+  text-align: left;
+
+}
+
+
+
+.feature-image {
+
+  height: 150px;
+
+}
+
+
+
+.feature-image img {
+
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+
+}
+
+
+
+.feature-card-body {
+
+  padding: 13px;
+
+}
+
+
+
+.feature-card h3 {
+
+  color: #143e55;
+
+  font-size: 11px;
+
+  margin: 0 0 7px;
+
+}
+
+
+
+.feature-card p {
+
+  color: #7b898e;
+
+  font-size: 9px;
+
+  line-height: 1.4;
+
+  margin: 0;
+
+}
+
+
+
+
+
+/* INSIGHTS */
+
+
+
+.insights-section {
+
+  display: grid;
+
+  grid-template-columns: 0.8fr 1.2fr;
+
+  gap: 70px;
+
+  align-items: center;
+
+}
+
+
+
+.insight-image-container {
+
+  position: relative;
+
+}
+
+
+
+.insight-image-container img {
+
+  width: 100%;
+
+  height: 300px;
+
+  border-radius: 9px;
+
+  object-fit: cover;
+
+}
+
+
+
+.insight-card {
+
+  position: absolute;
+
+  left: 40px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  background: rgba(255, 255, 255, 0.94);
+
+  padding: 20px 25px;
+
+  border-radius: 8px;
+
+  min-width: 260px;
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+
+}
+
+
+
+.insight-title {
+
+  color: #008659;
+
+  font-size: 11px;
+
+  font-weight: 900;
+
+  margin-bottom: 15px;
+
+}
+
+
+
+.insight-card strong {
+
+  color: #183e54;
+
+  font-size: 17px;
+
+}
+
+
+
+.insight-card p {
+
+  color: #637780;
+
+  font-size: 11px;
+
+  margin: 7px 0 10px;
+
+}
+
+
+
+.insight-card a {
+
+  color: #00875a;
+
+  font-size: 10px;
+
+  font-weight: 900;
+
+}
+
+
+
+
+
+/* STATISTICS */
+
+
+
+.statistics-strip {
+
+  background: #eff9f4;
+
+  min-height: 110px;
+
+  display: grid;
+
+  grid-template-columns: repeat(5, 1fr);
+
+  align-items: center;
+
+  padding: 20px 5%;
+
+}
+
+
+
+.stat-item {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 12px;
+
+}
+
+
+
+.stat-item > span {
+
+  font-size: 27px;
+
+}
+
+
+
+.stat-item strong {
+
+  display: block;
+
+  color: #153e54;
+
+  font-size: 18px;
+
+}
+
+
+
+.stat-item small {
+
+  color: #71848b;
+
+  font-size: 9px;
+
+}
+
+
+
+
+
+/* TESTIMONIALS */
+
+
+
+.testimonials-section {
+
+  text-align: center;
+
+}
+
+
+
+.testimonials-section .aarth-section-label {
+
+  justify-content: center;
+
+}
+
+
+
+.testimonial-wrapper {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 35px;
+
+  margin-top: 40px;
+
+}
+
+
+
+.testimonial-card {
+
+  width: min(700px, 90%);
+
+  padding: 35px 55px;
+
+  background: white;
+
+  border: 1px solid #e7eeee;
+
+  border-radius: 10px;
+
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+
+  position: relative;
+
+}
+
+
+
+.quote-mark {
+
+  position: absolute;
+
+  top: 15px;
+
+  left: 25px;
+
+  font-size: 40px;
+
+  color: #0b9164;
+
+  font-weight: 900;
+
+}
+
+
+
+.testimonial-card p {
+
+  color: #5e7078;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+
+}
+
+
+
+.testimonial-card strong {
+
+  color: #183e53;
+
+  font-size: 11px;
+
+}
+
+
+
+.testimonial-arrow {
+
+  width: 40px;
+
+  height: 40px;
+
+  border: 1px solid #d4dfe1;
+
+  border-radius: 50%;
+
+  background: white;
+
+  color: #789097;
+
+  font-size: 25px;
+
+  cursor: pointer;
+
+}
+
+
+
+.testimonial-dots {
+
+  margin-top: 20px;
+
+  display: flex;
+
+  justify-content: center;
+
+  gap: 6px;
+
+}
+
+
+
+.testimonial-dots button {
+
+  width: 7px;
+
+  height: 7px;
+
+  border: 0;
+
+  padding: 0;
+
+  border-radius: 50%;
+
+  background: #c8d5d5;
+
+  cursor: pointer;
+
+}
+
+
+
+.testimonial-dots button.active {
+
+  background: #008a5b;
+
+}
+
+
+
+
+
+/* CTA */
+
+
+
+.aarth-cta {
+
+  position: relative;
+
+  min-height: 250px;
+
+  background-position: center;
+
+  background-size: cover;
+
+  display: flex;
+
+  align-items: center;
+
+}
+
+
+
+.cta-overlay {
+
+  position: absolute;
+
+  inset: 0;
+
+  background: linear-gradient(
+
+    90deg,
+
+    rgba(2, 49, 48, 0.96),
+
+    rgba(2, 65, 52, 0.55),
+
+    rgba(0, 0, 0, 0.2)
+
+  );
+
+}
+
+
+
+.cta-content {
+
+  position: relative;
+
+  z-index: 2;
+
+  width: min(1380px, 92%);
+
+  margin: auto;
+
+}
+
+
+
+.cta-content h2 {
+
+  color: white;
+
+  font-size: 35px;
+
+  margin: 0 0 10px;
+
+}
+
+
+
+.cta-content p {
+
+  color: #e2eeea;
+
+  font-size: 14px;
+
+  max-width: 470px;
+
+  line-height: 1.5;
+
+}
+
+
+
+.cta-buttons {
+
+  display: flex;
+
+  gap: 12px;
+
+  margin-top: 20px;
+
+}
+
+
+
+.cta-login,
+
+.cta-register {
+
+  padding: 13px 30px;
+
+  border-radius: 5px;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+}
+
+
+
+.cta-login {
+
+  border: 1px solid white;
+
+  color: white;
+
+}
+
+
+
+.cta-register {
+
+  background: white;
+
+  color: #075c49;
+
+}
+
+
+
+
+
+/* FOOTER */
+
+
+
+.aarth-footer {
+
+  background: white;
+
+}
+
+
+
+.footer-main {
+
+  width: min(1380px, 92%);
+
+  margin: auto;
+
+  padding: 55px 0 45px;
+
+  display: grid;
+
+  grid-template-columns: 1.7fr repeat(4, 1fr);
+
+  gap: 35px;
+
+}
+
+
+
+.footer-logo {
+
+  color: #078652;
+
+  font-size: 24px;
+
+  font-weight: 900;
+
+}
+
+
+
+.footer-brand p {
+
+  color: #718189;
+
+  font-size: 10px;
+
+  margin-top: 4px;
+
+}
+
+
+
+.footer-column {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+
+}
+
+
+
+.footer-column h4 {
+
+  color: #183d52;
+
+  font-size: 12px;
+
+  margin: 0 0 4px;
+
+}
+
+
+
+.footer-column a {
+
+  color: #71818a;
+
+  font-size: 10px;
+
+}
+
+
+
+.social-icons {
+
+  display: flex;
+
+  gap: 13px;
+
+}
+
+
+
+.social-icons span {
+
+  color: #153d55;
+
+  font-size: 15px;
+
+  font-weight: 900;
+
+}
+
+
+
+.footer-bottom {
+
+  border-top: 1px solid #eeeeee;
+
+  width: min(1380px, 92%);
+
+  margin: auto;
+
+  padding: 20px 0;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  color: #74848a;
+
+  font-size: 9px;
+
+}
+
+
+
+
+
+/* RESPONSIVE */
+
+
+
+@media (max-width: 1100px) {
+
+
+
+  .aarth-nav-links {
+
+    gap: 12px;
+
+  }
+
+
+
+  .aarth-nav-links a {
+
+    font-size: 10px;
+
+  }
+
+
+
+  .feature-grid {
+
+    grid-template-columns: repeat(3, 1fr);
+
+  }
+
+
+
+  .quick-item {
+
+    padding: 15px;
+
+  }
+
+
+
+  .mission-section,
+
+  .insights-section {
+
+    gap: 35px;
+
+  }
+
+}
+
+
+
+
+
+@media (max-width: 800px) {
+
+
+
+  .aarth-navbar {
+
+    height: auto;
+
+  }
+
+
+
+  .aarth-nav-inner {
+
+    flex-wrap: wrap;
+
+    padding: 12px 0;
+
+  }
+
+
+
+  .aarth-nav-links {
+
+    order: 3;
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    justify-content: flex-start;
+
+    padding-bottom: 5px;
+
+  }
+
+
+
+  .aarth-nav-right {
+
+    margin-left: auto;
+
+  }
+
+
+
+  .aarth-hero {
+
+    min-height: 600px;
+
+  }
+
+
+
+  .hero-quote-card {
+
+    display: none;
+
+  }
+
+
+
+  .aarth-quick-strip {
+
+    grid-template-columns: repeat(2, 1fr);
+
+  }
+
+
+
+  .aarth-trust-strip {
+
+    grid-template-columns: repeat(2, 1fr);
+
+  }
+
+
+
+  .mission-section,
+
+  .insights-section {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+
+  .impact-strip {
+
+    grid-template-columns: repeat(2, 1fr);
+
+  }
+
+
+
+  .process-container {
+
+    flex-wrap: wrap;
+
+  }
+
+
+
+  .process-arrow {
+
+    display: none;
+
+  }
+
+
+
+  .feature-grid {
+
+    grid-template-columns: repeat(2, 1fr);
+
+  }
+
+
+
+  .statistics-strip {
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 25px;
+
+  }
+
+
+
+  .footer-main {
+
+    grid-template-columns: repeat(2, 1fr);
+
+  }
+
+
+
+  .footer-bottom {
+
+    flex-direction: column;
+
+    gap: 10px;
+
+  }
+
+}
+
+
+
+
+
+@media (max-width: 520px) {
+
+
+
+  .aarth-logo-name {
+
+    font-size: 21px;
+
+  }
+
+
+
+  .language-button,
+
+  .search-icon {
+
+    display: none;
+
+  }
+
+
+
+  .nav-login,
+
+  .nav-register {
+
+    padding: 8px 12px;
+
+  }
+
+
+
+  .aarth-hero h1 {
+
+    font-size: 42px;
+
+  }
+
+
+
+  .hero-eyebrow {
+
+    font-size: 8px;
+
+  }
+
+
+
+  .aarth-hero p {
+
+    font-size: 13px;
+
+  }
+
+
+
+  .aarth-section {
+
+    padding: 65px 0;
+
+  }
+
+
+
+  .feature-grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+
+  .impact-strip {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+
+  .statistics-strip {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+
+  .footer-main {
+
+    grid-template-columns: 1fr;
+
+  }
+
+}
+
+
+
+
+
+/* =========================================================
+
+   AARTH OFFICIAL HOMEPAGE — LARGE DESKTOP REFERENCE SCALE
+
+   These overrides intentionally keep the complete existing
+
+   homepage structure while matching the supplied reference
+
+   image's proportions and visual density.
+
+   ========================================================= */
+
+
+
+.aarth-home {
+
+  width: 100%;
+
+  min-width: 320px;
+
+  background: #ffffff;
+
+  color: #12344d;
+
+  overflow-x: hidden;
+
+}
+
+
+
+.aarth-navbar {
+
+  height: 76px;
+
+}
+
+
+
+.aarth-nav-inner {
+
+  width: min(1560px, 94vw);
+
+  gap: 28px;
+
+}
+
+
+
+.aarth-logo {
+
+  min-width: 210px;
+
+}
+
+
+
+.aarth-logo-image {
+
+  width: 176px;
+
+  height: auto;
+
+  display: block;
+
+  object-fit: contain;
+
+}
+
+
+
+.aarth-logo-copy {
+
+  display: none;
+
+}
+
+
+
+.aarth-nav-links {
+
+  gap: clamp(18px, 1.6vw, 34px);
+
+}
+
+
+
+.aarth-nav-links a {
+
+  font-size: 13px;
+
+}
+
+
+
+.aarth-nav-right {
+
+  gap: 12px;
+
+}
+
+
+
+.language-button {
+
+  font-size: 12px;
+
+}
+
+
+
+.nav-login,
+
+.nav-register {
+
+  padding: 11px 20px;
+
+  font-size: 12px;
+
+}
+
+
+
+.aarth-hero {
+
+  min-height: 540px;
+
+  background-position: center center;
+
+}
+
+
+
+.aarth-hero-content {
+
+  width: min(1560px, 94vw);
+
+  padding: 105px 0;
+
+}
+
+
+
+.hero-eyebrow {
+
+  font-size: 12px;
+
+  letter-spacing: .65px;
+
+  margin-bottom: 22px;
+
+}
+
+
+
+.aarth-hero h1 {
+
+  font-size: clamp(52px, 5.3vw, 82px);
+
+  line-height: .99;
+
+  letter-spacing: -2.7px;
+
+}
+
+
+
+.aarth-hero p {
+
+  max-width: 650px;
+
+  font-size: 17px;
+
+  line-height: 1.55;
+
+  margin: 25px 0 32px;
+
+}
+
+
+
+.hero-primary-button,
+
+.hero-secondary-button {
+
+  padding: 16px 30px;
+
+  font-size: 14px;
+
+}
+
+
+
+.hero-quote-card {
+
+  right: 6.5%;
+
+  min-width: 235px;
+
+  padding: 23px 28px;
+
+}
+
+
+
+.quote-marathi {
+
+  font-size: 19px;
+
+}
+
+
+
+.aarth-quick-strip {
+
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+
+}
+
+
+
+.quick-item {
+
+  min-height: 116px;
+
+  padding: 18px 22px;
+
+  gap: 13px;
+
+}
+
+
+
+.quick-icon {
+
+  font-size: 30px;
+
+}
+
+
+
+.quick-title {
+
+  font-size: 13px;
+
+}
+
+
+
+.quick-subtitle {
+
+  font-size: 10px;
+
+}
+
+
+
+.aarth-trust-strip {
+
+  min-height: 132px;
+
+}
+
+
+
+.trust-item strong {
+
+  font-size: 21px;
+
+}
+
+
+
+.trust-item span,
+
+.trust-item b {
+
+  font-size: 13px;
+
+}
+
+
+
+.trust-item small {
+
+  font-size: 10px;
+
+}
+
+
+
+.aarth-section {
+
+  width: min(1500px, 92vw);
+
+  padding: 110px 0;
+
+}
+
+
+
+.aarth-section-label {
+
+  font-size: 12px;
+
+  margin-bottom: 18px;
+
+}
+
+
+
+.aarth-section-label span {
+
+  width: 23px;
+
+}
+
+
+
+.aarth-section h2 {
+
+  font-size: clamp(34px, 3.1vw, 50px);
+
+  line-height: 1.08;
+
+}
+
+
+
+.section-description {
+
+  font-size: 16px;
+
+  margin-top: 15px;
+
+}
+
+
+
+.mission-section {
+
+  grid-template-columns: .86fr 1.14fr;
+
+  gap: 90px;
+
+}
+
+
+
+.mission-content p,
+
+.insights-content p {
+
+  max-width: 600px;
+
+  font-size: 16px;
+
+  line-height: 1.7;
+
+  margin: 27px 0;
+
+}
+
+
+
+.green-button {
+
+  padding: 15px 25px;
+
+  font-size: 13px;
+
+}
+
+
+
+.mission-image-container img {
+
+  height: 455px;
+
+}
+
+
+
+.mission-image-quote {
+
+  top: 32px;
+
+  left: 36px;
+
+  padding: 18px 23px;
+
+}
+
+
+
+.mission-image-quote strong {
+
+  font-size: 17px;
+
+}
+
+
+
+.impact-strip {
+
+  width: min(1500px, 92vw);
+
+  margin: -32px auto 42px;
+
+  gap: 28px;
+
+}
+
+
+
+.impact-item {
+
+  font-size: 12px;
+
+}
+
+
+
+.impact-item span {
+
+  font-size: 26px;
+
+}
+
+
+
+.process-container {
+
+  margin-top: 62px;
+
+  gap: 25px;
+
+}
+
+
+
+.process-step {
+
+  width: 210px;
+
+}
+
+
+
+.process-circle {
+
+  width: 66px;
+
+  height: 66px;
+
+  font-size: 25px;
+
+}
+
+
+
+.process-number {
+
+  width: 26px;
+
+  height: 26px;
+
+  font-size: 12px;
+
+}
+
+
+
+.process-step h3 {
+
+  font-size: 16px;
+
+  margin: 10px 0;
+
+}
+
+
+
+.process-step p {
+
+  font-size: 11px;
+
+  line-height: 1.5;
+
+}
+
+
+
+.process-arrow {
+
+  font-size: 29px;
+
+  padding-top: 24px;
+
+}
+
+
+
+.process-detail-button {
+
+  margin-top: 45px;
+
+  padding: 14px 28px;
+
+  font-size: 12px;
+
+}
+
+
+
+.features-section {
+
+  width: 100%;
+
+  padding-left: max(4vw, 30px);
+
+  padding-right: max(4vw, 30px);
+
+}
+
+
+
+.features-section > .aarth-section-label,
+
+.features-section > h2,
+
+.features-section > .section-description,
+
+.feature-grid {
+
+  width: min(1500px, 92vw);
+
+  margin-left: auto;
+
+  margin-right: auto;
+
+}
+
+
+
+.feature-grid {
+
+  margin-top: 44px;
+
+  gap: 18px;
+
+}
+
+
+
+.feature-card {
+
+  border-radius: 10px;
+
+}
+
+
+
+.feature-image {
+
+  height: 178px;
+
+}
+
+
+
+.feature-card-body {
+
+  padding: 15px;
+
+}
+
+
+
+.feature-card h3 {
+
+  font-size: 12px;
+
+  line-height: 1.3;
+
+  margin-bottom: 8px;
+
+}
+
+
+
+.feature-card p {
+
+  font-size: 10px;
+
+  line-height: 1.5;
+
+}
+
+
+
+.insights-section {
+
+  grid-template-columns: .78fr 1.22fr;
+
+  gap: 85px;
+
+}
+
+
+
+.insight-image-container img {
+
+  height: 345px;
+
+}
+
+
+
+.insight-card {
+
+  left: 45px;
+
+  min-width: 300px;
+
+  padding: 23px 28px;
+
+}
+
+
+
+.insight-title {
+
+  font-size: 12px;
+
+  margin-bottom: 17px;
+
+}
+
+
+
+.insight-card strong {
+
+  font-size: 19px;
+
+}
+
+
+
+.insight-card p {
+
+  font-size: 12px;
+
+}
+
+
+
+.insight-card a {
+
+  font-size: 11px;
+
+}
+
+
+
+.statistics-strip {
+
+  min-height: 125px;
+
+  padding: 24px 4vw;
+
+}
+
+
+
+.stat-item {
+
+  gap: 14px;
+
+}
+
+
+
+.stat-item > span {
+
+  font-size: 30px;
+
+}
+
+
+
+.stat-item strong {
+
+  font-size: 21px;
+
+}
+
+
+
+.stat-item small {
+
+  font-size: 10px;
+
+}
+
+
+
+.testimonial-wrapper {
+
+  margin-top: 46px;
+
+  gap: 42px;
+
+}
+
+
+
+.testimonial-card {
+
+  width: min(760px, 90%);
+
+  padding: 40px 62px;
+
+}
+
+
+
+.testimonial-card p {
+
+  font-size: 14px;
+
+}
+
+
+
+.testimonial-card strong {
+
+  font-size: 12px;
+
+}
+
+
+
+.testimonial-arrow {
+
+  width: 44px;
+
+  height: 44px;
+
+}
+
+
+
+.aarth-cta {
+
+  min-height: 285px;
+
+}
+
+
+
+.cta-content {
+
+  width: min(1500px, 92vw);
+
+}
+
+
+
+.cta-content h2 {
+
+  font-size: 42px;
+
+}
+
+
+
+.cta-content p {
+
+  font-size: 15px;
+
+  max-width: 540px;
+
+}
+
+
+
+.cta-login,
+
+.cta-register {
+
+  padding: 14px 34px;
+
+  font-size: 13px;
+
+}
+
+
+
+.footer-main {
+
+  width: min(1500px, 92vw);
+
+  padding: 68px 0 55px;
+
+  gap: 50px;
+
+}
+
+
+
+.footer-logo-link {
+
+  display: inline-flex;
+
+  align-items: center;
+
+}
+
+
+
+.footer-logo-image {
+
+  width: 170px;
+
+  height: auto;
+
+  display: block;
+
+  object-fit: contain;
+
+}
+
+
+
+.footer-brand p {
+
+  font-size: 11px;
+
+}
+
+
+
+.footer-column h4 {
+
+  font-size: 13px;
+
+}
+
+
+
+.footer-column a {
+
+  font-size: 11px;
+
+}
+
+
+
+.footer-bottom {
+
+  width: min(1500px, 92vw);
+
+  padding: 22px 0;
+
+  font-size: 10px;
+
+}
+
+
+
+
+
+/* Keep the reference composition intact at normal laptops. */
+
+@media (max-width: 1280px) {
+
+  .aarth-nav-inner {
+
+    width: 94vw;
+
+    gap: 16px;
+
+  }
+
+
+
+  .aarth-logo {
+
+    min-width: 170px;
+
+  }
+
+
+
+  .aarth-logo-image {
+
+    width: 150px;
+
+  }
+
+
+
+  .aarth-nav-links {
+
+    gap: 13px;
+
+  }
+
+
+
+  .aarth-nav-links a {
+
+    font-size: 11px;
+
+  }
+
+
+
+  .aarth-section {
+
+    width: 92vw;
+
+  }
+
+
+
+  .feature-grid {
+
+    width: 92vw;
+
+  }
+
+}
+
+
+
+
+
+/* Tablet */
+
+@media (max-width: 900px) {
+
+  .aarth-navbar {
+
+    height: auto;
+
+  }
+
+
+
+  .aarth-nav-inner {
+
+    flex-wrap: wrap;
+
+    padding: 12px 0;
+
+  }
+
+
+
+  .aarth-logo-image {
+
+    width: 145px;
+
+  }
+
+
+
+  .aarth-nav-links {
+
+    order: 3;
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    justify-content: flex-start;
+
+    padding-bottom: 6px;
+
+  }
+
+
+
+  .aarth-nav-right {
+
+    margin-left: auto;
+
+  }
+
+
+
+  .aarth-hero {
+
+    min-height: 610px;
+
+  }
+
+
+
+  .aarth-hero-content {
+
+    padding: 100px 0;
+
+  }
+
+
+
+  .hero-quote-card {
+
+    display: none;
+
+  }
+
+
+
+  .aarth-quick-strip {
+
+    grid-template-columns: repeat(3, 1fr);
+
+  }
+
+
+
+  .aarth-trust-strip {
+
+    grid-template-columns: repeat(2, 1fr);
+
+  }
+
+
+
+  .mission-section,
+
+  .insights-section {
+
+    grid-template-columns: 1fr;
+
+    gap: 45px;
+
+  }
+
+
+
+  .mission-image-container img {
+
+    height: 420px;
+
+  }
+
+
+
+  .process-container {
+
+    flex-wrap: wrap;
+
+  }
+
+
+
+  .process-arrow {
+
+    display: none;
+
+  }
+
+
+
+  .feature-grid {
+
+    grid-template-columns: repeat(3, 1fr);
+
+  }
+
+
+
+  .statistics-strip {
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 28px;
+
+  }
+
+}
+
+
+
+
+
+/* Mobile */
+
+@media (max-width: 560px) {
+
+  .aarth-nav-inner {
+
+    width: 92vw;
+
+  }
+
+
+
+  .aarth-logo-image {
+
+    width: 125px;
+
+  }
+
+
+
+  .nav-login,
+
+  .nav-register {
+
+    padding: 9px 12px;
+
+  }
+
+
+
+  .aarth-hero {
+
+    min-height: 610px;
+
+  }
+
+
+
+  .aarth-hero-content {
+
+    width: 92vw;
+
+    padding: 90px 0 75px;
+
+  }
+
+
+
+  .hero-eyebrow {
+
+    font-size: 8px;
+
+  }
+
+
+
+  .aarth-hero h1 {
+
+    font-size: 42px;
+
+  }
+
+
+
+  .aarth-hero p {
+
+    font-size: 13px;
+
+  }
+
+
+
+  .aarth-quick-strip {
+
+    grid-template-columns: repeat(2, 1fr);
+
+  }
+
+
+
+  .aarth-trust-strip {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+
+  .aarth-section {
+
+    width: 90vw;
+
+    padding: 72px 0;
+
+  }
+
+
+
+  .feature-grid {
+
+    width: 90vw;
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+
+  .statistics-strip {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+
+  .footer-main {
+
+    width: 90vw;
+
+    grid-template-columns: 1fr 1fr;
+
+  }
+
+
+
+  .footer-bottom {
+
+    width: 90vw;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+  }
+
+}
+
+
+
+
+
+/* SIH26193 direct-access layer */
+
+.sih-access-section{padding:78px 7%;background:#f5f8f4;border-top:1px solid #dce7dc;border-bottom:1px solid #dce7dc}
+
+.sih-access-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;max-width:1280px;margin:0 auto 32px}
+
+.sih-access-heading h2{margin:12px 0 10px;font-size:clamp(34px,4vw,54px);line-height:1.05;color:#123b2c}
+
+.sih-access-heading p{max-width:760px;margin:0;color:#617069;line-height:1.75;font-size:16px}
+
+.sih-access-badge{min-width:180px;padding:20px 22px;border:1px solid #b9d0bd;background:#fff;box-shadow:0 12px 35px rgba(20,62,38,.08)}
+
+.sih-access-badge span,.sih-access-badge small{display:block;color:#6a7a72;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+
+.sih-access-badge strong{display:block;margin:6px 0;font-size:25px;color:#0c6b46;letter-spacing:.04em}
+
+.sih-role-grid{max-width:1280px;margin:auto;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+
+.sih-role-card{appearance:none;border:1px solid #d5e1d6;background:#fff;text-align:left;padding:20px;display:flex;align-items:center;gap:14px;min-height:118px;cursor:pointer;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;background-image:linear-gradient(135deg,rgba(255,255,255,1),rgba(247,251,247,1));font:inherit;color:inherit}
+
+.sih-role-card:hover{transform:translateY(-5px);border-color:#75a986;box-shadow:0 18px 38px rgba(21,91,55,.13)}
+
+.sih-role-icon{width:48px;height:48px;display:grid;place-items:center;flex:0 0 48px;border:1px solid #c9ddce;color:#176b49;background:#f0f7f1}
+
+.sih-role-copy{min-width:0;flex:1}.sih-role-copy strong{display:block;font-size:18px;color:#173d2d}.sih-role-copy small{display:block;margin-top:5px;color:#6d7b74;line-height:1.4}.sih-role-arrow{color:#176b49;transition:transform .2s ease}.sih-role-card:hover .sih-role-arrow{transform:translateX(4px)}
+
+.aarth-search-panel{position:fixed;inset:0;z-index:1000;background:rgba(8,35,25,.62);backdrop-filter:blur(8px);display:grid;place-items:start center;padding:130px 24px 24px}.aarth-search-box{width:min(760px,100%);background:#fff;padding:42px;box-shadow:0 30px 80px rgba(0,0,0,.25)}.aarth-search-box h2{margin:12px 0 24px;color:#173c2c;font-size:36px}.aarth-search-box input{width:100%;box-sizing:border-box;border:1px solid #cdd8d0;padding:17px 18px;font:inherit;outline:none}.aarth-search-box input:focus{border-color:#2d8056;box-shadow:0 0 0 3px rgba(45,128,86,.1)}.aarth-search-close{position:absolute;right:28px;top:28px;background:#fff;border:1px solid #d1dbd4;padding:10px 16px;cursor:pointer;font:inherit}.search-icon{display:grid;place-items:center;border:0;background:transparent;cursor:pointer;color:inherit;padding:6px}
+
+@media (max-width:1050px){.sih-role-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.sih-access-heading{align-items:flex-start;flex-direction:column}.sih-access-badge{min-width:unset}}
+
+@media (max-width:700px){.sih-access-section{padding:55px 5%}.sih-role-grid{grid-template-columns:1fr}.sih-role-card{min-height:96px}.aarth-search-box{padding:28px}.aarth-search-box h2{font-size:28px}}
+
+/* =========================================================
+   AARTH SIH REFINEMENT OVERRIDES
+   IMPORTANT: the complete original homepage CSS above is preserved.
+   Only the requested visual refinements are added below.
+   ========================================================= */
+
+.aarth-navbar {
+  position: relative;
+  z-index: 120;
+}
+
+.aarth-hero {
+  min-height: 500px;
+  align-items: center;
+  background-position: center 28%;
+}
+
+.aarth-hero-content {
+  padding: 66px 0 74px;
+  max-width: 1560px;
+}
+
+.hero-farmer-card {
+  position: absolute;
+  z-index: 4;
+  right: 5.5%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(390px, 30vw);
+  min-width: 300px;
+  height: 360px;
+  overflow: hidden;
+  border: 7px solid rgba(255,255,255,.94);
+  background: #e9f2ec;
+  box-shadow: 0 24px 60px rgba(0,0,0,.22);
+}
+
+.hero-farmer-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.hero-farmer-card-caption {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  padding: 13px 15px;
+  background: rgba(5, 42, 35, .88);
+  border-left: 4px solid #f1a33c;
+  color: #fff;
+}
+
+.hero-farmer-card-caption span {
+  display: block;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .14em;
+}
+
+.hero-farmer-card-caption strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 19px;
+  line-height: 1.2;
+}
+
+.hero-primary-button {
+  position: relative;
+  overflow: visible;
+  box-shadow: 0 0 0 0 rgba(0, 141, 93, .48);
+  animation: aarthPrimaryGlow 1.8s ease-in-out infinite;
+}
+
+.hero-primary-button::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border: 2px solid rgba(0, 141, 93, .45);
+  border-radius: 9px;
+  animation: aarthPrimaryRing 1.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes aarthPrimaryGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,141,93,.42), 0 10px 24px rgba(0,80,55,.12); }
+  50% { box-shadow: 0 0 0 9px rgba(0,141,93,.08), 0 14px 34px rgba(0,80,55,.25); }
+}
+
+@keyframes aarthPrimaryRing {
+  0%, 100% { opacity: .35; transform: scale(1); }
+  50% { opacity: .95; transform: scale(1.035); }
+}
+
+/* Larger, clearer homepage typography without deleting the original scale system. */
+.quick-title { font-size: 14px; }
+.quick-subtitle { font-size: 11px; }
+.aarth-section-label { font-size: 13px; }
+.section-description { font-size: 17px; }
+.feature-card h3 { font-size: 14px; }
+.feature-card p { font-size: 11px; }
+.process-step h3 { font-size: 17px; }
+.process-step p { font-size: 12px; }
+.stat-item strong { font-size: 22px; }
+.stat-item small { font-size: 11px; }
+.footer-column h4 { font-size: 14px; }
+.footer-column a { font-size: 11px; }
+
+/* Indian role imagery section used by the SIH direct demonstration. */
+.sih-role-visual {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #d7e2da;
+  background: #eaf2ed;
+}
+
+.sih-role-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Direct-demo verification indicator. */
+.sih-verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+  border: 1px solid #b9dec9;
+  background: #effaf3;
+  color: #0b7549;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .02em;
+}
+
+/* Responsive hero image. */
+@media (max-width: 1050px) {
+  .hero-farmer-card {
+    right: 3%;
+    width: 32vw;
+    min-width: 260px;
+    height: 320px;
+  }
+
+  .aarth-hero-content {
+    padding-right: 34vw;
+  }
+}
+
+@media (max-width: 800px) {
+  .hero-farmer-card {
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: none;
+    width: min(520px, 92vw);
+    height: 260px;
+    margin: 20px auto 0;
+  }
+
+  .aarth-hero-content {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero-farmer-card {
+    min-width: 0;
+    width: 92vw;
+    height: 230px;
+  }
+
+  .hero-farmer-card-caption strong {
+    font-size: 16px;
+  }
+}
+
+
+/* =========================================================
+   FINAL SIH 26193 UI FIXES
+   These are additive overrides; the original HomePage.css above
+   is intentionally preserved.
+========================================================= */
+.aarth-navbar { min-height: 70px; }
+.aarth-nav-inner { min-height: 70px; }
+.aarth-logo { display:flex; align-items:center; gap:9px; }
+.aarth-logo-image {
+  width: 58px !important;
+  height: 58px !important;
+  object-fit: contain !important;
+  display:block !important;
+  flex:0 0 58px;
+}
+.aarth-logo-mark { display:none !important; }
+
+.aarth-hero {
+  min-height: 500px !important;
+  height: 500px !important;
+  align-items: center !important;
+  background-position: center 42% !important;
+}
+.aarth-hero-content {
+  position:relative;
+  z-index:5;
+  padding-top: 42px !important;
+  padding-bottom: 42px !important;
+  padding-right: 420px !important;
+}
+.hero-farmer-card {
+  display:block !important;
+  position:absolute !important;
+  z-index:6 !important;
+  right:5.2% !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  width:min(410px,31vw) !important;
+  min-width:310px !important;
+  height:385px !important;
+  border:6px solid rgba(255,255,255,.96) !important;
+  border-radius:18px !important;
+  overflow:hidden !important;
+  background:#e8f1eb !important;
+  box-shadow:0 25px 65px rgba(0,0,0,.27) !important;
+}
+.hero-farmer-card img {
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+  object-position:center !important;
+}
+.hero-farmer-card-caption {
+  left:18px !important;
+  right:18px !important;
+  bottom:18px !important;
+  padding:13px 15px !important;
+  background:rgba(5,42,35,.90) !important;
+  border-left:4px solid #f1a33c !important;
+}
+.hero-farmer-card-caption span { font-size:10px !important; }
+.hero-farmer-card-caption strong { font-size:20px !important; }
+
+.hero-primary-button {
+  position:relative !important;
+  z-index:7 !important;
+  animation: aarthPrimaryGlowFinal 1.7s ease-in-out infinite !important;
+}
+.hero-primary-button::after {
+  content:"" !important;
+  position:absolute !important;
+  inset:-7px !important;
+  border:2px solid rgba(119,255,166,.60) !important;
+  border-radius:10px !important;
+  pointer-events:none !important;
+  animation: aarthPrimaryRingFinal 1.7s ease-in-out infinite !important;
+}
+@keyframes aarthPrimaryGlowFinal {
+  0%,100% { box-shadow:0 0 0 0 rgba(98,255,154,.16),0 8px 25px rgba(0,0,0,.12); }
+  50% { box-shadow:0 0 0 9px rgba(98,255,154,.10),0 0 38px rgba(98,255,154,.70); }
+}
+@keyframes aarthPrimaryRingFinal {
+  0%,100% { opacity:.35; transform:scale(1); }
+  50% { opacity:1; transform:scale(1.035); }
+}
+
+/* Stronger readable homepage type. */
+.aarth-hero h1 { font-size:clamp(48px,5.6vw,78px) !important; }
+.aarth-hero p { font-size:18px !important; line-height:1.65 !important; }
+.quick-title { font-size:15px !important; }
+.quick-subtitle { font-size:12px !important; }
+.aarth-section h2 { font-size:clamp(34px,4vw,52px); }
+.feature-card h3 { font-size:16px !important; }
+.feature-card p { font-size:13px !important; line-height:1.55 !important; }
+.process-step h3 { font-size:18px !important; }
+.process-step p { font-size:13px !important; }
+.stat-item strong { font-size:24px !important; }
+.stat-item small { font-size:12px !important; }
+
+@media (max-width:1050px) {
+  .aarth-hero { height:auto !important; min-height:620px !important; }
+  .aarth-hero-content { padding-right:35vw !important; }
+  .hero-farmer-card { width:33vw !important; min-width:270px !important; height:330px !important; right:2.5% !important; }
+}
+@media (max-width:800px) {
+  .aarth-hero { height:auto !important; min-height:760px !important; }
+  .aarth-hero-content { padding-right:0 !important; padding-bottom:20px !important; }
+  .hero-farmer-card {
+    position:relative !important;
+    right:auto !important;
+    top:auto !important;
+    transform:none !important;
+    width:min(560px,92vw) !important;
+    min-width:0 !important;
+    height:280px !important;
+    margin:10px auto 0 !important;
+  }
+}
+@media (max-width:560px) {
+  .aarth-logo-image { width:50px !important; height:50px !important; flex-basis:50px; }
+  .aarth-logo-name { font-size:21px !important; }
+  .aarth-hero { min-height:700px !important; }
+  .hero-farmer-card { width:92vw !important; height:235px !important; }
+}
+
+
+/* =========================================================
+   AARTH SIH 26193 — FINAL HOMEPAGE PRESENTATION OVERRIDES
+   ADDITIVE ONLY: existing homepage styles remain above.
+   ========================================================= */
+
+/* 1. Compact, single AARTH logo in the navbar.
+   The source logo image already contains the emblem + AARTH wordmark,
+   so the duplicate text block is hidden instead of deleting its JSX. */
+.aarth-logo {
+  min-width: 130px !important;
+  width: 130px !important;
+  gap: 0 !important;
+  overflow: visible !important;
+}
+
+.aarth-logo-image {
+  width: 64px !important;
+  height: 64px !important;
+  max-width: 64px !important;
+  max-height: 64px !important;
+  object-fit: contain !important;
+  display: block !important;
+  flex: 0 0 44px !important;
+}
+
+.aarth-logo > div {
+  display: none !important;
+}
+
+/* 2. Better desktop alignment. */
+.aarth-navbar {
+  height: 64px !important;
+  min-height: 64px !important;
+}
+
+.aarth-nav-inner {
+  height: 64px !important;
+  min-height: 64px !important;
+  width: min(1500px, 94vw) !important;
+}
+
+.aarth-nav-links {
+  gap: 28px !important;
+}
+
+.aarth-nav-links a {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+}
+
+.aarth-nav-right {
+  gap: 11px !important;
+}
+
+.nav-login,
+.nav-register {
+  font-size: 13px !important;
+}
+
+/* 3. Hero — prevent content/card overlap. */
+.aarth-hero {
+  min-height: 505px !important;
+  height: 505px !important;
+  position: relative !important;
+  overflow: hidden !important;
+  background-position: center center !important;
+}
+
+.aarth-hero-content {
+  width: min(1500px, 94vw) !important;
+  margin: 0 auto !important;
+  padding: 54px 470px 52px 0 !important;
+  position: relative !important;
+  z-index: 8 !important;
+}
+
+.aarth-hero h1 {
+  font-size: clamp(48px, 5.2vw, 76px) !important;
+  line-height: 1.02 !important;
+  letter-spacing: -2.8px !important;
+}
+
+.aarth-hero-content > p {
+  font-size: 17px !important;
+  line-height: 1.65 !important;
+  max-width: 690px !important;
+}
+
+.hero-eyebrow {
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  letter-spacing: .06em !important;
+}
+
+/* 4. Indian Maharashtra farmer image on the right side of the teal hero. */
+.hero-farmer-card {
+  right: max(3.5%, calc((100vw - 1500px) / 2)) !important;
+  top: 50% !important;
+  width: 360px !important;
+  min-width: 360px !important;
+  height: 350px !important;
+  transform: translateY(-50%) !important;
+  border-radius: 18px !important;
+  border: 6px solid rgba(255,255,255,.96) !important;
+  z-index: 10 !important;
+}
+
+.hero-farmer-card img {
+  object-position: center center !important;
+}
+
+/* 5. Know Our Solution remains the attention CTA. */
+.hero-primary-button {
+  animation: aarthSolutionPulse 1.7s ease-in-out infinite !important;
+  z-index: 12 !important;
+}
+
+@keyframes aarthSolutionPulse {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow: 0 0 0 0 rgba(0,141,93,.12), 0 10px 24px rgba(0,80,55,.12);
+  }
+  50% {
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 8px rgba(0,141,93,.10), 0 0 36px rgba(0,141,93,.55);
+  }
+}
+
+/* 6. Doodle-style icons instead of WhatsApp-style emoji glyphs. */
+.doodle-icon,
+.doodle-process-icon,
+.impact-doodle,
+.stat-doodle,
+.footer-doodle {
+  color: #14764f !important;
+}
+
+.doodle-icon svg,
+.doodle-process-icon svg,
+.impact-doodle svg,
+.stat-doodle svg,
+.footer-doodle svg {
+  display: block;
+}
+
+.quick-icon {
+  display: grid !important;
+  place-items: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  border: 1px solid #cfe0d4 !important;
+  border-radius: 12px !important;
+  background: #f2f8f3 !important;
+}
+
+.process-circle {
+  display: grid !important;
+  place-items: center !important;
+}
+
+.impact-item > span,
+.stat-item > span {
+  display: grid !important;
+  place-items: center !important;
+}
+
+/* 7. Direct SIH role selector shown by Know Our Solution. */
+.sih-access-section {
+  padding: 82px 5vw !important;
+  background: linear-gradient(180deg, #f4f8f5 0%, #ffffff 100%) !important;
+  border-top: 1px solid #dce8df !important;
+  border-bottom: 1px solid #dce8df !important;
+}
+
+.sih-access-heading {
+  width: min(1500px, 94vw) !important;
+  margin: 0 auto 36px !important;
+  align-items: flex-end !important;
+}
+
+.sih-access-heading h2 {
+  font-size: clamp(36px, 4vw, 56px) !important;
+  font-weight: 900 !important;
+  margin: 12px 0 !important;
+}
+
+.sih-access-heading p {
+  font-size: 17px !important;
+  max-width: 820px !important;
+}
+
+.sih-role-grid {
+  width: min(1500px, 94vw) !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+}
+
+.sih-role-card {
+  display: block !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  border-radius: 16px !important;
+  text-decoration: none !important;
+}
+
+.sih-role-visual {
+  position: relative !important;
+  height: 190px !important;
+  border: 0 !important;
+  border-bottom: 1px solid #d7e2da !important;
+}
+
+.sih-role-visual img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.sih-verified-badge {
+  position: absolute !important;
+  left: 12px !important;
+  top: 12px !important;
+  padding: 7px 9px !important;
+  font-size: 10px !important;
+  background: rgba(239,250,243,.96) !important;
+  box-shadow: 0 4px 14px rgba(0,0,0,.08) !important;
+}
+
+.sih-role-copy {
+  padding: 18px !important;
+}
+
+.sih-role-icon {
+  width: 42px !important;
+  height: 42px !important;
+  margin-bottom: 12px !important;
+  border-radius: 11px !important;
+}
+
+.sih-role-copy strong {
+  display: block !important;
+  font-size: 20px !important;
+  line-height: 1.2 !important;
+}
+
+.sih-role-copy small {
+  display: block !important;
+  min-height: 58px !important;
+  margin-top: 8px !important;
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+}
+
+.sih-role-arrow {
+  display: block !important;
+  margin-top: 14px !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+}
+
+/* 8. Larger readable homepage typography. */
+.quick-title { font-size: 15px !important; font-weight: 900 !important; }
+.quick-subtitle { font-size: 12px !important; }
+.aarth-section-label { font-size: 13px !important; font-weight: 900 !important; }
+.aarth-section h2 { font-size: clamp(36px, 4vw, 54px) !important; }
+.section-description { font-size: 17px !important; line-height: 1.7 !important; }
+.feature-card h3 { font-size: 18px !important; }
+.feature-card p { font-size: 13px !important; line-height: 1.6 !important; }
+.process-step h3 { font-size: 18px !important; }
+.process-step p { font-size: 13px !important; line-height: 1.6 !important; }
+.stat-item strong { font-size: 26px !important; }
+.stat-item small { font-size: 12px !important; }
+.footer-column h4 { font-size: 15px !important; }
+.footer-column a { font-size: 13px !important; }
+
+/* 9. Remove the old generic trust strip without deleting its JSX/code. */
+.aarth-trust-strip {
+  display: none !important;
+}
+
+/* 10. Replace the generic feature-image sizing with stronger visual cards. */
+.feature-image {
+  height: 210px !important;
+  overflow: hidden !important;
+}
+
+.feature-image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transition: transform .3s ease !important;
+}
+
+.feature-card:hover .feature-image img {
+  transform: scale(1.04) !important;
+}
+
+/* 11. Final CTA demo action. */
+.cta-demo {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 13px 20px !important;
+  border: 1px solid rgba(255,255,255,.55) !important;
+  color: #fff !important;
+  background: rgba(255,255,255,.12) !important;
+  font-weight: 900 !important;
+  text-decoration: none !important;
+}
+
+/* 12. Responsive role cards and hero. */
+@media (max-width: 1200px) {
+  .sih-role-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+  .aarth-hero-content { padding-right: 410px !important; }
+  .hero-farmer-card { width: 330px !important; min-width: 330px !important; }
+}
+
+@media (max-width: 900px) {
+  .aarth-hero {
+    height: auto !important;
+    min-height: 700px !important;
+  }
+
+  .aarth-hero-content {
+    width: 92vw !important;
+    padding: 48px 0 18px !important;
+  }
+
+  .hero-farmer-card {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    transform: none !important;
+    width: min(560px, 92vw) !important;
+    min-width: 0 !important;
+    height: 280px !important;
+    margin: 12px auto 25px !important;
+  }
+
+  .sih-role-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+
+@media (max-width: 650px) {
+  .aarth-logo-image { width: 56px !important; height: 56px !important; max-width: 56px !important; max-height: 56px !important; flex-basis: 56px !important; }
+  .aarth-nav-links { display: none !important; }
+  .aarth-hero h1 { font-size: 44px !important; letter-spacing: -1.8px !important; }
+  .aarth-hero-content > p { font-size: 15px !important; }
+  .hero-buttons { flex-wrap: wrap !important; }
+  .sih-role-grid { grid-template-columns: 1fr !important; }
+  .sih-access-heading { width: 92vw !important; }
+  .sih-role-grid { width: 92vw !important; }
+}
+
+
+/* =========================================================
+   AARTH — HEADLINE-STYLE SERVICE MARQUEE
+   Two identical six-card sets make the -50% loop seamless.
+========================================================= */
+.aarth-quick-strip{
+  width:100% !important;
+  display:block !important;
+  overflow:hidden !important;
+  position:relative !important;
+  background:#fff !important;
+  border-bottom:1px solid #e7eeee !important;
+  padding:0 !important;
+}
+.aarth-quick-marquee-track{
+  display:flex !important;
+  flex-wrap:nowrap !important;
+  width:max-content !important;
+  min-width:200% !important;
+  will-change:transform;
+  animation:aarthQuickHeadline 24s linear infinite !important;
+}
+.aarth-quick-strip:hover .aarth-quick-marquee-track{
+  animation-play-state:paused !important;
+}
+.aarth-quick-strip .quick-item{
+  flex:0 0 clamp(260px,16.6666667vw,320px) !important;
+  width:clamp(260px,16.6666667vw,320px) !important;
+  min-width:clamp(260px,16.6666667vw,320px) !important;
+  min-height:116px !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:13px !important;
+  padding:18px 22px !important;
+  border-right:1px solid #e7eeee !important;
+  white-space:nowrap !important;
+}
+@keyframes aarthQuickHeadline{
+  from{transform:translate3d(0,0,0)}
+  to{transform:translate3d(-50%,0,0)}
+}
+
+/* Keep the Marathi message beside, rather than underneath/behind, the farmer image. */
+@media (min-width:901px){
+  .hero-quote-card{
+    right:calc(5.5% + min(390px,30vw) + 24px) !important;
+    top:18% !important;
+    transform:none !important;
+    z-index:11 !important;
+    min-width:235px !important;
+    max-width:280px !important;
+  }
+  .hero-farmer-card{z-index:10 !important;}
+}

@@ -11,6 +11,7 @@ import logo from "../assets/aarth-logo.png";
 import LotEvidenceCapture from "../components/LotEvidenceCapture";
 import "./FarmerLotPage.css";
 import "./BuyerEnhancements.css";
+import { demoLots, demoTransactions, tracking } from "../data/prototypeData";
 
 const crops = Object.values(FARMER_CROP_CATEGORIES).flat();
 const initial = {
@@ -131,15 +132,22 @@ export default function FarmerLotPage({ mode = "create" }) {
     if (mode === "list")
       lotApi
         .list()
-        .then((value) => setLots(value.lots || []))
-        .catch((value) => setError(value.message));
+        .then((value) => setLots(value.lots?.length ? value.lots : demoLots.slice(0, 7).map((lot) => ({
+          lot_id: lot.id, commodity_name: lot.commodity, variety: lot.variety, quantity: lot.qty, quantity_unit: lot.unit.toLowerCase(), pickup_village: lot.farmer.village, pickup_district: lot.district, expected_price: lot.price, evidence: Array.from({ length: Number(lot.evidence?.split("/")[0] || 0) }, (_, i) => ({ id: `${lot.id}-e-${i}`, sequence_number: i + 1 })), verification_status: lot.evidence === "5/5" ? "VERIFIED" : "PENDING", evidence_status: "SUBMITTED", status: lot.status === "MATCHED" ? "MATCHED" : "OPEN"
+        }))))
+        .catch(() => setLots(demoLots.slice(0, 7).map((lot) => ({
+          lot_id: lot.id, commodity_name: lot.commodity, variety: lot.variety, quantity: lot.qty, quantity_unit: lot.unit.toLowerCase(), pickup_village: lot.farmer.village, pickup_district: lot.district, expected_price: lot.price, evidence: [], verification_status: "VERIFIED", evidence_status: "SUBMITTED", status: "OPEN"
+        }))));
   }, [mode]);
   useEffect(() => {
     if (mode === "detail" && lotId)
       lotApi
         .get(lotId)
-        .then(setLotDetail)
-        .catch((value) => setError(value.message));
+        .then((value) => setLotDetail(value || demoLots.find((lot) => lot.id === lotId)))
+        .catch(() => {
+          const mock = demoLots.find((lot) => lot.id === lotId) || demoLots[0];
+          setLotDetail(mock ? { ...mock, lot_id: mock.id, commodity_name: mock.commodity, quantity: mock.qty, quantity_unit: mock.unit.toLowerCase(), pickup_village: mock.farmer.village, pickup_district: mock.district, expected_price: mock.price, evidence: [] } : null);
+        });
   }, [mode, lotId]);
   useEffect(() => {
     if (locationSearch.trim().length < 2 || form.location_verified) {
@@ -648,52 +656,50 @@ function LotDetail({ lot, error, navigate }) {
   if (!lot)
     return (
       <section className="lot-table-card lot-empty">
-        <h2>Loading lot evidence...</h2>
+        <h2>Loading lot details...</h2>
       </section>
     );
+  const mock = lot.commodity ? lot : null;
+  const transaction = demoTransactions.find((tx) => tx.lot?.id === lot.lot_id || tx.lot?.id === lot.id);
+  const txStatus = transaction?.status || (mock?.status === "MATCHED" ? "IN_TRANSIT" : "OPEN");
   return (
-    <section className="lot-table-card lot-detail">
-      <button
-        className="lot-secondary-button"
-        onClick={() => navigate("/farmer/lots")}
-      >
-        Back to my lots
-      </button>
-      <div className="lot-page-heading">
-        <div>
-          <span className="lot-eyebrow">LOT EVIDENCE</span>
-          <h1>{lot.commodity_name}</h1>
-          <p>
-            {lot.lot_id} · {lot.quantity} {lot.quantity_unit}
-          </p>
+    <>
+      <section className="lot-table-card lot-detail">
+        <button className="lot-secondary-button" onClick={() => navigate("/farmer/lots")}>← Back to my lots</button>
+        <div className="lot-page-heading">
+          <div>
+            <span className="lot-eyebrow">LOT → OFFER → DELIVERY → PAYMENT</span>
+            <h1>{lot.commodity_name || lot.commodity}</h1>
+            <p>{lot.lot_id || lot.id} · {lot.quantity || lot.qty} {lot.quantity_unit || lot.unit}</p>
+          </div>
+          <span className={`lot-verification ${lot.verification_status === "VERIFIED" || mock?.evidence === "5/5" ? "verified" : "not-verified"}`}>
+            {lot.verification_status === "VERIFIED" || mock?.evidence === "5/5" ? "✓ VERIFIED" : "⚠ DECLARED"}
+          </span>
         </div>
-        <span
-          className={`lot-verification ${lot.verification_status === "VERIFIED" ? "verified" : "not-verified"}`}
-        >
-          {lot.verification_status === "VERIFIED"
-            ? "✓ VERIFIED"
-            : "⚠ NOT VERIFIED"}
-        </span>
-      </div>
-      <h2>Evidence captured</h2>
-      <p>
-        {lot.evidence?.length || 0} photos ·{" "}
-        {lot.evidence_status === "SUBMITTED"
-          ? "Uploaded to AARTH"
-          : "Evidence incomplete"}
-      </p>
-      <div className="lot-detail-evidence">
-        {(lot.evidence || []).map((item) =>
-          item.signed_url ? (
-            <img
-              key={item.id}
-              src={item.signed_url}
-              alt={`Evidence photo ${item.sequence_number}`}
-            />
-          ) : null,
-        )}
-      </div>
-    </section>
+        <div className="farmer-lot-detail-grid">
+          <div><small>QUALITY</small><strong>{lot.grade || mock?.grade || "Grade A"} · {lot.size_calibre || mock?.size || "55–70 mm"}</strong></div>
+          <div><small>PICKUP</small><strong>{lot.pickup_village || mock?.farmer?.village}, {lot.pickup_district || mock?.district}</strong></div>
+          <div><small>EXPECTED PRICE</small><strong>₹{Number(lot.expected_price || mock?.price || 0).toLocaleString("en-IN")}/qtl</strong></div>
+          <div><small>AARTH MATCH</small><strong>{mock?.match || 92}%</strong></div>
+        </div>
+        <div className="lot-lifecycle">
+          {["Lot created", "Offer received", "Logistics", "Delivery", "Payment"].map((step, index) => <div key={step} className={index <= (txStatus === "OPEN" ? 1 : 4) ? "done" : ""}><i>{index + 1}</i><span>{step}</span></div>)}
+        </div>
+      </section>
+      <section className="farmer-lot-detail-grid farmer-lot-detail-cards">
+        <article><small>BUYER / OFFER</small><h3>{transaction?.buyer?.name || "Sahyadri Food Processing Pvt. Ltd."}</h3><p>{transaction ? `Offer amount ${Number(transaction.amount).toLocaleString("en-IN")} · ${transaction.quantity}` : "Top matching buyer · ₹2,875/qtl indicative offer"}</p><button>Review offer</button></article>
+        <article><small>PAYMENT HISTORY</small><h3>{transaction?.payment || "PENDING"}</h3><p>{transaction ? `Transaction ${transaction.id}` : "Payment is released after verified delivery."}</p><button>View digital receipt</button></article>
+        <article><small>LIVE SHIPPING</small><h3>{tracking.vehicle}</h3><p>{tracking.current} · {tracking.progress}% route complete</p><button onClick={() => document.getElementById("farmer-tracking")?.scrollIntoView({ behavior: "smooth" })}>Track shipment</button></article>
+      </section>
+      <section className="lot-table-card" id="farmer-tracking">
+        <h2>Shipping path & tracking</h2>
+        <p className="lot-detail-subtle">{tracking.lastUpdated} · Vehicle {tracking.vehicle} · Driver {tracking.driver}</p>
+        <div className="farmer-tracking-timeline">{tracking.route.map((point) => <div className={point.done ? "done" : ""} key={point.label}><i>{point.done ? "✓" : "•"}</i><span><b>{point.label}</b><small>{point.place} · {point.time}</small></span></div>)}</div>
+      </section>
+      <section className="lot-table-card">
+        <div className="lot-detail-action-row"><div><h2>Digital transaction record</h2><p className="lot-detail-subtle">Unique lot/transaction records are retained for traceability.</p></div><button className="lot-primary-button">Download digital receipt</button><button className="lot-secondary-button">Raise grievance</button></div>
+      </section>
+    </>
   );
 }
 function Produce({ form, update, crops, search, setSearch }) {

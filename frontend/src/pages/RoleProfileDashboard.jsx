@@ -471,7 +471,11 @@ export default function RoleProfileDashboard({
     const selectFarmerNav = (label) => {
       setActiveNav(label);
       if (label === "Market Insights") {
+<<<<<<< HEAD
         navigate("/farmer/market-insights");
+=======
+        navigate("/farmer/profit-loss");
+>>>>>>> f6b12ac (FEAT : ADDED THE SECTIONS FOR REJECTED LOT RECOVERY MULTI CROP MATCHING , REQUIREMENTS , etc)
         return;
       }
       if (label === "Create Lot") {
@@ -483,7 +487,11 @@ export default function RoleProfileDashboard({
         return;
       }
       if (label === "Buyers") {
-        navigate("/farmer/buyers");
+        navigate("/farmer/operations");
+        return;
+      }
+      if (label === "Operations" || label === "Rejected Recovery" || label === "Residue") {
+        navigate(label === "Rejected Recovery" ? "/farmer/recovery" : label === "Residue" ? "/farmer/residue" : "/farmer/operations");
         return;
       }
       if (label === "Profile") {
@@ -505,6 +513,9 @@ export default function RoleProfileDashboard({
       book: "▤",
       cloud: "☁",
       headset: "◉",
+      grid: "▦",
+      recovery: "↺",
+      leaf: "☘",
     };
     const renderInput = (item) => {
       if (!isConditionalFieldVisible(item)) return null;
@@ -532,14 +543,59 @@ export default function RoleProfileDashboard({
       return <label className={`profile-field ${item.wide ? "wide" : ""}`}>{label}<input type={item.type || "text"} value={values[item.key] || ""} placeholder={item.placeholder} readOnly={item.readOnlyFromRegistration && Boolean(values[item.key])} onChange={(event) => updateField(item.key, event.target.value)} /></label>;
     };
 
-    return <div className="onboarding role-farmer" style={{ "--accent": config.accent, "--deep": config.deep, "--soft": config.soft }}>
-      <header className="aarth-topbar"><div className="aarth-brand-block"><img src={logo} alt="AARTH" /><span><strong>AARTH</strong><small>FARMERS · MARKETS · OPPORTUNITIES</small></span></div><nav className="aarth-main-nav">{(config.nav.some((item) => item.label === "Buyers") ? config.nav : [...config.nav, { label: "Buyers", icon: "buyers" }]).map((item) => <button type="button" key={item.label} className={activeNav === item.label ? "active" : ""} onClick={() => selectFarmerNav(item.label)}><b>{farmerNavIcons[item.icon] || "•"}</b><span>{item.label}</span></button>)}</nav><div className="aarth-topbar-actions"><label className="aarth-search-box"><span>⌕</span><input placeholder="Search markets, crops, buyers..." /></label><button type="button" className="top-icon-button" aria-label="Notifications">♧<i className="notification-dot" /></button><div className="farmer-account-menu"><button type="button" className="farmer-account" aria-expanded={accountMenuOpen} onClick={() => setAccountMenuOpen((open) => !open)}><span className="farmer-avatar">{displayName.slice(0, 2).toUpperCase()}</span><span className="farmer-account-copy"><strong>{displayName}</strong><small>Farmer</small></span><b className="account-chevron">⌄</b></button>{accountMenuOpen && <div className="account-dropdown"><span>{displayName}</span><button type="button" onClick={logout}>↪ Log out</button></div>}</div></div></header>
-      <main className="redesigned-farmer-main"><section className="farmer-welcome-hero"><div className="welcome-copy"><span className="welcome-leaf-icon">☘</span><div><h1>Welcome, {displayName}!</h1><p>Let’s set up your profile to get started with AARTH.</p></div></div><div className="farmer-hero-image" style={{ backgroundImage: `url(${config.visualImage})` }}><div className="farmer-hero-overlay" /></div></section>
+    return <div className={`onboarding role-${config.slug}`} style={{ "--accent": config.accent, "--deep": config.deep, "--soft": config.soft }}>
+      <header className="aarth-topbar"><div className="aarth-brand-block"><img src={logo} alt="AARTH" /><span><strong>AARTH</strong><small>FARMERS · MARKETS · OPPORTUNITIES</small></span></div><nav className="aarth-main-nav">{(config.nav.some((item) => item.label === "Buyers") ? config.nav : [...config.nav, { label: "Buyers", icon: "buyers" }]).map((item) => <button type="button" key={item.label} className={activeNav === item.label ? "active" : ""} onClick={() => selectFarmerNav(item.label)}><b>{farmerNavIcons[item.icon] || "•"}</b><span>{item.label}</span></button>)}</nav><div className="aarth-topbar-actions"><label className="aarth-search-box"><span>⌕</span><input placeholder="Search markets, crops, buyers..." /></label><button type="button" className="top-icon-button" aria-label="Notifications">♧<i className="notification-dot" /></button><div className="farmer-account-menu"><button type="button" className="farmer-account" aria-expanded={accountMenuOpen} onClick={() => setAccountMenuOpen((open) => !open)}><span className="farmer-avatar">{displayName.slice(0, 2).toUpperCase()}</span><span className="farmer-account-copy"><strong>{displayName}</strong><small>{config.roleLabel}</small></span><b className="account-chevron">⌄</b></button>{accountMenuOpen && <div className="account-dropdown"><span>{displayName}</span><button type="button" onClick={logout}>↪ Log out</button></div>}</div></div></header>
+      {config.slug === "farmer" && <div className="farmer-service-marquee" aria-label="AARTH farmer services">
+        <div className="farmer-service-marquee-track">{[
+          ["Market Prices", "Mandi prices & arrivals", "▥"],
+          ["Verified Buyers", "Trusted buyer context", "♧"],
+          ["FPO Network", "Aggregate & grow", "☘"],
+          ["Logistics", "Transport made easier", "▣"],
+          ["Storage", "Compare facilities", "▤"],
+          ["Agri Knowledge", "Schemes & insights", "✦"],
+          ["Market Prices", "Mandi prices & arrivals", "▥"],
+          ["Verified Buyers", "Trusted buyer context", "♧"],
+          ["FPO Network", "Aggregate & grow", "☘"],
+          ["Logistics", "Transport made easier", "▣"],
+          ["Storage", "Compare facilities", "▤"],
+          ["Agri Knowledge", "Schemes & insights", "✦"],
+          ["Market Prices", "Mandi prices & arrivals", "▥"],
+          ["Verified Buyers", "Trusted buyer context", "♧"],
+          ["FPO Network", "Aggregate & grow", "☘"],
+          ["Logistics", "Transport made easier", "▣"],
+          ["Storage", "Compare facilities", "▤"],
+          ["Agri Knowledge", "Schemes & insights", "✦"],
+        ].map(([title, text, icon], index) => <div className="farmer-service-marquee-item" key={`${title}-${index}`}><i>{icon}</i><span><strong>{title}</strong><small>{text}</small></span></div>)}</div>
+      </div>}
+      <main className="redesigned-farmer-main"><section className="farmer-welcome-hero"><div className="welcome-copy"><span className="welcome-leaf-icon">☘</span><div><h1>Welcome, {displayName}!</h1><p>Let’s set up your profile to get started with AARTH.</p><span className="role-demo-verified">✓ VERIFIED {config.roleLabel} · SIH26193 DEMO</span></div></div><div className="farmer-hero-image" style={{ backgroundImage: `url(${config.visualImage})` }}><div className="farmer-hero-overlay" /></div></section>
       <section className="role-dashboard-strip redesigned-id-strip">{[["▣", "AARTH ID", profile.aarth_id || "Not assigned", true], ["☘", "ROLE ID", profile.role_id || "Not assigned", true], ["●", "ACCOUNT TYPE", config.roleLabel], ["●", "ACCOUNT STATUS", profile.status || "ACTIVE"]].map(([icon, labelText, value, copy]) => <div className="id-card-item" key={labelText}><i className={`id-card-icon ${labelText === "ACCOUNT STATUS" ? "status-icon" : ""}`}>{icon}</i><span><small>{labelText}</small><strong>{value}</strong></span>{copy && <button type="button" aria-label={`Copy ${labelText}`} onClick={() => navigator.clipboard?.writeText(value)}>⧉</button>}</div>)}</section>
       {(completion.percentage === 100 || savedCompletion.percentage === 100) && <FarmerIdentityCard profile={profile} onScan={() => navigate("/farmer/scan")} />}
-      <div className="portal-content redesigned-content"><section className="form-card redesigned-form-card"><div className="form-title redesigned-form-title"><div><h2>Complete your profile</h2><p className="form-description">Tell us about yourself and your farm so AARTH can connect you with relevant market opportunities.</p></div><span>FARMER</span></div><div className="stepper redesigned-stepper">{config.steps.map((step, index) => { const completed = isStepComplete(index); const incomplete = attemptedSteps.includes(index) && !completed; return <button type="button" key={step} className={[index === activeStep ? "current" : "", completed ? "completed" : "", incomplete ? "incomplete" : ""].filter(Boolean).join(" ")} onClick={() => goToStep(index)}><i>{completed ? "✓" : index + 1}</i><small>{step}</small></button>; })}</div><div className="details-box redesigned-details-box">{activeStep < 2 ? <><div className="section-heading-row"><div><h3><em>{activeStep === 0 ? "●" : "☘"}</em>{activeStep === 0 ? "Personal & Location" : "Farm Profile"}</h3><p>{activeStep === 0 ? "Who is this farmer? Add your basic contact and Maharashtra location details." : "A concise agricultural background for relevant AARTH participants."}</p></div><span className="maharashtra-badge"><b>MH</b>Maharashtra</span></div><div className="field-grid redesigned-field-grid">{fieldsForStep.map((item) => <div className={item.wide ? "wide" : ""} key={item.key}>{renderInput(item)}</div>)}</div>{activeStep === 0 && <div className="maharashtra-note"><span>⌖</span><div><strong>Location flow</strong>Select your district, then taluka, before searching for your village.</div></div>}<footer className="redesigned-form-footer"><button type="button" className="draft redesigned-secondary" disabled={saving} onClick={() => saveProfile(false)}>▣ Save as draft</button><span className="step-actions">{activeStep > 0 && <button type="button" className="back-button" onClick={() => setActiveStep(activeStep - 1)}>← Back</button>}<button type="button" className="continue redesigned-primary" disabled={saving} onClick={() => goToStep(activeStep === 1 ? 2 : 1)}>{saving ? "Saving..." : activeStep === 1 ? "Review profile →" : "Save & Continue →"}</button></span></footer></> : <div className="review-panel"><div className="review-profile-header"><span className="review-avatar">{displayName.slice(0, 2).toUpperCase()}</span><div><h3>{values.full_name || displayName}</h3><p>Farmer {location && `· ${location}`}</p></div></div><div className="review-grid"><div><small>PERSONAL & LOCATION</small><strong>{values.full_name || "—"}<br />{values.phone_number || "—"}<br />{location || "—"}</strong></div><div><small>FARM SIZE</small><strong>{values.land_size || "—"}</strong></div><div className="review-wide"><small>CROPS GROWN</small><div className="review-chip-list">{selectedCrops.length ? selectedCrops.map((key) => <span key={key}>{cropLookup.get(key)?.name || key}</span>) : <strong>—</strong>}</div></div><div><small>CULTIVATION</small><strong>{values.cultivation_type || "—"}</strong></div><div><small>FPO / COOPERATIVE</small><strong>{values.fpo_membership === "Yes" ? values.fpo_name || "Yes" : values.fpo_membership || "—"}</strong></div><div><small>STORAGE</small><strong>{values.storage_access === "Available" ? values.storage_type || "Available" : values.storage_access || "—"}</strong></div><div className="review-wide"><small>ABOUT THE FARM</small><strong>{values.about_farm || "No description added."}</strong></div></div><div className="review-actions"><button type="button" className="back-button" onClick={() => setActiveStep(1)}>← Back</button><button type="button" className="redesigned-secondary" onClick={() => setActiveStep(0)}>Edit</button><button type="button" className="redesigned-primary" disabled={saving} onClick={() => saveProfile(true)}>{saving ? "Publishing..." : "Publish Profile"}</button></div></div>}</div></section>
+      <div className="portal-content redesigned-content"><section className="form-card redesigned-form-card"><div className="form-title redesigned-form-title"><div><h2>Complete your profile</h2><p className="form-description">Tell us about your organization so AARTH can connect you with relevant market opportunities.</p></div><span>{config.roleLabel}</span></div><div className="stepper redesigned-stepper">{config.steps.map((step, index) => { const completed = isStepComplete(index); const incomplete = attemptedSteps.includes(index) && !completed; return <button type="button" key={step} className={[index === activeStep ? "current" : "", completed ? "completed" : "", incomplete ? "incomplete" : ""].filter(Boolean).join(" ")} onClick={() => goToStep(index)}><i>{completed ? "✓" : index + 1}</i><small>{step}</small></button>; })}</div><div className="details-box redesigned-details-box">{activeStep < 2 ? <><div className="section-heading-row"><div><h3><em>{activeStep === 0 ? "●" : "☘"}</em>{activeStep === 0 ? "Personal & Location" : "Farm Profile"}</h3><p>{activeStep === 0 ? "Who is this farmer? Add your basic contact and Maharashtra location details." : "A concise agricultural background for relevant AARTH participants."}</p></div><span className="maharashtra-badge"><b>MH</b>Maharashtra</span></div><div className="field-grid redesigned-field-grid">{fieldsForStep.map((item) => <div className={item.wide ? "wide" : ""} key={item.key}>{renderInput(item)}</div>)}</div>{activeStep === 0 && <div className="maharashtra-note"><span>⌖</span><div><strong>Location flow</strong>Select your district, then taluka, before searching for your village.</div></div>}<footer className="redesigned-form-footer"><button type="button" className="draft redesigned-secondary" disabled={saving} onClick={() => saveProfile(false)}>▣ Save as draft</button><span className="step-actions">{activeStep > 0 && <button type="button" className="back-button" onClick={() => setActiveStep(activeStep - 1)}>← Back</button>}<button type="button" className="continue redesigned-primary" disabled={saving} onClick={() => goToStep(activeStep === 1 ? 2 : 1)}>{saving ? "Saving..." : activeStep === 1 ? "Review profile →" : "Save & Continue →"}</button></span></footer></> : <div className="review-panel"><div className="review-profile-header"><span className="review-avatar">{displayName.slice(0, 2).toUpperCase()}</span><div><h3>{values.full_name || displayName}</h3><p>Farmer {location && `· ${location}`}</p></div></div><div className="review-grid"><div><small>PERSONAL & LOCATION</small><strong>{values.full_name || "—"}<br />{values.phone_number || "—"}<br />{location || "—"}</strong></div><div><small>FARM SIZE</small><strong>{values.land_size || "—"}</strong></div><div className="review-wide"><small>CROPS GROWN</small><div className="review-chip-list">{selectedCrops.length ? selectedCrops.map((key) => <span key={key}>{cropLookup.get(key)?.name || key}</span>) : <strong>—</strong>}</div></div><div><small>CULTIVATION</small><strong>{values.cultivation_type || "—"}</strong></div><div><small>FPO / COOPERATIVE</small><strong>{values.fpo_membership === "Yes" ? values.fpo_name || "Yes" : values.fpo_membership || "—"}</strong></div><div><small>STORAGE</small><strong>{values.storage_access === "Available" ? values.storage_type || "Available" : values.storage_access || "—"}</strong></div><div className="review-wide"><small>ABOUT THE FARM</small><strong>{values.about_farm || "No description added."}</strong></div></div><div className="review-actions"><button type="button" className="back-button" onClick={() => setActiveStep(1)}>← Back</button><button type="button" className="redesigned-secondary" onClick={() => setActiveStep(0)}>Edit</button><button type="button" className="redesigned-primary" disabled={saving} onClick={() => saveProfile(true)}>{saving ? "Publishing..." : "Publish Profile"}</button></div></div>}</div></section>
       <aside className="profile-aside redesigned-aside"><section className="readiness-card redesigned-readiness-card"><div className="aside-card-heading"><h3>Profile readiness</h3><span>{completion.percentage}%</span></div><div className="readiness-progress-track"><span style={{ width: `${completion.percentage}%` }} /></div><p><b>{completion.completed} of {completion.total} required fields completed</b><br />Complete your basic profile to unlock AARTH opportunities.</p></section><section className="tip-card redesigned-tip-card"><span className="tip-icon-box">💡</span><p>Your basic farm information helps AARTH understand your location and production context.</p></section><section className="role-visual redesigned-role-visual" style={{ backgroundImage: "url(/leaf.png)" }}><div className="visual-photo-overlay" /><div className="visual-copy redesigned-visual-copy"><span className="visual-main-line">Better market links<br />Better price choices</span><small>Without the right market link, a farmer may miss the best price.</small></div></section><section className="quick-card redesigned-quick-card profile-public-card"><span className="public-card-icon">☘</span><div><strong>Build your farmer profile</strong><p>Complete your basic details before creating lots and exploring market opportunities.</p></div></section></aside></div>{notice && <div className="save-notice redesigned-save-notice">✓ {notice}<button type="button" onClick={() => setNotice("")}>×</button></div>}</main></div>;
   }
+
+  const handleGenericNav = (label) => {
+    setActiveNav(label);
+    if (config.role === "STORAGE_PARTNER") {
+      const storageRoutes = {
+        "Storage Requests": "/storage-partner/requests",
+        "My Facilities": "/storage-partner/facilities",
+        "Capacity": "/storage-partner/capacity",
+        "Bookings": "/storage-partner/bookings",
+        "Operations": "/storage-partner/operations",
+        "Support": "/storage-partner/support",
+      };
+      if (storageRoutes[label]) {
+        navigate(storageRoutes[label]);
+        return;
+      }
+      if (label === "Profile") {
+        requestAnimationFrame(() => {
+          document.querySelector(".redesigned-form-card")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      }
+    }
+  };
 
   return (
     <div
@@ -584,11 +640,7 @@ export default function RoleProfileDashboard({
                     ? "active"
                     : ""
                 }
-                onClick={() =>
-                  setActiveNav(
-                    item.label
-                  )
-                }
+                onClick={() => handleGenericNav(item.label)}
               >
                 <span>
                   {item.icon}

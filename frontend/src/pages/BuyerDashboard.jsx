@@ -99,6 +99,7 @@ export default function BuyerDashboard() {
   const [locationSearch, setLocationSearch] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [activeNav, setActiveNav] = useState("Profile");
   const [verifyingGstin, setVerifyingGstin] = useState(false);
   const [gstinResult, setGstinResult] = useState(null);
 
@@ -269,6 +270,23 @@ export default function BuyerDashboard() {
   const selectedCrops = ALL_AARTH_CROPS.filter((crop) =>
     values.sourcing_commodities.includes(crop.key),
   );
+  const handleNav = (item) => {
+    setActiveNav(item);
+    const routes = {
+      Home: "/buyer",
+      Profile: "/buyer",
+      "Search Produce": "/buyer/search-produce",
+      "My Requirements": "/buyer/requirements",
+      "Discover Lots": "/buyer/discover-lots",
+      Orders: "/buyer/orders",
+      "Supplier Network": "/buyer/suppliers",
+      "Recovered Lots": "/buyer/recovery",
+      Operations: "/buyer/operations",
+      "Market Insights": "/buyer/market-insights",
+      Support: "/buyer/support",
+    };
+    if (routes[item]) navigate(routes[item]);
+  };
   return (
     <div className="buyer-shell">
       <header className="buyer-navbar">
@@ -289,22 +307,16 @@ export default function BuyerDashboard() {
             "Discover Lots",
             "Orders",
             "Supplier Network",
+            "Recovered Lots",
+            "Operations",
             "Market Insights",
             "Support",
           ].map((item) => (
             <button
               type="button"
-              className={item === "Profile" ? "active" : ""}
+              className={activeNav === item ? "active" : ""}
               key={item}
-              onClick={() =>
-                item === "Home"
-                  ? navigate("/buyer")
-                  : item === "My Requirements"
-                    ? navigate("/buyer/requirements")
-                    : item === "Discover Lots"
-                      ? navigate("/buyer/discover-lots")
-                      : setNotice(`${item} will be available in the next Buyer workspace release.`)
-              }
+              onClick={() => handleNav(item)}
             >
               {item}
             </button>

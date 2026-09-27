@@ -4,7 +4,6 @@ const API_URL = (
   import.meta.env.VITE_API_URL || ""
 ).replace(/\/$/, "");
 
-
 async function request(
   path,
   options = {},
@@ -21,7 +20,6 @@ async function request(
       : {}),
   };
 
-
   if (authenticated) {
     const token =
       authApi.getSession()
@@ -37,7 +35,6 @@ async function request(
       `Bearer ${token}`;
   }
 
-
   const response = await fetch(
     `${API_URL}${path}`,
     {
@@ -46,12 +43,10 @@ async function request(
     }
   );
 
-
   const body =
     await response
       .json()
       .catch(() => ({}));
-
 
   if (!response.ok) {
     throw new Error(
@@ -60,10 +55,8 @@ async function request(
     );
   }
 
-
   return body;
 }
-
 
 const query = (
   params = {}
@@ -74,9 +67,7 @@ const query = (
     )
   ).toString();
 
-
 export const fpoApi = {
-
   // Public FPO directory
   list: (filters) =>
     request(
@@ -87,7 +78,6 @@ export const fpoApi = {
     request(
       `/api/fpos/${id}`
     ),
-
 
   // FPO claim
   claim: (id, data) =>
@@ -100,14 +90,55 @@ export const fpoApi = {
       true
     ),
 
-
   // Logged-in FPO workspace
   dashboard: () =>
-    request(
-      "/api/fpo/dashboard",
-      {},
-      true
-    ),
+    (
+      typeof sessionStorage !==
+        "undefined" &&
+      sessionStorage.getItem(
+        "sih26193_demo"
+      ) === "true"
+    )
+      ? Promise.resolve({
+          fpo_name:
+            "SIH Demo FPO",
+
+          organisation_type:
+            "Farmer Producer Organisation",
+
+          registration_number:
+            "FPO-SIH26193",
+
+          district: "Nashik",
+
+          taluka: "Niphad",
+
+          village:
+            "Demo Village",
+
+          address:
+            "Maharashtra",
+
+          crops: [
+            "Onion",
+            "Grapes",
+          ],
+
+          summary: {
+            total: 126,
+            active: 118,
+            pending: 5,
+            inactive: 3,
+          },
+
+          username:
+            "SIH Demo FPO",
+        })
+      : request(
+          "/api/fpo/dashboard",
+          {},
+          true
+        ),
 
   organisation: () =>
     request(
@@ -126,28 +157,81 @@ export const fpoApi = {
       true
     ),
 
-
   // Farmer network
   members: (filters = {}) =>
-    request(
-      `/api/fpo/members?${query(filters)}`,
-      {},
-      true
-    ),
+    (
+      typeof sessionStorage !==
+        "undefined" &&
+      sessionStorage.getItem(
+        "sih26193_demo"
+      ) === "true"
+    )
+      ? Promise.resolve({
+          items: [
+            {
+              farmer_name:
+                "Demo Farmer 01",
+              crop: "Onion",
+              district: "Nashik",
+              status: "ACTIVE",
+              requested_at:
+                "2026-09-25T10:00:00Z",
+            },
+
+            {
+              farmer_name:
+                "Demo Farmer 02",
+              crop: "Grapes",
+              district: "Nashik",
+              status: "ACTIVE",
+              requested_at:
+                "2026-09-24T10:00:00Z",
+            },
+
+            {
+              farmer_name:
+                "Demo Farmer 03",
+              crop: "Tomato",
+              district:
+                "Ahmednagar",
+              status: "PENDING",
+              requested_at:
+                "2026-09-23T10:00:00Z",
+            },
+          ],
+        })
+      : request(
+          `/api/fpo/members?${query(
+            filters
+          )}`,
+          {},
+          true
+        ),
 
   inviteDetails: (code) =>
-    request(`/api/fpo/invites/${encodeURIComponent(code)}`),
-
-  farmerDetail: (membershipId) =>
     request(
-      `/api/fpo/farmers/${encodeURIComponent(membershipId)}`,
+      `/api/fpo/invites/${encodeURIComponent(
+        code
+      )}`
+    ),
+
+  farmerDetail: (
+    membershipId
+  ) =>
+    request(
+      `/api/fpo/farmers/${encodeURIComponent(
+        membershipId
+      )}`,
       {},
       true
     ),
 
   farmerMembership: () =>
-    request("/api/fpo/membership", {}, true),
-
+    request(
+      "/api/fpo/membership",
+      {},
+      true
+    ),
 
   // Farmer invitation
   invite: () =>
@@ -158,7 +242,6 @@ export const fpoApi = {
       },
       true
     ),
-
 
   // Farmer membership request
   requestMembership: (
@@ -177,7 +260,6 @@ export const fpoApi = {
       true
     ),
 
-
   // FPO approval/rejection
   decideMembership: (
     id,
@@ -190,7 +272,6 @@ export const fpoApi = {
       },
       true
     ),
-
 
   // Staff
   staff: () =>
@@ -210,22 +291,36 @@ export const fpoApi = {
       true
     ),
 
-  changeStaffRole: (userId, role) =>
+  changeStaffRole: (
+    userId,
+    role
+  ) =>
     request(
-      `/api/fpo/staff/${encodeURIComponent(userId)}/role`,
+      `/api/fpo/staff/${encodeURIComponent(
+        userId
+      )}/role`,
       {
         method: "PATCH",
-        body: JSON.stringify({ role }),
+        body: JSON.stringify({
+          role,
+        }),
       },
       true
     ),
 
-  changeStaffStatus: (userId, status) =>
+  changeStaffStatus: (
+    userId,
+    status
+  ) =>
     request(
-      `/api/fpo/staff/${encodeURIComponent(userId)}/status`,
+      `/api/fpo/staff/${encodeURIComponent(
+        userId
+      )}/status`,
       {
         method: "PATCH",
-        body: JSON.stringify({ status }),
+        body: JSON.stringify({
+          status,
+        }),
       },
       true
     ),

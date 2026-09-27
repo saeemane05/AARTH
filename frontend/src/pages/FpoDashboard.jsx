@@ -454,6 +454,11 @@ export default function FpoDashboard() {
             Lots
           </Link>
 
+          <Link to="/fpo/operations">
+            <Icon name="search" size={18} />
+            Operations
+          </Link>
+
           <Link to="/fpos">
             <Icon name="search" size={18} />
             FPO Directory

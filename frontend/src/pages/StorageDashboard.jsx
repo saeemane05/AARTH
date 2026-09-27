@@ -5,9 +5,9 @@ const storageConfig = {
   role: "STORAGE_PARTNER",
   roleLabel: "STORAGE PARTNER",
   welcome: "Storage Partner",
-  accent: "#88739b",
-  deep: "#625273",
-  soft: "#f2edf5",
+  accent: "#7b6a91",
+  deep: "#51435f",
+  soft: "#f1edf5",
   icon: "🏬",
 
   tagline: [
@@ -39,6 +39,7 @@ const storageConfig = {
     { label: "My Facilities", icon: "▤" },
     { label: "Capacity", icon: "◫" },
     { label: "Bookings", icon: "□" },
+    { label: "Operations", icon: "▦" },
     { label: "Support", icon: "?" },
   ],
 
@@ -116,6 +117,7 @@ const storageConfig = {
     "Accurate facility and capacity information helps AARTH evaluate storage-linked pathways without assuming that storing is always better than selling immediately.",
 
   visualClass: "visual-storage",
+  visualImage: "https://2.wlimg.com/product_images/bc-full/2022/9/1589933/vegetable-cold-storage-services-1663758415-6550907.jpeg",
   visualIcon: "🏬",
   visualLines: [
     "Secure Storage",
@@ -126,7 +128,7 @@ const storageConfig = {
   quickIcon: "📦",
   quickTitle: "Storage foundation",
   quickText:
-    "Facility, capacity and commodity details can later support storage matching and sell-vs-store calculations.",
+    "Facility, capacity, supported commodities, verification and availability can support storage matching and sell-vs-store calculations. SIH26193 demo data is used for presentation only.",
 };
 
 export default function StorageDashboard() {

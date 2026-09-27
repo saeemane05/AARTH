@@ -31,3 +31,12 @@
 .fpo-dashboard-shell .fpo-d-error p {
   font-size: 13px;
 }
+
+
+/* SIH presentation refinement */
+.fpo-d-hero h1{font-size:44px}.fpo-d-hero p{font-size:15px}.fpo-d-hero-meta,.fpo-d-status{font-size:12px}.fpo-d-hero::after{content:"✓ ORGANISATION VERIFIED · DEMO DATA";position:absolute;right:32px;bottom:25px;z-index:3;padding:7px 10px;border-radius:999px;background:#e2f4eb;color:#08734f;font-size:9px;font-weight:900;letter-spacing:.5px;}.fpo-d-stat-copy span{font-size:12px}.fpo-d-stat-copy strong{font-size:30px}.fpo-d-stat-copy small{font-size:11px}.fpo-d-panel-head h2{font-size:21px}.fpo-d-row{font-size:12px}.fpo-d-row b{font-size:13px}.fpo-d-action-card strong{font-size:13px}.fpo-d-action-card p{font-size:11px;}
+
+
+/* SIH26193 presentation refinement */
+.fpo-d-main{font-size:14px!important}.fpo-d-navbar{min-height:76px!important}.fpo-d-main h1{font-size:38px!important}.fpo-d-main h2{font-size:25px!important}.fpo-d-main h3{font-size:20px!important}.fpo-d-stat-card{min-height:145px!important}.fpo-d-stat-card strong{font-size:28px!important}.fpo-d-stat-card span{font-size:12px!important}.fpo-d-action-card{min-height:140px!important}.fpo-d-action-card h3{font-size:19px!important}
+.fpo-dashboard-shell .fpo-d-main:before{content:"";display:block;height:210px;border-radius:16px;margin-bottom:18px;background-image:linear-gradient(90deg,rgba(58,20,113,.82),rgba(58,20,113,.18)),url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Farming-nashik.jpg?width=1400");background-size:cover;background-position:center}
