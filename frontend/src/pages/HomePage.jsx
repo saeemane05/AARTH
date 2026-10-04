@@ -379,14 +379,14 @@ function AARTHHomePage() {
               path: "/sih26193/fpo",
               title: "FPO",
               text: "Aggregate farmer supply and coordinate market opportunities.",
-              image: "https://content.wotr.org/farmer-producer-companies-strengthen-maharashtra-farmers-against-climate-uncertainty/assets/d8GQK5frLN/dhruvi-edited-8-1000x750.jpg",
+              image: "/FPOimage.png",
               icon: "fpo",
             },
             {
               path: "/sih26193/logistics",
               title: "Logistics Partner",
               text: "Coordinate agricultural transport and delivery movement.",
-              image: "https://akm-img-in.tosshub.com/indiatoday/images/story/202004/Thane_trucks__PTI_.jpeg?size=690%3A388",
+              image: "https://content.wotr.org/farmer-producer-companies-strengthen-maharashtra-farmers-against-climate-uncertainty/assets/d8GQK5frLN/dhruvi-edited-8-1000x750.jpg",
               icon: "truck",
             },
             {
