@@ -2096,6 +2096,8 @@ select {
 .role-farmer .farmer-service-marquee-item strong{font-size:14px;}
 .role-farmer .farmer-service-marquee-item small{font-size:10px;}
 @keyframes farmer-service-marquee{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(-50%,0,0)}}
+/* The moving service strip belongs to the public home experience, not the farmer workspace. */
+.role-farmer .farmer-service-marquee{display:none!important}
 
 /* Storage workspace: stronger service navigation and operational presentation */
 .role-storage .portal-sidebar{background:linear-gradient(180deg,#5b4c68,#463a50);box-shadow:10px 0 30px rgba(50,35,66,.08)}
