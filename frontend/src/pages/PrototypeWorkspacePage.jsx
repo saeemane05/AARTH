@@ -148,6 +148,22 @@ const cropImages = {
   Soybean: "https://images.unsplash.com/photo-1604908554261-8d0a7e3b9a10?auto=format&fit=crop&w=900&q=80",
 };
 
+// Local presentation assets keep the demo useful when a device is offline.
+const recoveryImages = { Onion: "/OnionBag.jpg", Tomato: "/TomatoBag.jpg", Grapes: "/GrapesBag.jpg", Garlic: "/GarlicBag.jpg", Banana: "/BananaBag.jpg" };
+const recoveryListings = [
+  ...demoRecovery,
+  { id: "REC-2609-031", crop: "Garlic", qty: "2 MT", reason: "Packaging review requested by buyer", oldBuyer: "Pune Fresh Foods", alternatives: ["Nashik wholesale cluster", "Local retailer network"], stage: "ALTERNATIVE_BUYER_FOUND", suggestedAction: "Offer grade-separated bags" },
+  { id: "REC-2609-034", crop: "Banana", qty: "4 MT", reason: "Delivery slot moved by buyer", oldBuyer: "Mumbai Fruit Hub", alternatives: ["Nearby ripening unit", "Local institutional buyer"], stage: "MARKET_RESCUE", suggestedAction: "Re-route within the delivery window" },
+];
+const residueListings = [
+  ["RES-101", "Cow dung", "/Cowdung.jpg", "Bio-slurry / compost", "Suresh Patil", "1.5 MT", "GreenGrow Compost Cooperative", "₹3,750", "MATCHED"],
+  ["RES-102", "Soybean husk", "/SoyabeanHusk.jpg", "Biomass / cattle feed", "Sunita Wagh", "900 kg", "Vidarbha Biofuel", "₹4,050", "OPEN"],
+  ["RES-103", "Rice husk", "/Ricehusk.jpg", "Biomass / bedding", "Prakash Bhosale", "1.2 MT", "Dairy Collective", "₹3,240", "OPEN"],
+  ["RES-104", "Sugarcane trash", "/SugarcaneTrash.jpg", "Mulch / biofuel", "Ramesh More", "2.4 MT", "Sahyadri Bio Energy", "₹7,800", "OFFER"],
+  ["RES-105", "Cotton stalk", "/Cottonstalk.jpg", "Biomass briquettes", "Mangal Shinde", "1.8 MT", "Nashik Agro Fuel", "₹6,300", "MATCHED"],
+  ["RES-106", "Coconut shells", "/Coconutshells.jpg", "Charcoal / biofuel", "Kavita Pawar", "700 kg", "Eco Carbon Works", "₹4,900", "OFFER"],
+].map(([id, residue, image, category, farmer, quantity, buyer, value, status]) => ({ id, residue, image, category, farmer, quantity, buyer, value, status }));
+
 const cropImage = (crop) => cropImages[crop] || cropImages.Onion;
 
 function FarmerOperationsView() {
@@ -475,48 +491,12 @@ function FarmerView({ tab }) {
           subtitle="Alternative buyers, markets and recovery pathways."
         />
 
-        <div className="prototype-card-grid">
-          {demoRecovery.map((item) => (
-            <div
-              className="prototype-card"
-              key={item.id}
-            >
-              <div className="prototype-card-topline">
-                <strong>{item.id}</strong>
-                <StatusBadge value={item.stage} />
-              </div>
-
-              <h3>{item.crop}</h3>
-
-              <p>
-                <strong>{item.qty}</strong>
-              </p>
-
-              <p>{item.reason}</p>
-
-              <div className="prototype-info-list">
-                <div>
-                  <span>Previous buyer</span>
-                  <strong>{item.oldBuyer}</strong>
-                </div>
-
-                <div>
-                  <span>Suggested action</span>
-                  <strong>{item.suggestedAction}</strong>
-                </div>
-              </div>
-
-              <h4>Alternative pathways</h4>
-
-              {item.alternatives.map((alternative) => (
-                <div
-                  className="prototype-option"
-                  key={alternative}
-                >
-                  {alternative}
-                </div>
-              ))}
-            </div>
+        <div className="recovery-dashboard-grid">
+          {recoveryListings.map((item) => (
+            <article className="recovery-dashboard-card" key={item.id}>
+              <img src={recoveryImages[item.crop]} alt={`${item.crop} lot`} />
+              <div className="recovery-dashboard-copy"><div className="prototype-card-topline"><strong>{item.id}</strong><StatusBadge value={item.stage} /></div><h3>{item.crop}<small>{item.qty}</small></h3><p className="recovery-reason">◉ {item.reason}</p><dl><div><dt>Previous buyer</dt><dd>{item.oldBuyer}</dd></div><div><dt>Suggested action</dt><dd>{item.suggestedAction}</dd></div></dl><b className="pathway-label">Alternative pathways</b>{item.alternatives.map((alternative) => <button className="recovery-pathway" key={alternative}>{alternative}<span>›</span></button>)}</div>
+            </article>
           ))}
         </div>
       </>
@@ -546,41 +526,9 @@ function FarmerView({ tab }) {
           subtitle="Biowaste and agricultural residue opportunities."
         />
 
-        <div className="prototype-card-grid">
-          {demoResidues.map((item) => (
-            <div
-              className="prototype-card"
-              key={item.id}
-            >
-              <div className="prototype-card-topline">
-                <strong>{item.residue}</strong>
-                <StatusBadge value={item.status} />
-              </div>
-
-              <p>{item.category}</p>
-
-              <div className="prototype-info-list">
-                <div>
-                  <span>Farmer</span>
-                  <strong>{item.farmer}</strong>
-                </div>
-
-                <div>
-                  <span>Quantity</span>
-                  <strong>{item.quantity}</strong>
-                </div>
-
-                <div>
-                  <span>Potential buyer</span>
-                  <strong>{item.buyer}</strong>
-                </div>
-
-                <div>
-                  <span>Prototype value</span>
-                  <strong>{item.value}</strong>
-                </div>
-              </div>
-            </div>
+        <div className="residue-dashboard-grid">
+          {residueListings.map((item) => (
+            <article className="residue-dashboard-card" key={item.id}><img src={item.image} alt={item.residue} /><div><div className="prototype-card-topline"><strong>{item.residue}</strong><StatusBadge value={item.status} /></div><p>{item.category}</p><dl><div><dt>Farmer</dt><dd>{item.farmer}</dd></div><div><dt>Quantity</dt><dd>{item.quantity}</dd></div><div><dt>Potential buyer</dt><dd>{item.buyer}</dd></div></dl><footer><span>Updated just now</span><strong>{item.value}</strong><button className="prototype-primary-button">View details ›</button></footer></div></article>
           ))}
         </div>
       </>
@@ -1869,6 +1817,8 @@ function PrototypeStyles() {
         margin: 5px 0 0;
       }
 
+      .recovery-dashboard-grid,.residue-dashboard-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.recovery-dashboard-card,.residue-dashboard-card{display:grid;grid-template-columns:34% 1fr;overflow:hidden;background:#fff;border:1px solid #dce9e4;border-radius:16px;box-shadow:0 8px 24px rgba(18,68,53,.07)}.recovery-dashboard-card>img,.residue-dashboard-card>img{width:100%;height:100%;min-height:230px;object-fit:cover}.recovery-dashboard-copy,.residue-dashboard-card>div{padding:16px}.recovery-dashboard-card h3{margin:8px 0 3px;font-size:20px}.recovery-dashboard-card h3 small{display:block;color:#126d58;font-size:15px;margin-top:2px}.recovery-reason{margin:9px 0;color:#60776e;font-size:12px;line-height:1.45}.recovery-dashboard-card dl,.residue-dashboard-card dl{margin:10px 0}.recovery-dashboard-card dl div,.residue-dashboard-card dl div{display:grid;grid-template-columns:42% 1fr;gap:8px;padding:5px 0;font-size:11px}.recovery-dashboard-card dt,.residue-dashboard-card dt{color:#7c8d86}.recovery-dashboard-card dd,.residue-dashboard-card dd{margin:0;font-weight:700;color:#36574b}.pathway-label{display:block;margin:11px 0 6px;font-size:11px}.recovery-pathway{display:flex;justify-content:space-between;width:100%;margin-top:5px;padding:9px;border:0;border-radius:8px;background:#edf7f4;color:#2f6255;font-size:11px;font-weight:700;text-align:left;cursor:pointer}.recovery-pathway span{font-size:20px;line-height:10px;color:#16805c}.residue-dashboard-card{grid-template-columns:38% 1fr}.residue-dashboard-card p{margin:5px 0;color:#71817b;font-size:11px}.residue-dashboard-card footer{display:flex;align-items:center;gap:8px;border-top:1px solid #e5efeb;padding-top:10px}.residue-dashboard-card footer span{font-size:9px;color:#84948e}.residue-dashboard-card footer strong{margin-left:auto;color:#16805c}.residue-dashboard-card footer button{padding:7px 9px;font-size:10px}
+
       .prototype-stat-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -2358,6 +2308,7 @@ function PrototypeStyles() {
       @media (max-width: 900px) {
         .prototype-operations-grid,.supplier-network-grid { grid-template-columns:1fr; }
         .prototype-insight-grid,.support-grid { grid-template-columns:1fr; }
+        .recovery-dashboard-grid,.residue-dashboard-grid { grid-template-columns:1fr; }
         .order-source-row { grid-template-columns:52px 1fr; }
         .order-source-row > b,.order-source-row .supplier-actions { grid-column:2; justify-content:flex-start; }
       }
@@ -2374,6 +2325,7 @@ function PrototypeStyles() {
         .prototype-detail-grid {
           grid-template-columns: 1fr;
         }
+        .recovery-dashboard-card,.residue-dashboard-card{grid-template-columns:1fr}.recovery-dashboard-card>img,.residue-dashboard-card>img{height:180px;min-height:0}
 
         .prototype-modal-actions {
           flex-direction: column;
