@@ -8,6 +8,8 @@ import {
   useParams,
 } from "react-router-dom";
 
+import { Analytics } from "@vercel/analytics/react";
+
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 
@@ -317,7 +319,8 @@ function AdminPage() {
 
 export default function App() {
   return (
-    <Routes>
+    <>
+      <Routes>
 
       {/* =========================
           PUBLIC HOMEPAGE
@@ -943,5 +946,7 @@ export default function App() {
       />
 
     </Routes>
+      <Analytics />
+    </>
   );
 }
